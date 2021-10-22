@@ -133,22 +133,26 @@ const SignInScreen =({navigation})=>{
                     </View>
 
                     <View style={styles.checkboxContainer}>
-                    <Checkbox
-                        status={checked ? 'checked' : 'unchecked'}
-                        onPress={() => {
-                            setChecked(!checked);
-                        }}
-                        color={'blue'}
-                        uncheckColor={'red'}
-                    />
-                   
-                    <Text style={styles.label}>Remember me</Text>
 
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('ForgotPwdScreen')}>
-                        <Text style={styles.forgot_button}>Forgot Password?</Text>
-                    </TouchableOpacity>
-                </View>
+                        <View style={styles.checkBox}>
+                            <Checkbox
+                                status={checked ? 'checked' : 'unchecked'}
+                                onPress={() => {
+                                    setChecked(!checked);
+                                }}
+                                color={'blue'}
+                                uncheckColor={'red'}
+                            />
+                        
+                            <Text style={styles.label}>Remember me</Text>
+
+                        </View>
+
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('ForgotPwdScreen')}>
+                            <Text style={styles.forgot_button}>Forgot Password?</Text>
+                        </TouchableOpacity>
+                    </View>
 
 
                 </View>
@@ -276,26 +280,24 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         marginBottom: 20,
       },
-    checkbox: {
-        alignSelf: "center",
-      },
+    
     rowContainer: {
         flex:1,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
     },
-    checkboxInput: {
-        flexDirection: "row",
-        marginBottom: 20,
-      },
-
+    checkBox:{
+        flex:1,
+        flexDirection:'row',
+    },
     editText: {
         flex:1,
       },
 
-      forgot_button: {
+    forgot_button: {
 
+        flex:1,
         marginLeft: 140,
         color: '#333C8D',
         marginTop: 8.5,
