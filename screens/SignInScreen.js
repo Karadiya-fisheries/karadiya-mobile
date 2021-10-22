@@ -61,70 +61,74 @@ const SignInScreen =({navigation})=>{
                 animation="fadeInUpBig" 
                 style={styles.footer}>
 
-                <Text style={styles.text_footer}>User Name</Text>
-                <View style={styles.action}>
-                <FontAwesome 
-                    name="user-o"
-                    color="#05375a"
-                    size={20}
-                />
-                <TextInput
-                    placeholder="Your User Name"
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    onChangeText={(val)=>textInpitChange(val)}
+                <View style={styles.editText}>
 
-                />
+                    <Text style={styles.text_footer}>User Name</Text>
+                    <View style={styles.action}>
+                        <FontAwesome 
+                            name="user-o"
+                            color="#05375a"
+                            size={20}
+                        />
+                        <TextInput
+                            placeholder="Your User Name"
+                            style={styles.textInput}
+                            autoCapitalize="none"
+                            onChangeText={(val)=>textInpitChange(val)}
 
-                {data.check_textInputChange ?
-                <Animatable.View
-                    animation="bounceIn">
+                        />
 
-                <Feather
-                    name="check-circle"
-                    color="green"
-                    size={20}
-                />
+                        {data.check_textInputChange ?
+                        <Animatable.View
+                                animation="bounceIn">
 
-                </Animatable.View>
-                
-                :null}
+                            <Feather
+                                name="check-circle"
+                                color="green"
+                                size={20}
+                            />
 
-                </View>
-                <Text style={[styles.text_footer, {
-                    marginTop:35
-                }]}>Password</Text>
-                <View style={styles.action}>
-                <Feather 
-                    name="lock"
-                    color="#05375a"
-                    size={20}
-                />
-                <TextInput
-                    placeholder="Your Password"
-                    secureTextEntry={true}                //{data.secureTextEntry ? true : false}
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    onChangeText={(val)=>handlePasswordChange(val)}
+                        </Animatable.View>
+                    
+                    :null}
 
-                />
-                <TouchableOpacity
-                    onPress={updateSecureTextEntry}>
+                    </View>
+                        <Text style={[styles.text_footer, {
+                            marginTop:35
+                        }]}>Password</Text>
+                    <View style={styles.action}>
+                        <Feather 
+                            name="lock"
+                            color="#05375a"
+                            size={20}
+                        />
+                        <TextInput
+                            placeholder="Your Password"
+                            secureTextEntry={true}                //{data.secureTextEntry ? true : false}
+                            style={styles.textInput}
+                            autoCapitalize="none"
+                            onChangeText={(val)=>handlePasswordChange(val)}
 
-                    {data.secureTextEntry ? 
-                    <Feather 
-                        name="eye-off"
-                        color="grey"
-                        size={20}
-                    />
-                    :
-                    <Feather 
-                        name="eye"
-                        color="grey"
-                        size={20}
-                    />
-                    }
-                </TouchableOpacity>
+                        />
+                        <TouchableOpacity
+                            onPress={updateSecureTextEntry}>
+
+                            {data.secureTextEntry ? 
+                            <Feather 
+                                name="eye-off"
+                                color="grey"
+                                size={20}
+                            />
+                            :
+                            <Feather 
+                                name="eye"
+                                color="grey"
+                                size={20}
+                            />
+                            }
+                        </TouchableOpacity>
+                    </View>
+
                 </View>
 
 
@@ -254,6 +258,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
       },
     rowContainer: {
+        flex:1,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
@@ -261,5 +266,9 @@ const styles = StyleSheet.create({
     checkboxInput: {
         flexDirection: "row",
         marginBottom: 20,
+      },
+
+    editText: {
+        flex:1,
       },
   });

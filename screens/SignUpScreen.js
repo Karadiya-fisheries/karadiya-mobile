@@ -19,78 +19,82 @@ function SignUpScreen() {
                 animation="fadeInUpBig" 
                 style={styles.footer}>
 
-                <Text style={styles.text_footer}>Full Name</Text>
-                <View style={styles.action}>
-                
-                <TextInput
-                    placeholder="Your Full Name"
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    onChangeText={(val)=>textInpitChange(val)}
+                <View style={styles.editText}>
 
-                />
-                </View>
+                    <Text style={styles.text_footer}>Full Name</Text>
+                    <View style={styles.action}>
+                    
+                    <TextInput
+                        placeholder="Your Full Name"
+                        style={styles.textInput}
+                        autoCapitalize="none"
+                        onChangeText={(val)=>textInpitChange(val)}
 
-                <Text style={styles.text_footer}>Email Address</Text>
-                <View style={styles.action}>
-                
-                <TextInput
-                    placeholder="Your E-mail"
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    onChangeText={(val)=>textInpitChange(val)}
+                    />
+                    </View>
 
-                />
-                </View>
+                    <Text style={styles.text_footer}>Email Address</Text>
+                    <View style={styles.action}>
+                    
+                    <TextInput
+                        placeholder="Your E-mail"
+                        style={styles.textInput}
+                        autoCapitalize="none"
+                        onChangeText={(val)=>textInpitChange(val)}
 
-                <Text style={styles.text_footer}>Phone Number</Text>
-                <View style={styles.action}>
-                
-                <TextInput
-                    placeholder="Your Phone Number"
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    onChangeText={(val)=>textInpitChange(val)}
+                    />
+                    </View>
 
-                />
-                </View>
+                    <Text style={styles.text_footer}>Phone Number</Text>
+                    <View style={styles.action}>
+                    
+                    <TextInput
+                        placeholder="Your Phone Number"
+                        style={styles.textInput}
+                        autoCapitalize="none"
+                        onChangeText={(val)=>textInpitChange(val)}
 
-                <Text style={styles.text_footer}>NIC</Text>
-                <View style={styles.action}>
-                
-                <TextInput
-                    placeholder="Your NIC Number"
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    onChangeText={(val)=>textInpitChange(val)}
+                    />
+                    </View>
 
-                />
-                </View>
+                    <Text style={styles.text_footer}>NIC</Text>
+                    <View style={styles.action}>
+                    
+                    <TextInput
+                        placeholder="Your NIC Number"
+                        style={styles.textInput}
+                        autoCapitalize="none"
+                        onChangeText={(val)=>textInpitChange(val)}
 
-                <Text style={styles.text_footer}>Create Password</Text>
-                <View style={styles.action}>
-                
-                <TextInput
-                    placeholder="Enter Your Password"
-                    style={styles.textInput}
-                    secureTextEntry={true} 
-                    autoCapitalize="none"
-                    onChangeText={(val)=>textInpitChange(val)}
+                    />
+                    </View>
 
-                />
-                </View>
+                    <Text style={styles.text_footer}>Create Password</Text>
+                    <View style={styles.action}>
+                    
+                    <TextInput
+                        placeholder="Enter Your Password"
+                        style={styles.textInput}
+                        secureTextEntry={true} 
+                        autoCapitalize="none"
+                        onChangeText={(val)=>textInpitChange(val)}
 
-                <Text style={styles.text_footer}>Conform Password</Text>
-                <View style={styles.action}>
-                
-                <TextInput
-                    placeholder="Reenter Your Password"
-                    style={styles.textInput}
-                    secureTextEntry={true} 
-                    autoCapitalize="none"
-                    onChangeText={(val)=>textInpitChange(val)}
+                    />
+                    </View>
 
-                />
+                    <Text style={styles.text_footer}>Conform Password</Text>
+                    <View style={styles.action}>
+                    
+                    <TextInput
+                        placeholder="Reenter Your Password"
+                        style={styles.textInput}
+                        secureTextEntry={true} 
+                        autoCapitalize="none"
+                        onChangeText={(val)=>textInpitChange(val)}
+
+                    />
+                    </View>
+
                 </View>
 
                 <View style={styles.rowContainer}>
@@ -140,7 +144,7 @@ const styles = StyleSheet.create({
         paddingBottom: 5
     },
     textInput: {
-        flex: 1,
+        //flex: 1,
         marginTop: Platform.OS === 'ios' ? 0 : -12,
         paddingLeft: 10,
         color: '#05375a',
@@ -170,7 +174,7 @@ const styles = StyleSheet.create({
     button: {
         alignItems: 'center',
         flexDirection:"column-reverse",
-        marginTop: 20,
+        marginTop: 5,
         backgroundColor: '#333C8D',
         padding: 10,
         width:"50%",
@@ -184,10 +188,15 @@ const styles = StyleSheet.create({
     },
 
     rowContainer: {
+        flex:1,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
     },
+
+    editText:{
+        flex:6,
+    }
 
 
 
