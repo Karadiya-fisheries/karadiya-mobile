@@ -4,10 +4,13 @@ import {View,Text,Button,StyleSheet, TextInput, TouchableOpacity,StatusBar} from
 import * as Animatable from 'react-native-animatable';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import { Checkbox } from 'react-native-paper';
 
 
 
 const SignInScreen =({navigation})=>{
+
+    const [checked, setChecked] = React.useState(false);
     
 
     const [data,setData]=React.useState({
@@ -128,6 +131,25 @@ const SignInScreen =({navigation})=>{
                             }
                         </TouchableOpacity>
                     </View>
+
+                    <View style={styles.checkboxContainer}>
+                    <Checkbox
+                        status={checked ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                            setChecked(!checked);
+                        }}
+                        color={'blue'}
+                        uncheckColor={'red'}
+                    />
+                   
+                    <Text style={styles.label}>Remember me</Text>
+
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('ForgotPwdScreen')}>
+                        <Text style={styles.forgot_button}>Forgot Password?</Text>
+                    </TouchableOpacity>
+                </View>
+
 
                 </View>
 
@@ -271,4 +293,18 @@ const styles = StyleSheet.create({
     editText: {
         flex:1,
       },
+
+      forgot_button: {
+
+        marginLeft: 140,
+        color: '#333C8D',
+        marginTop: 8.5,
+
+    },
+
+    label: {
+        marginTop: 8.5,
+        color: '#333C8D',
+        marginRight: 5,
+    },
   });
