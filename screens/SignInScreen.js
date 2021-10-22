@@ -1,35 +1,38 @@
 
 import React from 'react';
-import {View,Text,Button,StyleSheet, TextInput, TouchableOpacity,StatusBar} from 'react-native';
+import { View, Text, Button, StyleSheet, TextInput, TouchableOpacity, StatusBar } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import { Checkbox } from 'react-native-paper';
 
 
 
-const SignInScreen =({navigation})=>{
-    
+const SignInScreen = ({ navigation }) => {
 
-    const [data,setData]=React.useState({
+    const [checked, setChecked] = React.useState(false);
+
+
+    const [data, setData] = React.useState({
         username: '',
-        password:'',
-        check_textInputChange:false,
-        secureTextEntry:true
+        password: '',
+        check_textInputChange: false,
+        secureTextEntry: true
     });
 
     const textInpitChange = (val) => {
-        if(val.length!=0){
+        if (val.length != 0) {
             setData({
                 ...data,
-                username:val,
-                check_textInputChange:true
+                username: val,
+                check_textInputChange: true
 
             });
-        }else {
+        } else {
             setData({
                 ...data,
-                username:val,
-                check_textInputChange:false
+                username: val,
+                check_textInputChange: false
             });
         }
     }
@@ -42,115 +45,132 @@ const SignInScreen =({navigation})=>{
     }*/
 
 
-    const updateSecureTextEntry = () =>{
+    const updateSecureTextEntry = () => {
         setData({
             ...data,
-            secureTextEntry:!data.secureTextEntry
+            secureTextEntry: !data.secureTextEntry
         });
     }
 
 
     return (
         <View style={styles.container}>
-        <StatusBar translucent backgroundColor="transparent" />
+            <StatusBar translucent backgroundColor="transparent" />
             <View style={styles.header}>
                 <Text style={styles.titleLeft}>Welcome TO</Text>
                 <Text style={styles.titleCenter}>"KARADIYA"</Text>
             </View>
             <Animatable.View
-                animation="fadeInUpBig" 
+                animation="fadeInUpBig"
                 style={styles.footer}>
 
                 <Text style={styles.text_footer}>User Name</Text>
                 <View style={styles.action}>
-                <FontAwesome 
-                    name="user-o"
-                    color="#05375a"
-                    size={20}
-                />
-                <TextInput
-                    placeholder="Your User Name"
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    onChangeText={(val)=>textInpitChange(val)}
+                    <FontAwesome
+                        name="user-o"
+                        color="#05375a"
+                        size={20}
+                    />
+                    <TextInput
+                        placeholder="Your User Name"
+                        style={styles.textInput}
+                        autoCapitalize="none"
+                        onChangeText={(val) => textInpitChange(val)}
 
-                />
+                    />
 
-                {data.check_textInputChange ?
-                <Animatable.View
-                    animation="bounceIn">
+                    {data.check_textInputChange ?
+                        <Animatable.View
+                            animation="bounceIn">
 
-                <Feather
-                    name="check-circle"
-                    color="green"
-                    size={20}
-                />
+                            <Feather
+                                name="check-circle"
+                                color="green"
+                                size={20}
+                            />
 
-                </Animatable.View>
-                
-                :null}
+                        </Animatable.View>
+
+                        : null}
 
                 </View>
                 <Text style={[styles.text_footer, {
-                    marginTop:35
+                    marginTop: 35
                 }]}>Password</Text>
                 <View style={styles.action}>
-                <Feather 
-                    name="lock"
-                    color="#05375a"
-                    size={20}
-                />
-                <TextInput
-                    placeholder="Your Password"
-                    secureTextEntry={true}                //{data.secureTextEntry ? true : false}
-                    style={styles.textInput}
-                    autoCapitalize="none"
-                    onChangeText={(val)=>handlePasswordChange(val)}
-
-                />
-                <TouchableOpacity
-                    onPress={updateSecureTextEntry}>
-
-                    {data.secureTextEntry ? 
-                    <Feather 
-                        name="eye-off"
-                        color="grey"
+                    <Feather
+                        name="lock"
+                        color="#05375a"
                         size={20}
                     />
-                    :
-                    <Feather 
-                        name="eye"
-                        color="grey"
-                        size={20}
+                    <TextInput
+                        placeholder="Your Password"
+                        secureTextEntry={true}                //{data.secureTextEntry ? true : false}
+                        style={styles.textInput}
+                        autoCapitalize="none"
+                        onChangeText={(val) => handlePasswordChange(val)}
+
                     />
-                    }
-                </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={updateSecureTextEntry}>
+
+                        {data.secureTextEntry ?
+                            <Feather
+                                name="eye-off"
+                                color="grey"
+                                size={20}
+                            />
+                            :
+                            <Feather
+                                name="eye"
+                                color="grey"
+                                size={20}
+                            />
+                        }
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.checkboxContainer}>
+                    <Checkbox
+                        status={checked ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                            setChecked(!checked);
+                        }}
+                        color={'blue'}
+                        uncheckColor={'red'}
+                    />
+                    <Text style={styles.label}>Remember me</Text>
+
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('ForgotPwdScreen')}>
+                        <Text style={styles.forgot_button}>Forgot Password?</Text>
+                    </TouchableOpacity>
                 </View>
 
 
-                
+
                 <View style={styles.rowContainer}>
                     <TouchableOpacity
                         style={styles.button}
-                        //onPress={onPress}
+                    //onPress={onPress}
                     >
-                    <Text style={styles.textSign}>LogIn</Text>
+                        <Text style={styles.textSign}>LogIn</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={()=>navigation.navigate('SignUpScreen')}
+                        onPress={() => navigation.navigate('SignUpScreen')}
                     >
-                    <Text style={styles.textSign}>SignUp</Text>
+                        <Text style={styles.textSign}>SignUp</Text>
                     </TouchableOpacity>
                 </View>
 
 
-                
-                
+
+
 
             </Animatable.View>
-            
+
         </View>
     );
 };
@@ -159,9 +179,9 @@ export default SignInScreen;
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1, 
-      backgroundColor: '#333C8D'
-      
+        flex: 1,
+        backgroundColor: '#333C8D'
+
     },
     header: {
         flex: 1,
@@ -174,7 +194,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
-        borderBottomRightRadius:100,
+        borderBottomRightRadius: 100,
         paddingHorizontal: 20,
         paddingVertical: 30
     },
@@ -213,53 +233,61 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: 'center',
-        flexDirection:"column-reverse",
+        flexDirection: "column-reverse",
         marginTop: 50,
         backgroundColor: '#333C8D',
         padding: 10,
-        width:"50%",
-        alignItems:"center",
-        borderRadius:20,
-    
+        width: "50%",
+        alignItems: "center",
+        borderRadius: 20,
+
     },
     signIn: {
         width: '100%',
         height: 50,
         justifyContent: 'center',
         alignItems: 'center',
-        
+
     },
     textSign: {
         fontSize: 18,
         fontWeight: 'bold',
-        color:"#fff"
+        color: "#fff"
     },
     titleLeft: {
         color: '#fff',
         fontSize: 30,
         fontWeight: 'bold',
-        textAlign:'left'
+        textAlign: 'left'
     },
     titleCenter: {
         color: '#fff',
         fontSize: 30,
         fontWeight: 'bold',
-        textAlign:'center'
+        textAlign: 'center'
     },
     checkboxContainer: {
         flexDirection: "row",
-        marginBottom: 20,
-      },
-    checkbox: {
-        alignSelf: "center",
-      },
+        height: 50,
+
+    },
+
+    label: {
+        marginTop: 8.5,
+        color: '#333C8D',
+        marginRight: 5,
+    },
+    forgot_button: {
+
+        marginLeft: 140,
+        color: '#333C8D',
+        marginTop: 8.5,
+
+    },
     rowContainer: {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
     },
-    checkboxInput: {
-        flexDirection: "row",
-        marginBottom: 20,
-      },
-  });
+
+});
