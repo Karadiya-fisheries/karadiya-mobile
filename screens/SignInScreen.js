@@ -6,6 +6,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { Checkbox } from 'react-native-paper';
 
+import { AuthContext } from '../components/context';
+
 
 
 const SignInScreen =({navigation})=>{
@@ -19,6 +21,8 @@ const SignInScreen =({navigation})=>{
         check_textInputChange:false,
         secureTextEntry:true
     });
+
+    const { signIn } = React.useContext(AuthContext);
 
     const textInpitChange = (val) => {
         if(val.length!=0){
@@ -35,14 +39,16 @@ const SignInScreen =({navigation})=>{
                 check_textInputChange:false
             });
         }
-    }
-    //password validation need to fix
-    /*const updateSecureTextEntry = () => {
+    };
+
+    const handlePasswordChange = (val) => {
         setData({
             ...data,
-            secureTextEntry: !data.secureTextEntry
+            password:val
         });
-    }*/
+    };
+    //password validation need to fix
+     
 
 
     const updateSecureTextEntry = () =>{
@@ -50,7 +56,11 @@ const SignInScreen =({navigation})=>{
             ...data,
             secureTextEntry:!data.secureTextEntry
         });
-    }
+    };
+
+    const loginHandle = (username,password) => {
+        signIn(username,password);
+    };
 
 
     return (
@@ -107,7 +117,7 @@ const SignInScreen =({navigation})=>{
                         />
                         <TextInput
                             placeholder="Your Password"
-                            secureTextEntry={true}                //{data.secureTextEntry ? true : false}
+                            secureTextEntry={data.secureTextEntry ? true : false}
                             style={styles.textInput}
                             autoCapitalize="none"
                             onChangeText={(val)=>handlePasswordChange(val)}
@@ -158,7 +168,7 @@ const SignInScreen =({navigation})=>{
                 <View style={styles.rowContainer}>
                     <TouchableOpacity
                         style={styles.button}
-                        //onPress={onPress}
+                        onPress={()=>{loginHandle(data.username,data.password)}}
                     >
                     <Text style={styles.textSign}>LogIn</Text>
                     </TouchableOpacity>
@@ -275,6 +285,7 @@ const styles = StyleSheet.create({
     checkboxContainer: {
         flexDirection: "row",
         marginBottom: 20,
+        marginTop:30,
       },
     checkbox: {
         alignSelf: "center",
