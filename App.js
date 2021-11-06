@@ -32,14 +32,18 @@ import { AuthContext } from './components/context';
 
 
 const App = () => {
+<<<<<<< Updated upstream
 
   // const [isLoading,setIsLoading]=React.useState(true);
   // const [userToken,setUserToken]=React.useState(null);
 
+=======
+>>>>>>> Stashed changes
   const initialLoginState = {
     isLoading: true,
     userName: null,
     userToken: null,
+    user: undefined,
   };
 
   const loginReducer = (prevState, action) => {
@@ -74,6 +78,7 @@ const App = () => {
     }
   };
 
+<<<<<<< Updated upstream
   const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
 
 
@@ -86,6 +91,49 @@ const App = () => {
 
       if(userName == 'user' && password  =='pass'){ //userName and Password fetch from backend api 
         
+=======
+  const [loginState, dispatch] = React.useReducer(
+    loginReducer,
+    initialLoginState,
+  );
+  const API_URL = 'https://serene-woodland-83390.herokuapp.com/api/auth/';
+
+  const authContext = React.useMemo(
+    () => ({
+      signIn: async (userName, password) => {
+        // setUserToken('fgkj');
+        // setIsLoading(false);
+        var userToken;
+        userToken = null;
+        try {
+          const email = userName;
+          axios
+            .post(API_URL + 'signin', {
+              email,
+              password,
+            })
+            .then(response => {
+              if (response.data.accessToken) {
+                userToken = response.data.accessToken;
+                AsyncStorage.setItem('userToken', userToken);
+                AsyncStorage.setItem('user', response.data);
+                console.log(userToken);
+                dispatch({
+                  type: 'LOGIN',
+                  id: userName,
+                  token: userToken,
+                  user: response.data,
+                });
+              }
+            });
+        } catch (e) {
+          console.log(e);
+        }
+      },
+      signOut: async () => {
+        // setUserToken(null);
+        // setIsLoading(false);
+>>>>>>> Stashed changes
         try {
           userToken='dfgdfg';       //usertoken fetch from api 
           await AsyncStorage.setItem('userToken', userToken );
