@@ -115,14 +115,10 @@ const App = () => {
 
         dispatch({type: 'LOGOUT'});
       },
-      signUp: () => {
-        // axios.post(API_URL + 'signup', {
-        //   fullname,
-        //   email,
-        //   phone,
-        //   password,
-        // });
-        console.log();
+      signUp: user => {
+        axios.post(API_URL + 'signup', user).then(res => {
+          console.log(res);
+        });
       },
     }),
     [],
