@@ -95,6 +95,7 @@ const App = () => {
               if (response.data.accessToken) {
                 userToken = response.data.accessToken;
                 AsyncStorage.setItem('userToken', userToken);
+                AsyncStorage.setItem('user', JSON.stringify(response.data));
                 console.log(userToken);
                 dispatch({type: 'LOGIN', id: userName, token: userToken});
               }
@@ -109,6 +110,7 @@ const App = () => {
         // setIsLoading(false);
         try {
           await AsyncStorage.removeItem('userToken');
+          await AsyncStorage.removeItem('user');
         } catch (e) {
           console.log(e);
         }
@@ -130,12 +132,12 @@ const App = () => {
       let userToken;
       userToken = null;
       try {
-        await AsyncStorage.getItem('userToken');
+        const userToken = await AsyncStorage.getItem('userToken');
+        console.log(userToken);
+        dispatch({type: 'RETRIEVE_TOKEN', token: userToken});
       } catch (e) {
         console.log(e);
       }
-
-      dispatch({type: 'RETRIEVE_TOKEN', token: userToken});
     }, 1000);
   }, []);
 
