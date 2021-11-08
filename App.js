@@ -96,7 +96,7 @@ const App = () => {
                 userToken = response.data.accessToken;
                 AsyncStorage.setItem('userToken', userToken);
                 AsyncStorage.setItem('user', JSON.stringify(response.data));
-                console.log(userToken);
+                console.log(response.data);
                 dispatch({type: 'LOGIN', id: userName, token: userToken});
               }
               return response.data;
