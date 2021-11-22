@@ -5,14 +5,17 @@
  * @format
  * @flow strict-local
  */
- import 'react-native-gesture-handler';
+import 'react-native-gesture-handler';
 import React from 'react';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator,useIsDrawerOpen } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 import {
   SafeAreaView,
@@ -26,6 +29,7 @@ import {
 
 import RootStackScreen from './screens/RootStackScreen';
 import HomeStackScreen from './screens/HomeStackScreen';
+
 import { ActivityIndicator } from 'react-native-paper';
 
 import { AuthContext } from './components/context';
@@ -47,10 +51,11 @@ const Drawer = createDrawerNavigator();
 
 
 
-const App = () => {
+import {AuthContext} from './components/context';
 
-  // const [isLoading,setIsLoading]=React.useState(true);
-  // const [userToken,setUserToken]=React.useState(null);
+const App = () => {
+  // const [isLoading, setIsLoading] = React.useState(true);
+  // const [userToken, setUserToken] = React.useState(null);
 
   const initialLoginState = {
     isLoading: true,
@@ -59,28 +64,28 @@ const App = () => {
   };
 
   const loginReducer = (prevState, action) => {
-    switch( action.type ) {
-      case 'RETRIEVE_TOKEN': 
+    switch (action.type) {
+      case 'RETRIEVE_TOKEN':
         return {
           ...prevState,
           userToken: action.token,
           isLoading: false,
         };
-      case 'LOGIN': 
+      case 'LOGIN':
         return {
           ...prevState,
           userName: action.id,
           userToken: action.token,
           isLoading: false,
         };
-      case 'LOGOUT': 
+      case 'LOGOUT':
         return {
           ...prevState,
           userName: null,
           userToken: null,
           isLoading: false,
         };
-      case 'REGISTER': 
+      case 'REGISTER':
         return {
           ...prevState,
           userName: action.id,
@@ -90,82 +95,97 @@ const App = () => {
     }
   };
 
-  const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
 
+  
 
-  const authContext = React.useMemo(() => ({
-    signIn: async(userName, password)=>{
-      // setUserToken('fgkj');
-      // setIsLoading(false);
-        let userToken;
-        userToken=null;
+  const [loginState, dispatch] = React.useReducer(
+    loginReducer,
+    initialLoginState,
+  );
+  const API_URL = 'https://serene-woodland-83390.herokuapp.com/api/auth/';
 
-      if(userName == 'user' && password  =='pass'){ //userName and Password fetch from backend api 
-        
+  const authContext = React.useMemo(
+    () => ({
+      signIn: async (userName, password) => {
+        // setUserToken('fgkj');
+        // setIsLoading(false);
+        var userToken;
+        userToken = null;
         try {
-          
-          userToken='dfgdfg';       //usertoken fetch from api 
-          const result=await AsyncStorage.setItem('userToken','sadasda' );
-          console.log('set Token',result);
-        } catch(e) {
+          const email = userName;
+          axios
+            .post(API_URL + 'signin', {
+              email,
+              password,
+            })
+            .then(response => {
+              if (response.data.accessToken) {
+                userToken = response.data.accessToken;
+                AsyncStorage.setItem('userToken', userToken);
+                console.log(userToken);
+                dispatch({type: 'LOGIN', id: userName, token: userToken});
+              }
+              return response.data;
+            });
+        } catch (e) {
+          console.log(e);
+        }
+      },
+      signOut: async () => {
+        // setUserToken(null);
+        // setIsLoading(false);
+        try {
+          await AsyncStorage.removeItem('userToken');
+        } catch (e) {
+
           console.log(e);
         }
 
-      }
-     
-      dispatch({ type:'LOGIN', id:userName, token:userToken });
-
-    },
-    signOut: async()=>{
-      // setUserToken(null);
-      // setIsLoading(false);
-      try {
-        await AsyncStorage.removeItem('userToken');
-      } catch(e) {
-        console.log(e);
-      }
-
-      dispatch({ type:'LOGOUT' });
-
-    },
-    signUp: ()=>{
-      setUserToken('fgkj');
-      setIsLoading(false);
-    },
-  }), []);
+        dispatch({type: 'LOGOUT'});
+      },
+      signUp: () => {
+        // axios.post(API_URL + 'signup', {
+        //   fullname,
+        //   email,
+        //   phone,
+        //   password,
+        // });
+        console.log();
+      },
+    }),
+    [],
+  );
 
   useEffect(() => {
-    setTimeout(async() => {
+    setTimeout(async () => {
       //setIsLoading(false);
       let userToken;
-      userToken=null;
+      userToken = null;
       try {
+
         userToken=await AsyncStorage.getItem('userToken' );
         console.log('Token',userToken);
       } catch(e) {
         console.log(e);
       }
 
-
-      dispatch({ type:'RETRIEVE_TOKEN', token:userToken });
-
-    },1000);
+      dispatch({type: 'RETRIEVE_TOKEN', token: userToken});
+    }, 1000);
   }, []);
 
-
-  if (loginState.isLoading){
-    return(
-      <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-        <ActivityIndicator size='large'/>
+  if (loginState.isLoading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" />
       </View>
     );
   }
-  
 
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         {loginState.userToken != null ? (
+
           <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
             <Drawer.Screen name="Home" component={HomeStackScreen} />
             <Drawer.Screen name="E-logBook" component={ElogBookScreen} />
@@ -181,15 +201,12 @@ const App = () => {
           <RootStackScreen/>
         }
         
-      </NavigationContainer>
 
+        
+
+      </NavigationContainer>
     </AuthContext.Provider>
 
-    
-
-    
-
-    
   );
 };
 
