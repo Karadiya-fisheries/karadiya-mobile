@@ -1,12 +1,95 @@
 
 import * as React from 'react';
-import { View, Text,StyleSheet,TextInput,TouchableOpacity ,StatusBar} from 'react-native';
+import { View, Text,StyleSheet,TextInput,TouchableOpacity ,StatusBar,fetch} from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import axios from 'axios';
 
 
 
 
 function SignUpScreen() {
+
+    const [data, setData] = React.useState({
+        username: '',
+        password: '',
+        phone:'',
+        email:'',
+        successful: false,
+        message: '',
+        // check_textInputChange: false,
+        // secureTextEntry: true,
+        // confirm_secureTextEntry: true,
+    });
+
+    const textUserNameChange = (val) => {
+        
+            setData({
+                ...data,
+                username: val,
+                
+            });
+        
+    }
+
+    const textEmailChange = (val) => {
+        
+        setData({
+            ...data,
+            email: val,
+            
+        });
+    
+    }
+
+    const textPhoneChange = (val) => {
+        
+        setData({
+            ...data,
+            phone: val,
+            
+        });
+    
+    }
+
+
+
+    const PasswordChange = (val) => {
+        setData({
+            ...data,
+            password: val
+        });
+    }
+
+    const onSubmitHanndle=(data)=>{
+       
+        console.log(data.username,data.password,data.phone,data.email);
+         axios.post('https://serene-woodland-83390.herokuapp.com/api/auth/signup', {
+            
+                        
+                fullname : data.username ,
+                 email : data.email,
+                 phone : data.phone,
+                 password : data.password,
+                 roles : ['user'],
+
+           })
+           .then(function (response) {
+            console.log(response);
+
+
+           })
+           .catch(function (error) {
+             console.log(error);
+           });
+
+    
+    }
+
+    
+    
+
+
+
   return (
       
     <View style={styles.container}>
@@ -28,7 +111,9 @@ function SignUpScreen() {
                         placeholder="Your Full Name"
                         style={styles.textInput}
                         autoCapitalize="none"
-                        onChangeText={(val)=>textInpitChange(val)}
+                        //value={this.state.fullname}
+                        //onChange={this.onChangeFullname}
+                        onChangeText={(val)=>textUserNameChange(val)}
 
                     />
                     </View>
@@ -40,7 +125,9 @@ function SignUpScreen() {
                         placeholder="Your E-mail"
                         style={styles.textInput}
                         autoCapitalize="none"
-                        onChangeText={(val)=>textInpitChange(val)}
+                        // value={this.state.phone}
+                        // onChange={this.onChangePhone}
+                        onChangeText={(val)=>textEmailChange(val)}
 
                     />
                     </View>
@@ -52,12 +139,14 @@ function SignUpScreen() {
                         placeholder="Your Phone Number"
                         style={styles.textInput}
                         autoCapitalize="none"
-                        onChangeText={(val)=>textInpitChange(val)}
+                        // value={this.state.phone}
+                        // onChange={this.onChangePhone}
+                        onChangeText={(val)=>textPhoneChange(val)}
 
                     />
                     </View>
 
-                    <Text style={styles.text_footer}>NIC</Text>
+                    {/* <Text style={styles.text_footer}>NIC</Text>
                     <View style={styles.action}>
                     
                     <TextInput
@@ -67,7 +156,7 @@ function SignUpScreen() {
                         onChangeText={(val)=>textInpitChange(val)}
 
                     />
-                    </View>
+                    </View> */}
 
                     <Text style={styles.text_footer}>Create Password</Text>
                     <View style={styles.action}>
@@ -77,12 +166,14 @@ function SignUpScreen() {
                         style={styles.textInput}
                         secureTextEntry={true} 
                         autoCapitalize="none"
-                        onChangeText={(val)=>textInpitChange(val)}
+                        // value={this.state.password}
+                        // onChange={this.onChangePassword}
+                        onChangeText={(val)=>PasswordChange(val)}
 
                     />
                     </View>
 
-                    <Text style={styles.text_footer}>Conform Password</Text>
+                    {/* <Text style={styles.text_footer}>Conform Password</Text>
                     <View style={styles.action}>
                     
                     <TextInput
@@ -93,7 +184,7 @@ function SignUpScreen() {
                         onChangeText={(val)=>textInpitChange(val)}
 
                     />
-                    </View>
+                    </View> */}
 
                 </View>
 
@@ -101,7 +192,7 @@ function SignUpScreen() {
 
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={()=>navigation.navigate('SignUpScreen')}
+                        onPress={()=>onSubmitHanndle(data)}
                     >
                     <Text style={styles.textSign}>SignUp</Text>
                     </TouchableOpacity>

@@ -5,6 +5,7 @@ import * as Animatable from 'react-native-animatable';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import { Checkbox } from 'react-native-paper';
+import axios from 'axios';
 
 import { AuthContext } from '../components/context';
 
@@ -47,9 +48,7 @@ const SignInScreen =({navigation})=>{
             password:val
         });
     };
-    //password validation need to fix
      
-
 
     const updateSecureTextEntry = () =>{
         setData({
@@ -58,8 +57,22 @@ const SignInScreen =({navigation})=>{
         });
     };
 
-    const loginHandle = (username,password) => {
-        signIn(username,password);
+    const loginHandle = (data) => {
+        signIn(data.username,data.password);
+        
+        //  console.log(data.username,data.password);
+        //  axios.post('https://serene-woodland-83390.herokuapp.com/api/auth/signin', {
+            
+        //      email: data.username,
+        //      password: data.password,
+        //    })
+        //    .then(function (response) {
+        //      console.log(response.data.accessToken);
+        //    })
+        //    .catch(function (error) {
+        //      console.log(error);
+        //    });
+
     };
 
 
@@ -172,14 +185,14 @@ const SignInScreen =({navigation})=>{
                 <View style={styles.rowContainer}>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={()=>{loginHandle(data.username,data.password)}}
+                        onPress={()=>{loginHandle(data)}}
                     >
                     <Text style={styles.textSign}>LogIn</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={()=>navigation.navigate('SignUpScreen')}
+                        onPress={()=>navigation.navigate('SignUpScreen',data)}
                     >
                     <Text style={styles.textSign}>SignUp</Text>
                     </TouchableOpacity>
