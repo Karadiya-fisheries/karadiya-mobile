@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, Dimensions, Image, } from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -61,7 +60,7 @@ function ForgotPwdScreen({ navigation }) {
 
             </Animatable.View>
 
-        </View >
+        </View>
     );
 }
 
