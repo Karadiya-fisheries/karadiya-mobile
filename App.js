@@ -7,9 +7,12 @@
  */
 import 'react-native-gesture-handler';
 import React from 'react';
+
 import {NavigationContainer} from '@react-navigation/native';
+import {createDrawerNavigator, useIsDrawerOpen} from '@react-navigation/drawer';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useEffect} from 'react';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
@@ -25,9 +28,23 @@ import {
 
 import RootStackScreen from './screens/RootStackScreen';
 import HomeStackScreen from './screens/HomeStackScreen';
+
 import {ActivityIndicator} from 'react-native-paper';
 
 import {AuthContext} from './components/context';
+import {DrawerContent} from './screens/DrawerContent';
+import HomeScreen from './screens/HomeScreen';
+import SupportScreen from './screens/SupportScreen';
+import SettingsScreen from './screens/SettingsScreen';
+import FishermanRegistration from './screens/FishermanRegistration';
+import ElogBookScreen from './screens/ElogBookScreen';
+import NavigationScreen from './screens/NavigationScreen';
+import PredictionScreen from './screens/PredictonScreen';
+import BoatRegistrtionScreen from './screens/BoatRegistrationScreen';
+import DepartureApprovalScreen from './screens/DepartureApprovalScreen';
+import ProfileScreen from './screens/ProfileScreen';
+
+const Drawer = createDrawerNavigator();
 
 const App = () => {
   // const [isLoading, setIsLoading] = React.useState(true);
@@ -96,7 +113,7 @@ const App = () => {
                 userToken = response.data.accessToken;
                 AsyncStorage.setItem('userToken', userToken);
                 AsyncStorage.setItem('user', JSON.stringify(response.data));
-                console.log(response.data);
+                console.log(userToken);
                 dispatch({type: 'LOGIN', id: userName, token: userToken});
               }
               return response.data;
@@ -153,7 +170,26 @@ const App = () => {
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         {loginState.userToken != null ? (
-          <HomeStackScreen />
+          <Drawer.Navigator
+            drawerContent={props => <DrawerContent {...props} />}>
+            <Drawer.Screen name="Home" component={HomeStackScreen} />
+            <Drawer.Screen name="E-logBook" component={ElogBookScreen} />
+            <Drawer.Screen name="Navigation" component={NavigationScreen} />
+            <Drawer.Screen
+              name="Fisherman-Registration"
+              component={FishermanRegistration}
+            />
+            <Drawer.Screen name="Prediction" component={PredictionScreen} />
+            <Drawer.Screen
+              name="Boat-Registration"
+              component={BoatRegistrtionScreen}
+            />
+            <Drawer.Screen
+              name="Departure-Approval"
+              component={DepartureApprovalScreen}
+            />
+            <Drawer.Screen name="Profile" component={ProfileScreen} />
+          </Drawer.Navigator>
         ) : (
           <RootStackScreen />
         )}
