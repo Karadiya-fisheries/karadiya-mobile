@@ -152,7 +152,8 @@ const SignInScreen = ({ navigation }) => {
                 <View style={styles.rowContainer}>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => navigation.navigate('FishermanRegScreen')}
+                        onPress={() => navigation.navigate('HomeScreen')}
+
                     >
                         <Text style={styles.textSign}>LogIn</Text>
                     </TouchableOpacity>
