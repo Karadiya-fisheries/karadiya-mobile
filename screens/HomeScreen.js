@@ -9,12 +9,12 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Button} from 'react-native-paper';
-import {AuthContext} from '../components/context';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Button } from 'react-native-paper';
+import { AuthContext } from '../components/context';
 
-function HomeScreen({navigation}) {
-  const {signOut} = React.useContext(AuthContext);
+function HomeScreen({ navigation }) {
+  const { signOut } = React.useContext(AuthContext);
 
   return (
     <View style={styles.container}>
@@ -113,7 +113,7 @@ function HomeScreen({navigation}) {
 
 export default HomeScreen;
 
-const {height} = Dimensions.get('screen');
+const { height } = Dimensions.get('screen');
 const height_logo = height * 0.28;
 
 const styles = StyleSheet.create({
