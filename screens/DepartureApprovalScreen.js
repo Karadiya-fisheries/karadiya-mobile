@@ -512,7 +512,9 @@ function DepartureApprovalScreen() {
 
                 </ProgressStep>
 
-                <ProgressStep>
+                <ProgressStep
+                  onSubmit={handleSubmit}
+                  disabled={!isValid}>
                   <View style={{ padding: 15, marginTop: 10 }}>
 
                     <Text style={styles.txt}>16. I will not take on this boat any of my boat's registration book, operating license, valid insurance certificate, log book, fire extinguishers, radio with call sign, life jacket, life-saving equipment, or any other means of disembarkation. I hereby promise that I will not be taken on board and will not engage in any activity that is detrimental to national security or the health of the people of the country.</Text>
@@ -530,12 +532,6 @@ function DepartureApprovalScreen() {
                       <Text style={styles.label}>I Agree</Text>
                     </View>
                     <Text style={styles.txt}>17. Click the button below to request the transit (check if you get a message that says 'successfully forwarded' after pressing that button).</Text>
-                    <Button style={{ marginTop: 10 }}
-
-                      onPress={handleSubmit}
-                      title="SUBMIT"
-                      disabled={!isValid}
-                    />
                   </View>
 
 
