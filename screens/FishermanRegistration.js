@@ -726,7 +726,10 @@ function FishermanRegistration() {
                   </View>
                 </ProgressStep>
 
-                <ProgressStep>
+                <ProgressStep
+                  onSubmit={handleSubmit}
+                  disabled={!isValid}
+                >
 
                   <Text style={styles.text_footer}>Photo of Applicant</Text>
 
@@ -787,14 +790,7 @@ function FishermanRegistration() {
                     </TouchableHighlight>
                   </View>
 
-                  <View style={{ marginTop: 20 }}>
-                    <Button style={{ color: '#333C8D' }}
 
-                      onPress={handleSubmit}
-                      title="SUBMIT"
-                      disabled={!isValid}
-                    />
-                  </View>
                 </ProgressStep>
 
               </ProgressSteps>
