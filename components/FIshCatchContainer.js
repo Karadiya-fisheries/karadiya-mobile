@@ -39,12 +39,12 @@ const  FishCatchContainer=()=>{
 
     return (
         <View>
-        <View style={{ borderWidth: 1, borderRadius: 10, marginBottom: 10, borderColor: '#333C8D', padding: 5 }}>
-                  <Text style={styles.text_footer}>Catch Details</Text>
-                  <View style={{ flexDirection: 'row', alignItems: 'center',marginTop:5 }}>
+        <View style={styles.cordinateContainer}>
+
+                  <View style={styles.rowContainer}>
 
 
-                    <Text style={styles.txt}>Fish Type</Text>
+                    <Text style={styles.label}>Fish Type</Text>
                     <Picker
                       mode='dropdown'
                       style={styles.pickerStyle}
@@ -58,10 +58,10 @@ const  FishCatchContainer=()=>{
 
                   </View>
 
-                  <View style={{ flexDirection: 'row', alignItems: 'center',marginTop:5 }}>
+                  <View style={styles.rowContainer}>
 
                     
-                    <Text style={styles.txt}>Sub Fish Type</Text>
+                    <Text style={styles.label}>Sub Fish Type</Text>
                     <Picker
                       mode='dropdown'
                       style={styles.pickerStyle}
@@ -75,7 +75,7 @@ const  FishCatchContainer=()=>{
 
                   </View>
 
-                  <View style={{ flexDirection: 'row', alignItems: 'center',marginTop:5 }}>
+                  <View style={styles.rowContainer}>
 
                         <TextInput
                             style={styles.textInput}
@@ -109,13 +109,7 @@ const  FishCatchContainer=()=>{
                     
               </View>
 
-              <ScrollView style={{ borderWidth: 1, borderRadius: 10, marginBottom: 10, borderColor: '#333C8D', padding: 5 }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center',marginTop:5 ,flex:1}}>
-                        <Text style={{flex:1,alignItems: 'center',marginLeft:30}}>Fish Type</Text>
-                        <Text style={{flex:1,alignItems: 'center'}}>Qty</Text>
-                        <Text style={{flex:1,alignItems: 'center'}}>Weight</Text>
-
-                    </View>
+              <ScrollView style={styles.items}>
                     {/* this is the where tasks will go */}
                     {
                         taskItems.map((item,index)=>{
@@ -141,14 +135,14 @@ const  FishCatchContainer=()=>{
 const styles = StyleSheet.create({
 
     textInput: {
-        flex:1,
+        flex:2,
+        height: 35,
+        marginRight:15,
         borderWidth: 1,
         width:'100%',
         borderRadius:10,
-        borderColor: '#333C8D',
-        flexDirection: 'row-reverse',
-        fontSize: 18,
-        height:40,
+        
+    
         
       },
       
@@ -178,9 +172,7 @@ const styles = StyleSheet.create({
         height:10,
         width: "60%",  
         color: '#333C8D',
-        fontWeight:'bold',
-        backgroundColor:'#EEECEB',
-       
+        fontWeight:'bold',  
     }  ,
     
       cordinateContainer:{
@@ -188,7 +180,7 @@ const styles = StyleSheet.create({
         borderColor:'black',
         borderWidth:1,
         borderRadius:20,
-        height:200,
+        height:250,
         backgroundColor: '#EEECEB',
         
       },
@@ -232,24 +224,7 @@ const styles = StyleSheet.create({
     
     
       },
-
-      txt: {
-        fontSize: 16,
-        padding: 15,
-        paddingLeft: 5,
-        color: '#333C8D',
-        //marginEnd: 50,
-        minWidth: 160
-    },
-    text_footer: {
-      color: '#333C8D',
-      fontSize: 18,
-      fontWeight: 'bold',
-      marginTop: 20,
-      marginBottom: 20
-
-
-  },
+    
 
 });
 

@@ -82,7 +82,7 @@ export function DrawerContent(props) {
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
-                                name="account-check-outline" 
+                                name="bookmark-outline" 
                                 color={color}
                                 size={size}
                                 />
@@ -93,7 +93,7 @@ export function DrawerContent(props) {
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
-                                name="book-open-outline" 
+                                name="bookmark-outline" 
                                 color={color}
                                 size={size}
                                 />
@@ -104,7 +104,7 @@ export function DrawerContent(props) {
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
-                                name="map-marker-check-outline" 
+                                name="account-check-outline" 
                                 color={color}
                                 size={size}
                                 />
@@ -115,7 +115,7 @@ export function DrawerContent(props) {
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
-                                name="map-check-outline" 
+                                name="account-check-outline" 
                                 color={color}
                                 size={size}
                                 />
@@ -126,7 +126,7 @@ export function DrawerContent(props) {
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
-                                name="text-box-multiple-outline" 
+                                name="account-check-outline" 
                                 color={color}
                                 size={size}
                                 />
@@ -137,7 +137,7 @@ export function DrawerContent(props) {
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
-                                name="text-box-check-outline" 
+                                name="account-check-outline" 
                                 color={color}
                                 size={size}
                                 />

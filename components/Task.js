@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     square:{
        width:24,
        height:24, 
-       backgroundColor:'#333C8D',
+       backgroundColor:'#55BCF6',
        opacity:8.4,
        borderRadius:5,
        marginRight:15,

@@ -39,7 +39,7 @@ const TaskContainer=()=>{
 
     return (
         <View>
-        <View style={{ borderWidth: 1, borderRadius: 10, marginBottom: 10, borderColor: '#333C8D', padding: 5 }}>
+        <View style={styles.cordinateContainer}>
 
                   <View style={styles.rowContainer}>
 
@@ -98,14 +98,8 @@ const TaskContainer=()=>{
                     
               </View>
 
-              <View style={{ borderWidth: 1, borderRadius: 10, marginBottom: 10, borderColor: '#333C8D', padding: 5 }}>
+              <View style={styles.items}>
                     {/* this is the where tasks will go */}
-                    <View style={{ flexDirection: 'row', alignItems: 'center',marginTop:5 ,flex:1}}>
-                        <Text style={{flex:1,alignItems: 'center',marginLeft:30}}>GPS Point</Text>
-                        <Text style={{flex:1,alignItems: 'center'}}>Latitude</Text>
-                        <Text style={{flex:1,alignItems: 'center'}}>Longitude</Text>
-
-                    </View>
                     {
                         taskItems.map((item,index)=>{
                         return (
@@ -165,9 +159,7 @@ const styles = StyleSheet.create({
         height:10,
         width: "60%",  
         color: '#333C8D',
-        fontWeight:'bold',
-        backgroundColor:'#EEECEB',
-        
+        fontWeight:'bold',  
     }  ,
     
       cordinateContainer:{
