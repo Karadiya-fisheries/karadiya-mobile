@@ -7,9 +7,8 @@ import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from "react-native-image-picker";
 import SignatureCapture from 'react-native-signature-capture';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import * as yup from 'yup';
-import ChildrenDetails from '../components/ChildrenDetails';
-import DependantDetails from '../components/DependantDetails';
 
 
 const fishermanregValidationSchema = yup.object().shape({
@@ -44,8 +43,6 @@ const fishermanregValidationSchema = yup.object().shape({
     .string()
     .required('*This is a required field'),
 
-  selectedZone: yup.string().required('this field is required'),
-
   imul: yup.boolean(),
   ntrb: yup.boolean(),
   mtrb: yup.boolean(),
@@ -71,6 +68,8 @@ function FishermanRegistration() {
 
 
   };
+
+
 
   //---------------------------------------------
   //signature pad
@@ -136,7 +135,64 @@ function FishermanRegistration() {
   const [selectedOpact, setSelectedOpact] = useState();
 
   //-----------------------------
+  //Dynamiccaly Adding input fields 
+  //children details
 
+  const [inputs, setInputs] = useState([{ key: '', value: '' }]);
+
+
+  const addHandler = () => {
+    const _inputs = [...inputs];
+    _inputs.push({ key: '', value: '' });
+    setInputs(_inputs);
+  }
+  const deleteHandler = (key) => {
+    const _inputs = inputs.filter((input, index) => index != key);
+    setInputs(_inputs);
+  }
+
+  //dependant details
+  const [inputs1, setInputs1] = useState([{ key1: '', value1: '' }]);
+
+  const addHandler1 = () => {
+    const _inputs1 = [...inputs1];
+    _inputs1.push({ key1: '', value1: '' });
+    setInputs1(_inputs1);
+  }
+
+  const deleteHandler1 = (key1) => {
+    const _inputs1 = inputs1.filter((input1, index1) => index1 != key1);
+    setInputs1(_inputs1);
+
+  }
+  //-----------------------------
+  //date picker
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+  const [text, setText] = useState('');
+
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+
+    let tempDate = new Date(currentDate);
+    let fDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
+    setText(fDate)
+    console.log(fDate)
+
+  }
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
   useEffect(() => {
     LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
   }, [])
@@ -183,7 +239,6 @@ function FishermanRegistration() {
               <ProgressSteps {...progressStepsStyle}>
 
                 <ProgressStep>
-
                   <View style={{ borderWidth: 1, borderRadius: 10, marginBottom: 10, borderColor: '#333C8D', padding: 5 }}>
                     <Text style={styles.text_footer}>Fishing Details</Text>
 
@@ -536,8 +591,139 @@ function FishermanRegistration() {
 
 
                 <ProgressStep>
-                  <ChildrenDetails />
-                  <DependantDetails />
+                  <View style={{ borderWidth: 1, borderColor: '#333C8D', borderRadius: 10, padding: 5, marginBottom: 10 }}>
+                    <Text style={styles.text_footer}>Children Details</Text>
+                    <View>
+                      {inputs.map((input, key) => (
+
+                        <View>
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={styles.txt}>Name</Text>
+                            <TextInput style={styles.textInput}
+                              onChangeText={handleChange('childrenname')}
+                              onBlur={handleBlur('childrenname')}
+                              value={values.childrenname}
+                            />
+                          </View>
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{
+                              fontSize: 16,
+                              padding: 15,
+                              paddingLeft: 5,
+                              color: '#333C8D',
+                            }}>Birthday</Text>
+                            <Button onPress={showDatepicker} title="Select Date" color='#333C8D' />
+
+
+
+                            {show && (
+                              <DateTimePicker
+                                testID="dateTimePicker"
+                                value={date}
+                                mode={mode}
+                                is24Hour={true}
+                                display="default"
+                                onChange={onChange}
+                              />
+
+                            )}
+                            <Text style={{ fontSize: 18, margin: 20, color: '#333C8D' }}>{text}</Text>
+                            < TouchableOpacity onPress={() => deleteHandler(key)}>
+                              <Text style={{ color: "#333C8D", fontSize: 15, paddingRight: 10 }}>Remove</Text>
+                            </TouchableOpacity>
+
+
+
+                          </View>
+                        </View>
+                      ))}
+
+
+                      <View style={{ margin: 10, marginLeft: 200, }}>
+                        <TouchableOpacity
+                          style={styles.button}
+                          onPress={addHandler}
+                        >
+                          <Text style={styles.buttonText}>ADD</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+
+
+
+                  </View>
+                  <View style={{ borderWidth: 1, borderColor: '#333C8D', borderRadius: 10, padding: 5, marginTop: 10 }}>
+
+
+                    <Text style={styles.text_footer}>Details of Other Dependent</Text>
+
+
+                    <View>
+
+                      {inputs1.map((input1, key1) => (
+
+
+                        <View>
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={styles.txt}>Name</Text>
+                            <TextInput style={styles.textInput} />
+                          </View>
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={{
+                              fontSize: 16,
+                              padding: 15,
+                              paddingLeft: 5,
+                              color: '#333C8D',
+                            }}>Birthday</Text>
+
+                            <Button onPress={showDatepicker} title="Select Date" color='#333C8D' />
+
+                            {show && (
+                              <DateTimePicker
+
+
+                                testID="dateTimePicker2"
+                                value={date}
+                                mode={mode}
+                                is24Hour={true}
+                                display="default"
+                                onChange={onChange}
+                              />
+
+                            )}
+                            <Text style={{ fontSize: 18, margin: 20, color: '#333C8D' }}>{text}</Text>
+
+                            < TouchableOpacity onPress={() => deleteHandler1(key1)}>
+                              <Text style={{ color: "#333C8D", fontSize: 16, }}>Remove</Text>
+                            </TouchableOpacity>
+
+
+                          </View>
+
+                        </View>
+
+
+
+                      ))}
+
+                    </View>
+
+
+
+                    <View style={{ margin: 20, marginLeft: 200 }}>
+                      <TouchableOpacity
+                        style={styles.button}
+                        onPress={addHandler1}
+                      >
+                        <Text style={styles.buttonText}>ADD</Text>
+                      </TouchableOpacity>
+                    </View>
+
+
+
+
+
+                  </View>
                 </ProgressStep>
 
                 <ProgressStep
