@@ -572,7 +572,7 @@ function FishermanRegistration() {
                   </View>
                   <Text style={styles.text_footer}>Declaration of Applicant</Text>
                   <Text style={styles.txt}>I declare that the above said information are true and accurate</Text>
-                  <View style={{ borderWidth: 1, padding: 10, borderColor: '#333C8D' }}>
+                  <View style={{ borderWidth: 1, padding: 5, borderColor: '#333C8D' }}>
                     <SignatureCapture
                       style={styles.signature}
                       ref={sign}
@@ -683,7 +683,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 20,
-    marginBottom: 20
+    marginBottom: 5
 
 
   },
