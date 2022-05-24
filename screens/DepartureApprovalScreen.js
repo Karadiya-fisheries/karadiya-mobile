@@ -8,7 +8,6 @@ import { Picker } from '@react-native-picker/picker';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 
-
 const departureapprovalValidationSchema = yup.object().shape({
   imul: yup
     .string()
@@ -65,7 +64,12 @@ const departureapprovalValidationSchema = yup.object().shape({
     .required('*This is a required field'),
 
 
+
+
 });
+
+
+
 
 function DepartureApprovalScreen() {
   const progressStepsStyle = {
@@ -102,7 +106,7 @@ function DepartureApprovalScreen() {
 
 
   //----------------------------------------------------------
-  const [agree, setAgree] = React.useState(false);
+  const [mtrb, setMtrb] = React.useState(false);
 
 
   return (
@@ -517,9 +521,9 @@ function DepartureApprovalScreen() {
                     <View style={styles.checkBox}>
                       <Checkbox
 
-                        status={agree ? 'checked' : 'unchecked'}
+                        status={mtrb ? 'checked' : 'unchecked'}
                         onPress={() => {
-                          setAgree(!agree);
+                          setMtrb(!mtrb);
                         }}
                         color={'#333C8D'}
 
