@@ -8,10 +8,10 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 
-import {NavigationContainer} from '@react-navigation/native';
-import {createDrawerNavigator, useIsDrawerOpen} from '@react-navigation/drawer';
-import {createStackNavigator} from '@react-navigation/stack';
-import {useEffect} from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator, useIsDrawerOpen } from '@react-navigation/drawer';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useEffect } from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -25,24 +25,26 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
 
 import RootStackScreen from './screens/RootStackScreen';
 import HomeStackScreen from './screens/HomeStackScreen';
-
-import {ActivityIndicator} from 'react-native-paper';
-
-import {AuthContext} from './components/context';
-import {DrawerContent} from './screens/DrawerContent';
+import { AuthContext } from './components/context';
+import { DrawerContent } from './screens/DrawerContent';
 import HomeScreen from './screens/HomeScreen';
 import SupportScreen from './screens/SupportScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import FishermanRegistration from './screens/FishermanRegistration';
 import ElogBookScreen from './screens/ElogBookScreen';
-import NavigationScreen from './screens/NavigationScreen';
+import NavigationScreen from './screens/Navigation/NavigationScreen';
 import PredictionScreen from './screens/PredictonScreen';
 import BoatRegistrtionScreen from './screens/BoatRegistrationScreen';
 import DepartureApprovalScreen from './screens/DepartureApprovalScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import WayPoint from './screens/Navigation/WayPoint';
+import ManOverBoard from './screens/Navigation/ManOverBoard';
+import Compass from './screens/Navigation/Compass';
+import Forcasting from './screens/Navigation/Forcasting';
 
 const Drawer = createDrawerNavigator();
 
@@ -120,7 +122,7 @@ const App = () => {
                 AsyncStorage.setItem('userToken', userToken);
                 AsyncStorage.setItem('user', JSON.stringify(response.data));
                 console.log(userToken);
-                dispatch({type: 'LOGIN', id: userName, token: userToken});
+                dispatch({ type: 'LOGIN', id: userName, token: userToken });
               }
               return response.data;
             });
@@ -138,7 +140,7 @@ const App = () => {
           console.log(e);
         }
 
-        dispatch({type: 'LOGOUT'});
+        dispatch({ type: 'LOGOUT' });
       },
       signUp: user => {
         axios.post(API_URL + 'signup', user).then(res => {
@@ -157,7 +159,7 @@ const App = () => {
       try {
         const userToken = await AsyncStorage.getItem('userToken');
         console.log(userToken);
-        dispatch({type: 'RETRIEVE_TOKEN', token: userToken});
+        dispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
       } catch (e) {
         console.log(e);
       }
@@ -166,7 +168,7 @@ const App = () => {
 
   if (loginState.isLoading) {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -195,6 +197,10 @@ const App = () => {
               component={DepartureApprovalScreen}
             />
             <Drawer.Screen name="Profile" component={ProfileScreen} />
+            <Drawer.Screen name="WayPoint" component={WayPoint} />
+            <Drawer.Screen name="ManOverBoard" component={ManOverBoard} />
+            <Drawer.Screen name="Compass" component={Compass} />
+            <Drawer.Screen name="Forcasting" component={Forcasting} />
           </Drawer.Navigator>
         ) : (
           <RootStackScreen />

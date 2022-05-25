@@ -12,6 +12,7 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Button } from 'react-native-paper';
 import { AuthContext } from '../components/context';
+//import WeatherUpdate from '../screens/WeatherUpdate';
 
 function HomeScreen({ navigation }) {
   const { signOut } = React.useContext(AuthContext);
@@ -26,6 +27,7 @@ function HomeScreen({ navigation }) {
             source={require('../assets/fishing.png')}
             resizeMode="stretch"
           />
+          {/* <WeatherUpdate /> */}
         </View>
       </View>
       <View style={styles.footer}>
