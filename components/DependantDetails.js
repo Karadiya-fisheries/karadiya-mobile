@@ -4,6 +4,7 @@ import React from "react";
 import { Button, ScrollView, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View } from 'react-native';
 import RTask from "./RTask";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const DependantDetails = () => {
 
@@ -67,7 +68,13 @@ const DependantDetails = () => {
 
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.txt}>Birthday</Text>
-                    <Button onPress={showDatepicker} title="Select Date" color='#333C8D' />
+                    <TouchableOpacity onPress={showDatepicker}>
+                                                <Icon 
+                                                name="calendar" 
+                                                size={30} 
+                                                color="#333C8D"
+                                                />
+                                            </TouchableOpacity>
 
                     {show && (
                         <DateTimePicker

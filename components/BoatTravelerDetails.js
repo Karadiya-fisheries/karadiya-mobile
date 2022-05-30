@@ -2,18 +2,20 @@
 import { useState } from 'react';
 import React from "react";
 import { Button, ScrollView, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View } from 'react-native';
-import RTask from "./RTask";
-import DateTimePicker from '@react-native-community/datetimepicker';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import BTask from "./BTask";
 
-const ChildrenDetails = () => {
 
-    const [cname, setCname] = useState();
+const BoatTravelerDetails = () => {
+
+    const [pname, setPname] = useState();
+    const [pnic, setPnic] = useState();
     const [taskItems, setTaskItems] = useState([]);
 
     const handleAddTask = () => {
-        setTaskItems([...taskItems, cname]);
-        setCname(null);
+        setTaskItems([...taskItems, pname]);
+        setPname(null);
+        setTaskItems([...taskItems, pnic]);
+        setPnic(null);
         setTaskItems([...taskItems, dtext]);
         setDtext(null);
 
@@ -23,32 +25,7 @@ const ChildrenDetails = () => {
         console.log(taskItems);
 
     }
-    const [date, setDate] = useState(new Date());
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
     const [dtext, setDtext] = useState('');
-
-
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'ios');
-        setDate(currentDate);
-
-        let tempDate = new Date(currentDate);
-        let fDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
-        setDtext(fDate)
-        console.log(fDate)
-
-    }
-
-    const showMode = (currentMode) => {
-        setShow(true);
-        setMode(currentMode);
-    };
-
-    const showDatepicker = () => {
-        showMode('date');
-    };
 
     const deleteItem = (index) => {
         let itemsCopy = [...taskItems];
@@ -57,42 +34,26 @@ const ChildrenDetails = () => {
     }
 
     return (
-        <View>
-            <View style={{ borderWidth: 1, borderColor: '#333C8D', borderRadius: 10, padding: 5, marginTop: 10 }}>
-                <Text style={styles.text_footer}>Detals of Children</Text>
+        <View style={{paddingHorizontal:15}}>
+             <Text style={styles.txt}>11. Boat Traveler Details (Fill in the number of travelers only)</Text>
+            <View style={{ borderWidth: 0, borderColor: '#333C8D', borderRadius: 10, padding: 5, marginTop: 10 }}>
+                
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={styles.txt}>Name</Text>
+                    <Text style={styles.txt}>Name of first{"\n"}passenger</Text>
                     <TextInput style={styles.textInput}
-                        value={cname}
-                        onChangeText={txt3 => setCname(txt3)}
+                        value={pname}
+                        onChangeText={txt3 => setPname(txt3)}
                     />
                 </View>
 
 
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={styles.txt}>Birthday</Text>
-                    <TouchableOpacity onPress={showDatepicker}>
-                                                <Icon 
-                                                name="calendar" 
-                                                size={30} 
-                                                color="#333C8D"
-                                                />
-                                            </TouchableOpacity>
-                  
-
-                    {show && (
-                        <DateTimePicker
-                            testID="dateTimePicker"
-                            value={date}
-                            mode={mode}
-                            is24Hour={true}
-                            display="default"
-                            onChange={onChange}
-                        />
-
-                    )}
-                    <Text style={{ fontSize: 18, margin: 20, color: '#333C8D' }}>{dtext}</Text>
-
+                    <Text style={styles.txt}>NIC number</Text>
+                    <TextInput style={styles.textInput}
+                        value={pnic}
+                        onChangeText={txt4 => setPnic(txt4)}
+                    />
+                 
 
                 </View>
 
@@ -118,7 +79,7 @@ const ChildrenDetails = () => {
                     taskItems.map((item, index) => {
                         return (
                             <TouchableOpacity key={index} onPress={() => deleteItem(index)}>
-                                <RTask txt3={item} txt2={item} />
+                                <BTask txt3={item} txt4={item} />
                             </TouchableOpacity>
 
                         )
@@ -138,19 +99,13 @@ const styles = StyleSheet.create({
 
     textInput: {
         flex: 1,
-
         color: '#333C8D',
         borderBottomWidth: 0.5,
         borderBottomColor: '#333C8D',
         fontSize: 18,
         flexDirection: 'row-reverse',
-
-        maxWidth: 250,
-        paddingRight: 10
     },
-
-
-
+    
     textADD: {
         color: 'white',
         marginRight: 10,
@@ -179,12 +134,13 @@ const styles = StyleSheet.create({
 
 
     txt: {
-        fontSize: 16,
+        fontSize: 18,
         padding: 15,
         paddingLeft: 5,
         color: '#333C8D',
         //marginEnd: 50,
-        minWidth: 160
+        minWidth: 160,
+        //margin:10
     },
 
 
@@ -227,4 +183,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default ChildrenDetails;
+export default BoatTravelerDetails;

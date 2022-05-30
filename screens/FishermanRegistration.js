@@ -122,7 +122,7 @@ function FishermanRegistration() {
 
   //=--------------------------------------------
   //radio button
-  const [value, setValue] = React.useState('Yes');
+  const [checked, setChecked] = React.useState();
 
 
   //------------------------------------
@@ -500,20 +500,29 @@ function FishermanRegistration() {
 
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>Membership of {"\n"}Fisheries Society</Text>
+                      
+                      <View style={{ flexDirection: 'row' }}>
+                        <RadioButton
+                          color='#333C8D'
+                          value="yes"
+                          status={checked === 'yes' ? 'checked' : 'unchecked'}
+                          onPress={() => setChecked('yes')}
 
-                      <RadioButton.Group onValueChange={newValue => setValue(newValue)} value={value}>
-                        <View style={{ flexDirection: 'row' }}>
+                        />
+                        <Text style={styles.label}>Yes</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row' }}>
 
-                          <RadioButton color='#333C8D' value="yes" />
-                          <Text style={styles.txt}>Yes</Text>
-                        </View>
-
-                        <View style={{ flexDirection: 'row' }}>
-                          <RadioButton value="no" color='#333C8D' />
-                          <Text style={styles.txt}>No</Text>
-                        </View>
-                      </RadioButton.Group>
-
+                        <RadioButton
+                          color='#333C8D'
+                          value="no"
+                          status={checked === 'no' ? 'checked' : 'unchecked'}
+                          onPress={() => setChecked('no')}
+                        />
+                        <Text style={styles.label}>No</Text>
+                      </View>
+                          
+              
                     </View>
 
 
@@ -635,8 +644,6 @@ const styles = StyleSheet.create({
     //paddingHorizontal: 10,
     paddingBottom: 20,
 
-
-
   },
   footer: {
     flex: 5,
@@ -645,7 +652,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
 
   },
-
+  
   textInput: {
     flex: 1,
     marginTop: Platform.OS === 'ios' ? 0 : -12,
