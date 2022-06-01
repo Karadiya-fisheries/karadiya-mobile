@@ -7,6 +7,7 @@
  */
 import 'react-native-gesture-handler';
 import React from 'react';
+import { LogBox } from "react-native";
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator, useIsDrawerOpen } from '@react-navigation/drawer';
@@ -15,6 +16,7 @@ import { useEffect } from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 
 import {
   SafeAreaView,
@@ -25,15 +27,16 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
 
 import RootStackScreen from './screens/RootStackScreen';
 import HomeStackScreen from './screens/HomeStackScreen';
+
+import { ActivityIndicator } from 'react-native-paper';
+
 import { AuthContext } from './components/context';
 import { DrawerContent } from './screens/DrawerContent';
 import HomeScreen from './screens/HomeScreen';
-import SupportScreen from './screens/SupportScreen';
-import SettingsScreen from './screens/SettingsScreen';
+
 import FishermanRegistration from './screens/FishermanRegistration';
 import ElogBookScreen from './screens/ElogBookScreen';
 import NavigationScreen from './screens/Navigation/NavigationScreen';
@@ -41,12 +44,13 @@ import PredictionScreen from './screens/PredictonScreen';
 import BoatRegistrtionScreen from './screens/BoatRegistrationScreen';
 import DepartureApprovalScreen from './screens/DepartureApprovalScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import WayPoint from './screens/Navigation/WayPoint';
 import ManOverBoard from './screens/Navigation/ManOverBoard';
+import Forcasting from './screens/Navigation/Forcastion';
 import Compass from './screens/Navigation/Compass';
-import Forcasting from './screens/Navigation/Forcasting';
+import WayPoint from './screens/Navigation/WayPoint';
 
 const Drawer = createDrawerNavigator();
+const NaviDrawer = createDrawerNavigator();
 
 
 
@@ -173,6 +177,19 @@ const App = () => {
       </View>
     );
   }
+  function NaviStackScreen() {
+    return (
+      <NaviDrawer.Navigator>
+        <NaviDrawer.Screen name="Navigation" component={NavigationScreen} />
+        <NaviDrawer.Screen name="WayPoint" component={WayPoint} />
+        <NaviDrawer.Screen name="ManOverBoard" component={ManOverBoard} />
+        <NaviDrawer.Screen name="Compass" component={Compass} />
+        <NaviDrawer.Screen name="Forcasting" component={Forcasting} />
+
+
+      </NaviDrawer.Navigator>
+    );
+  }
 
   return (
     <AuthContext.Provider value={authContext}>
@@ -182,7 +199,8 @@ const App = () => {
             drawerContent={props => <DrawerContent {...props} />}>
             <Drawer.Screen name="Home" component={HomeStackScreen} />
             <Drawer.Screen name="E-logBook" component={ElogBookScreen} />
-            <Drawer.Screen name="Navigation" component={NavigationScreen} />
+            <Drawer.Screen name="Navigation" component={NaviStackScreen} />
+
             <Drawer.Screen
               name="Fisherman-Registration"
               component={FishermanRegistration}
@@ -197,10 +215,8 @@ const App = () => {
               component={DepartureApprovalScreen}
             />
             <Drawer.Screen name="Profile" component={ProfileScreen} />
-            <Drawer.Screen name="WayPoint" component={WayPoint} />
-            <Drawer.Screen name="ManOverBoard" component={ManOverBoard} />
-            <Drawer.Screen name="Compass" component={Compass} />
-            <Drawer.Screen name="Forcasting" component={Forcasting} />
+
+
           </Drawer.Navigator>
         ) : (
           <RootStackScreen />

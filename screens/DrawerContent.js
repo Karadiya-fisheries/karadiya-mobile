@@ -11,23 +11,34 @@ import {
     TouchableRipple,
     Switch
 } from 'react-native-paper';
+import { useEffect, useState } from 'react';
 import {
     DrawerContentScrollView,
     DrawerItem
 } from '@react-navigation/drawer';
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { AuthContext } from '../components/context';
+import authService from '../service/auth.service';
 
 export function DrawerContent(props) {
+    const [user, setUser] = useState({});
+    const [visible, setVisible] = React.useState(false);
+    useEffect(() => {
+        authService.getCurrentUser().then(res => {
+            setUser(JSON.parse(res));
+        });
+    }, []);
 
-    //console.log('props:',props);
 
 
     const { signOut } = React.useContext(AuthContext);
 
     return (
+
+
 
 
 
@@ -39,17 +50,15 @@ export function DrawerContent(props) {
 
 
                             <Avatar.Image
-                                source={{
-                                    uri: 'https://api.adorable.io/avatars/50/abott@adorable.png'
-                                }}
+                                source={require('../assets/avatar.jpg')}
                                 size={50}
                                 onPress={() => { props.navigation.navigate('Profile') }}
 
 
                             />
                             <View style={{ marginLeft: 15, flexDirection: 'column' }}>
-                                <Title style={styles.title}>User Name</Title>
-                                <Caption style={styles.caption}>User Role</Caption>
+                                <Title style={styles.title}>{user.fullname}</Title>
+                                <Caption style={styles.caption}>role</Caption>
                             </View>
                         </View>
 
@@ -175,12 +184,12 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
     },
     title: {
-        fontSize: 16,
+        fontSize: RFPercentage(3),
         marginTop: 3,
         fontWeight: 'bold',
     },
     caption: {
-        fontSize: 14,
+        fontSize: RFPercentage(2),
         lineHeight: 14,
     },
     row: {
