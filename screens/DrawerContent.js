@@ -11,156 +11,165 @@ import {
     TouchableRipple,
     Switch
 } from 'react-native-paper';
+import { useEffect, useState } from 'react';
 import {
     DrawerContentScrollView,
     DrawerItem
 } from '@react-navigation/drawer';
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import{ AuthContext } from '../components/context';
+import { AuthContext } from '../components/context';
+import authService from '../service/auth.service';
 
 export function DrawerContent(props) {
+    const [user, setUser] = useState({});
+    const [visible, setVisible] = React.useState(false);
+    useEffect(() => {
+        authService.getCurrentUser().then(res => {
+            setUser(JSON.parse(res));
+        });
+    }, []);
 
-    //console.log('props:',props);
-    
+
 
     const { signOut } = React.useContext(AuthContext);
 
-    return(
+    return (
 
-        
 
-        <View style={{flex:1}}>
+
+
+
+        <View style={{ flex: 1 }}>
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfoSection}>
-                        <View style={{flexDirection:'row',marginTop: 15}}>
+                        <View style={{ flexDirection: 'row', marginTop: 15 }}>
 
-                            
-                            <Avatar.Image 
-                                source={{
-                                    uri: 'https://api.adorable.io/avatars/50/abott@adorable.png'
-                                }}
+
+                            <Avatar.Image
+                                source={require('../assets/avatar.jpg')}
                                 size={50}
-                                onPress={() => {props.navigation.navigate('Profile')}}
+                                onPress={() => { props.navigation.navigate('Profile') }}
 
 
                             />
-                            <View style={{marginLeft:15, flexDirection:'column'}}>
-                                <Title style={styles.title}>User Name</Title>
-                                <Caption style={styles.caption}>User Role</Caption>
+                            <View style={{ marginLeft: 15, flexDirection: 'column' }}>
+                                <Title style={styles.title}>{user.fullname}</Title>
+                                <Caption style={styles.caption}>role</Caption>
                             </View>
                         </View>
 
-                        
+
                     </View>
 
                     <Drawer.Section style={styles.drawerSection}>
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="home-outline" 
-                                color={color}
-                                size={size}
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                <Icon
+                                    name="home-outline"
+                                    color={color}
+                                    size={size}
                                 />
                             )}
                             label="Home"
-                            onPress={() => {props.navigation.navigate('Home')}}
+                            onPress={() => { props.navigation.navigate('Home') }}
                         />
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="account-outline" 
-                                color={color}
-                                size={size}
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                <Icon
+                                    name="account-outline"
+                                    color={color}
+                                    size={size}
                                 />
                             )}
                             label="Profile"
-                            onPress={() => {props.navigation.navigate('Profile')}}
+                            onPress={() => { props.navigation.navigate('Profile') }}
                         />
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="account-check-outline" 
-                                color={color}
-                                size={size}
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                <Icon
+                                    name="account-check-outline"
+                                    color={color}
+                                    size={size}
                                 />
                             )}
                             label="Fisherman Registration"
-                            onPress={() => {props.navigation.navigate('Fisherman-Registration')}}
+                            onPress={() => { props.navigation.navigate('Fisherman-Registration') }}
                         />
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="book-open-outline" 
-                                color={color}
-                                size={size}
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                <Icon
+                                    name="book-open-outline"
+                                    color={color}
+                                    size={size}
                                 />
                             )}
                             label="E-logBook"
-                            onPress={() => {props.navigation.navigate('E-logBook')}}
+                            onPress={() => { props.navigation.navigate('E-logBook') }}
                         />
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="map-marker-check-outline" 
-                                color={color}
-                                size={size}
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                <Icon
+                                    name="map-marker-check-outline"
+                                    color={color}
+                                    size={size}
                                 />
                             )}
                             label="Navigation"
-                            onPress={() => {props.navigation.navigate('Navigation')}}
+                            onPress={() => { props.navigation.navigate('Navigation') }}
                         />
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="map-check-outline" 
-                                color={color}
-                                size={size}
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                <Icon
+                                    name="map-check-outline"
+                                    color={color}
+                                    size={size}
                                 />
                             )}
                             label="Prediction"
-                            onPress={() => {props.navigation.navigate('Prediction')}}
+                            onPress={() => { props.navigation.navigate('Prediction') }}
                         />
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="text-box-multiple-outline" 
-                                color={color}
-                                size={size}
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                <Icon
+                                    name="text-box-multiple-outline"
+                                    color={color}
+                                    size={size}
                                 />
                             )}
                             label="Boat Registration"
-                            onPress={() => {props.navigation.navigate('Boat-Registration')}}
+                            onPress={() => { props.navigation.navigate('Boat-Registration') }}
                         />
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="text-box-check-outline" 
-                                color={color}
-                                size={size}
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                <Icon
+                                    name="text-box-check-outline"
+                                    color={color}
+                                    size={size}
                                 />
                             )}
                             label="Departure Approval"
-                            onPress={() => {props.navigation.navigate('Departure-Approval')}}
+                            onPress={() => { props.navigation.navigate('Departure-Approval') }}
                         />
-                        
+
                     </Drawer.Section>
-                    
+
                 </View>
             </DrawerContentScrollView>
             <Drawer.Section style={styles.bottomDrawerSection}>
-                <DrawerItem 
-                    icon={({color, size}) => (
-                        <Icon 
-                        name="exit-to-app" 
-                        color={color}
-                        size={size}
+                <DrawerItem
+                    icon={({ color, size }) => (
+                        <Icon
+                            name="exit-to-app"
+                            color={color}
+                            size={size}
                         />
                     )}
                     label="Sign Out"
-                    onPress={() => {signOut()}}
+                    onPress={() => { signOut() }}
                 />
             </Drawer.Section>
         </View>
@@ -169,36 +178,36 @@ export function DrawerContent(props) {
 
 const styles = StyleSheet.create({
     drawerContent: {
-      flex: 1,
+        flex: 1,
     },
     userInfoSection: {
-      paddingLeft: 20,
+        paddingLeft: 20,
     },
     title: {
-      fontSize: 16,
-      marginTop: 3,
-      fontWeight: 'bold',
+        fontSize: RFPercentage(3),
+        marginTop: 3,
+        fontWeight: 'bold',
     },
     caption: {
-      fontSize: 14,
-      lineHeight: 14,
+        fontSize: RFPercentage(2),
+        lineHeight: 14,
     },
     row: {
-      marginTop: 20,
-      flexDirection: 'row',
-      alignItems: 'center',
+        marginTop: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     section: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginRight: 15,
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginRight: 15,
     },
     paragraph: {
-      fontWeight: 'bold',
-      marginRight: 3,
+        fontWeight: 'bold',
+        marginRight: 3,
     },
     drawerSection: {
-      marginTop: 15,
+        marginTop: 15,
     },
     bottomDrawerSection: {
         marginBottom: 15,
@@ -206,9 +215,9 @@ const styles = StyleSheet.create({
         borderTopWidth: 1
     },
     preference: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingVertical: 12,
-      paddingHorizontal: 16,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingVertical: 12,
+        paddingHorizontal: 16,
     },
-  });
+});
