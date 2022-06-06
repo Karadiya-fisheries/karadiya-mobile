@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     shadowRadius: 60,
   },
   btnText: {
-    fontSize: RFPercentage(3),
+    fontSize: RFPercentage(2),
     fontWeight: 'bold',
     color: '#333C8D',
     textAlign: 'center'

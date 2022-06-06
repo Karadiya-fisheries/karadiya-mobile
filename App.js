@@ -45,7 +45,7 @@ import BoatRegistrtionScreen from './screens/BoatRegistrationScreen';
 import DepartureApprovalScreen from './screens/DepartureApprovalScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import ManOverBoard from './screens/Navigation/ManOverBoard';
-import Forcasting from './screens/Navigation/Forcastion';
+import Forcasting from './screens/Navigation/Forecast';
 import Compass from './screens/Navigation/Compass';
 import WayPoint from './screens/Navigation/WayPoint';
 

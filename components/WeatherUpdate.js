@@ -1,17 +1,27 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 
 
-const Task = (props) => {
+
+const WeatherTask = (props) => {
+
+
+
+    console.log(props);
 
     return (
         <View style={styles.item}>
             <View style={styles.itemLeft}>
-                <View style={styles.square}><Text style={styles.itemText}>X</Text></View>
-                <Text style={styles.itemText}>{props.text3}</Text>
-                <Text style={styles.itemText}>{props.text1}</Text>
-                <Text style={styles.itemText}>{props.text2}</Text>
+
+
+                <Text style={styles.itemText1}>{props.des}</Text>
+                <Text style={styles.itemText1}>{Math.round(props.temp)} &deg;C</Text>
+                <Text style={styles.itemText2}>Preasure: {props.preas}  hPa</Text>
+                <Text style={styles.itemText2}>Humidity:{props.hum} %</Text>
+                <Text style={styles.itemText2}>Wind Speed: {props.speed} km/h</Text>
+                <Text style={styles.itemText2}>Wind Degree: {props.deg} from north</Text>
 
             </View>
 
@@ -37,6 +47,8 @@ const styles = StyleSheet.create({
         marginRight: 5,
         shadowColor: 'black',
         marginTop: 10,
+        width: 350,
+        height: 200,
 
 
     },
@@ -57,16 +69,30 @@ const styles = StyleSheet.create({
 
     },
 
-    itemText: {
+    itemText1: {
         maxWidth: '80%',
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: 20,
+        color: '#333C8D',
+        fontSize: RFPercentage(3),
+        fontWeight: 'bold',
+
+    },
+
+    itemText2: {
+        maxWidth: '80%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 20,
+        color: '#333C8D',
+        fontSize: RFPercentage(2),
 
     },
 
 
 
+
 });
 
-export default Task;
+export default WeatherTask;

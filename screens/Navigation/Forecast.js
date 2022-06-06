@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import {
     Platform,
     StyleSheet,
@@ -15,6 +15,8 @@ import {
 import ReactWeather, { useOpenWeather } from 'react-open-weather';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import Geolocation from 'react-native-geolocation-service';
+import WeatherTask from "../../components/WeatherUpdate";
+import { ScrollView } from "react-native-gesture-handler";
 
 
 
@@ -32,6 +34,7 @@ export class Forcasting extends Component {
 
     componentDidMount() {
         this.getLoaction();
+        this.getWeather();
     }
     //location permissions and set location
     getLoaction = async () => {
@@ -57,12 +60,19 @@ export class Forcasting extends Component {
 
     };
 
+
+
     getWeather = async () => {
         if (this.state.lat != null) {
 
-            const response = await fetch(
+            /*const response = await fetch(
                 `https://api.openweathermap.org/data/2.5/weather?lat=${this.state.lat}&lon=${this.state.lon}&appid=${this.Api.key}`
+            );*/
+
+            const response = await fetch(
+                `https://api.openweathermap.org/data/2.5/onecall?lat=${this.state.lat}&lon=${this.state.lon}&exclude=minutely,hourly&appid=${this.Api.key}`
             );
+
 
             const data = await response.json();
             //console.log(data);
@@ -75,15 +85,11 @@ export class Forcasting extends Component {
     };
 
 
-    round = (temp) => {
-        let a = Math.trunc(temp * 100 + 0.5);
-        let finalTemp = (a / 100);
-        return finalTemp;
-    }
 
 
     render() {
         const { data } = this.state;
+
         console.log(data);
 
         if (data != null) {
@@ -93,13 +99,8 @@ export class Forcasting extends Component {
 
                         <View style={styles.topPanel}>
                             <Text style={styles.Title}>Current Weather</Text>
-                            <Text>{data.weather.main}</Text>
-                            <Text>TEMP: {this.round(data.main.temp - 272.15)} C</Text>
-                            <Text>Preasure: {data.main.pressure}</Text>
-                            <Text>Humidity: {data.main.humidity}</Text>
-                            <Text>Wind Speed: {data.wind.speed} km/h</Text>
-                            <Text>Wind Degree: {data.wind.deg} from north</Text>
-
+                            <WeatherTask des={data.current.weather[0].main} temp={(data.current.temp - 272.15)}
+                                preas={data.current.pressure} hum={data.current.humidity} speed={data.current.wind_speed} deg={data.current.wind_deg} />
                         </View>
                     </View>
                     <View style={styles.footer}>
@@ -108,6 +109,38 @@ export class Forcasting extends Component {
 
                         <View style={styles.bottomPanel}>
                             <Text style={styles.Title}>Weather Forecast</Text>
+                            <ScrollView >
+
+                                <WeatherTask des={data.daily[0].weather[0].main} temp={(data.daily[0].temp.day - 272.15)}
+                                    preas={data.daily[0].pressure} hum={data.daily[0].humidity} speed={data.daily[0].wind_speed} deg={data.daily[0].wind_deg} />
+
+                                <WeatherTask des={data.daily[1].weather[0].main} temp={(data.daily[1].temp.day - 272.15)}
+                                    preas={data.daily[1].pressure} hum={data.daily[1].humidity} speed={data.daily[1].wind_speed} deg={data.daily[1].wind_deg} />
+
+                                <WeatherTask des={data.daily[2].weather[0].main} temp={(data.daily[2].temp.day - 272.15)}
+                                    preas={data.daily[2].pressure} hum={data.daily[2].humidity} speed={data.daily[2].wind_speed} deg={data.daily[2].wind_deg} />
+
+                                <WeatherTask des={data.daily[3].weather[0].main} temp={(data.daily[3].temp.day - 272.15)}
+                                    preas={data.daily[3].pressure} hum={data.daily[3].humidity} speed={data.daily[3].wind_speed} deg={data.daily[3].wind_deg} />
+
+                                <WeatherTask des={data.daily[4].weather[0].main} temp={(data.daily[4].temp.day - 272.15)}
+                                    preas={data.daily[4].pressure} hum={data.daily[4].humidity} speed={data.daily[4].wind_speed} deg={data.daily[4].wind_deg} />
+
+                                <WeatherTask des={data.daily[5].weather[0].main} temp={(data.daily[5].temp.day - 272.15)}
+                                    preas={data.daily[5].pressure} hum={data.daily[5].humidity} speed={data.daily[5].wind_speed} deg={data.daily[5].wind_deg} />
+
+                                <WeatherTask des={data.daily[6].weather[0].main} temp={(data.daily[6].temp.day - 272.15)}
+                                    preas={data.daily[6].pressure} hum={data.daily[6].humidity} speed={data.daily[6].wind_speed} deg={data.daily[6].wind_deg} />
+
+
+
+                            </ScrollView>
+                            {/* <Text>Date: {data.daily[0].dt}</Text>
+                            <Text>TEMP: {this.round(data.current.temp - 272.15)} C</Text>
+                            <Text>Preasure: {data.current.pressure}</Text>
+                            <Text>Humidity: {data.current.humidity}</Text>
+                            <Text>Wind Speed: {data.current.wind_speed} km/h</Text>
+                            <Text>Wind Degree: {data.current.wind_deg} from north</Text> */}
 
                         </View>
 
@@ -156,17 +189,21 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 10,
+        marginTop: 0,
+        backgroundColor: '#333C8D',
     },
     Title: {
-        fontSize: RFPercentage(5),
+        marginTop: 10,
+        fontSize: RFPercentage(4),
+        textAlign: 'center',
     },
     header: {
         flex: 1,
-        backgroundColor: '',
+
     },
     footer: {
         flex: 2,
+        marginTop: 10,
         backgroundColor: '',
     },
     welcome: {
