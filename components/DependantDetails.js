@@ -56,7 +56,7 @@ const DependantDetails = () => {
     return (
         <View>
             <View style={{ borderWidth: 1, borderColor: '#333C8D', borderRadius: 10, padding: 5, marginTop: 10 }}>
-                <Text style={styles.text_footer}>Details of Children</Text>
+                <Text style={styles.text_footer}>Details of Dependant</Text>
 
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.txt}>Name</Text>

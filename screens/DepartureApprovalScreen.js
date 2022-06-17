@@ -51,12 +51,6 @@ const departureapprovalValidationSchema = yup.object().shape({
   neteye: yup
     .string()
     .required('*This is a required field'),
-  psname: yup
-    .string()
-    .required('*This is a required field'),
-  psnic: yup
-    .number()
-    .required('*This is a required field'),
   llicense: yup
     .string()
     .required('*This is a required field'),
@@ -234,8 +228,8 @@ function DepartureApprovalScreen() {
                     <Picker style={styles.picker}
                           mode='dropdown'
                           selectedValue={selectedPort}
-                          onValueChange={(itemValue, itemIndex) =>
-                            setSelectedPort(itemValue)
+                          onValueChange={handleChange('selectedPort')}
+                          onBlur={handleBlur('selectedPort')
                           }>
                           <Picker.Item label="Galle" value="galle" />
                           <Picker.Item label="Hambantota" value="hambantota" />
@@ -397,8 +391,9 @@ function DepartureApprovalScreen() {
                         <Picker style={styles.picker}
                           mode='dropdown'
                           selectedValue={selectedStation}
-                          onValueChange={(itemValue, itemIndex) =>
-                            setSelectedStation(itemValue)
+                         
+                          onValueChange={handleChange('selectedStation')}
+                          onBlur={handleBlur('selectedStation')
                           }>
                           <Picker.Item label="Galle" value="galle" />
                           <Picker.Item label="Hambantota" value="hambantota" />
@@ -414,8 +409,8 @@ function DepartureApprovalScreen() {
                         <Picker style={styles.picker}
                           mode='dropdown'
                           selectedValue={selectedCode}
-                          onValueChange={(itemValue, itemIndex) =>
-                            setSelectedCode(itemValue)
+                          onValueChange={handleChange('selectedCode')}
+                          onBlur={handleBlur('selectedCode')
                           }>
                           <Picker.Item label="4096.0Hz" value="4096hz" />
                           <Picker.Item label="1024.0Hz" value="1024hz" />

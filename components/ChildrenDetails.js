@@ -5,6 +5,13 @@ import { Button, ScrollView, Keyboard, KeyboardAvoidingView, Platform, StyleShee
 import RTask from "./RTask";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as yup from 'yup';
+import { Formik, Field, Form, ErrorMessage,formik } from 'formik';
+
+const childrenValidationSchema = yup.object().shape({
+
+    
+  });
 
 const ChildrenDetails = () => {
 
@@ -23,16 +30,16 @@ const ChildrenDetails = () => {
         console.log(taskItems);
 
     }
-    const [date, setDate] = useState(new Date());
+    const [cdate, setcDate] = useState(new Date());
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const [dtext, setDtext] = useState('');
 
 
     const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
+        const currentDate = selectedDate || cdate;
         setShow(Platform.OS === 'ios');
-        setDate(currentDate);
+        setcDate(currentDate);
 
         let tempDate = new Date(currentDate);
         let fDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
@@ -57,14 +64,32 @@ const ChildrenDetails = () => {
     }
 
     return (
+        <Formik
+      validationSchema={childrenValidationSchema}
+
+      initialValues={{
+        cname:'',
+        date:'',
+        
+
+      }}
+
+      onSubmit={values => console.log(values)}
+
+    >
+
+      {({ handleChange, handleBlur, handleSubmit, values, errors, isValid, touched, }) => (
         <View>
             <View style={{ borderWidth: 1, borderColor: '#333C8D', borderRadius: 10, padding: 5, marginTop: 10 }}>
                 <Text style={styles.text_footer}>Detals of Children</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.txt}>Name</Text>
                     <TextInput style={styles.textInput}
+                     onChangeText={handleChange('cname')}
+                    
+                  //  value={values.nicno}
                         value={cname}
-                        onChangeText={txt3 => setCname(txt3)}
+                        //onChangeText={txt3 => setCname(txt3)}
                     />
                 </View>
 
@@ -83,7 +108,7 @@ const ChildrenDetails = () => {
                     {show && (
                         <DateTimePicker
                             testID="dateTimePicker"
-                            value={date}
+                            value={cdate}
                             mode={mode}
                             is24Hour={true}
                             display="default"
@@ -130,10 +155,11 @@ const ChildrenDetails = () => {
 
         </View>
 
-    )
-
-
+)
 }
+</Formik >
+)
+};
 const styles = StyleSheet.create({
 
     textInput: {

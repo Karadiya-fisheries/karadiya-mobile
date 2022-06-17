@@ -93,6 +93,17 @@ export function DrawerContent(props) {
                         <DrawerItem 
                             icon={({color, size}) => (
                                 <Icon 
+                                name="account-edit-outline" 
+                                color={color}
+                                size={size}
+                                />
+                            )}
+                            label="Edit Fisherman Details"
+                            onPress={() => {props.navigation.navigate('EditFishermanReg')}}
+                        />
+                        <DrawerItem 
+                            icon={({color, size}) => (
+                                <Icon 
                                 name="book-open-outline" 
                                 color={color}
                                 size={size}
@@ -144,6 +155,18 @@ export function DrawerContent(props) {
                             )}
                             label="Departure Approval"
                             onPress={() => {props.navigation.navigate('Departure-Approval')}}
+                        />
+
+<DrawerItem 
+                            icon={({color, size}) => (
+                                <Icon 
+                                name="tools" 
+                                color={color}
+                                size={size}
+                                />
+                            )}
+                            label="Settings"
+                            onPress={() => {props.navigation.navigate('Settings')}}
                         />
                         
                     </Drawer.Section>

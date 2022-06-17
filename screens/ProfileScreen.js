@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet,TouchableOpacity} from 'react-native';
 import {
   Button,
   Divider,
@@ -74,9 +74,15 @@ function ProfileScreen({navigation}) {
           onDismiss={hideMore}
           contentContainerStyle={styles.more}>
           <Card>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Settings')}>
             <List.Item title="Settings" />
+            </TouchableOpacity>
             <List.Item title="Share" />
+            <TouchableOpacity
+              onPress={() => navigation.navigate('EditProfile')}>
             <List.Item title="Edit Profile" />
+            </TouchableOpacity>
           </Card>
         </Modal>
       </Portal.Host>
