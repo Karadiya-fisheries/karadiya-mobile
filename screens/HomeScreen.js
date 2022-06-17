@@ -10,11 +10,8 @@ import {
   Dimensions,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
-
 import { Button } from 'react-native-paper';
 import { AuthContext } from '../components/context';
-import WelcomeScreen from '../components/WelcomeScreen';
 
 function HomeScreen({ navigation }) {
   const { signOut } = React.useContext(AuthContext);
@@ -24,7 +21,11 @@ function HomeScreen({ navigation }) {
       <StatusBar translucent backgroundColor="transparent" />
       <View style={styles.header}>
         <View>
-          <WelcomeScreen />
+          <Image
+            style={styles.imageContainer}
+            source={require('../assets/fishing.png')}
+            resizeMode="stretch"
+          />
         </View>
       </View>
       <View style={styles.footer}>
@@ -33,8 +34,8 @@ function HomeScreen({ navigation }) {
             <TouchableOpacity
               onPress={() => navigation.navigate('Fisherman-Registration')}
               style={styles.button}>
-              <Text style={styles.btnText}>Fisherman Registration</Text>
-
+              <Text>Fisherman</Text>
+              <Text>Registration</Text>
               <Image
                 style={styles.icon}
                 source={require('../assets/fishermanReg.png')}
@@ -45,8 +46,8 @@ function HomeScreen({ navigation }) {
             <TouchableOpacity
               onPress={() => navigation.navigate('E-logBook')}
               style={styles.button}>
-              <Text style={styles.btnText}>E-log Book</Text>
-
+              <Text>E log</Text>
+              <Text>Book</Text>
               <Image
                 style={styles.icon}
                 source={require('../assets/Ebook.png')}
@@ -59,8 +60,7 @@ function HomeScreen({ navigation }) {
             <TouchableOpacity
               onPress={() => navigation.navigate('Navigation')}
               style={styles.button}>
-              <Text style={styles.btnText}>Navigation</Text>
-
+              <Text>Navigation</Text>
               <Image
                 style={styles.icon}
                 source={require('../assets/navigation.png')}
@@ -71,8 +71,7 @@ function HomeScreen({ navigation }) {
             <TouchableOpacity
               onPress={() => navigation.navigate('Prediction')}
               style={styles.button}>
-              <Text style={styles.btnText}>Prediction</Text>
-
+              <Text>Prediction</Text>
               <Image
                 style={styles.icon}
                 source={require('../assets/prediction.png')}
@@ -85,7 +84,8 @@ function HomeScreen({ navigation }) {
             <TouchableOpacity
               onPress={() => navigation.navigate('Boat-Registration')}
               style={styles.button}>
-              <Text style={styles.btnText}>Boat Registration</Text>
+              <Text>Boat</Text>
+              <Text>Registration</Text>
               <Image
                 style={styles.icon}
                 source={require('../assets/BoatReg.png')}
@@ -96,8 +96,8 @@ function HomeScreen({ navigation }) {
             <TouchableOpacity
               onPress={() => navigation.navigate('Departure-Approval')}
               style={styles.button}>
-              <Text style={styles.btnText}>Departure Approval</Text>
-
+              <Text>Departure</Text>
+              <Text>Approval</Text>
               <Image
                 style={styles.icon}
                 source={require('../assets/departure.png')}
@@ -114,14 +114,12 @@ function HomeScreen({ navigation }) {
 export default HomeScreen;
 
 const { height } = Dimensions.get('screen');
-const height_logo = height * 0.4;
+const height_logo = height * 0.28;
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
     flex: 1,
-    backgroundColor: '#333C8D',
+    backgroundColor: '#fff',
     borderColor: '#333C8D',
     borderWidth: 5,
   },
@@ -129,10 +127,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#333C8D',
   },
   footer: {
-    flex: 3,
+    flex: 2,
     backgroundColor: '#fff',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
@@ -152,33 +149,23 @@ const styles = StyleSheet.create({
   button: {
     flex: 1,
     borderColor: '#333C8D',
-    borderWidth: 5,
+    borderWidth: 2,
     borderRadius: 10,
-    width: 130,
+    width: 100,
     alignItems: 'center',
-    height: 130,
+    height: 100,
     fontWeight: 'bold',
     fontSize: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.12,
-    shadowRadius: 60,
   },
-  btnText: {
-    fontSize: RFPercentage(3),
-    fontWeight: 'bold',
-    color: '#333C8D',
-    textAlign: 'center'
-
+  imageContainer: {
+    width: height_logo,
+    height: height_logo,
+    marginTop: 12,
   },
-
   icon: {
-    height: height_logo * 0.175,
+    height: 50,
     marginBottom: 5,
-    marginTop: 10,
+    marginTop: 5,
     alignContent: 'center',
     alignItems: 'center',
   },

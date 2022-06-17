@@ -6,13 +6,12 @@ import { Checkbox, RadioButton, RadioButtonGroup } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from "react-native-image-picker";
 import SignatureCapture from 'react-native-signature-capture';
-import { Formik, Field, Form, ErrorMessage,formik } from 'formik';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import ChildrenDetails from '../components/ChildrenDetails';
 import DependantDetails from '../components/DependantDetails';
 
-
-const fishermanregValidationSchema = yup.object().shape({
+const editfishermanregValidationSchema = yup.object().shape({
   fidivision: yup
     .string()
     .required('*This is a required field'),
@@ -43,23 +42,22 @@ const fishermanregValidationSchema = yup.object().shape({
   membershipno: yup
     .string()
     .required('*This is a required field'),
-  
-   
 
+  selectedZone: yup.string().required('this field is required'),
 
-  
+  imul: yup.boolean(),
+  ntrb: yup.boolean(),
+  mtrb: yup.boolean(),
+  iday: yup.boolean(),
+  ofrp: yup.boolean(),
+  nbsb: yup.boolean(),
+
 });
 
 
 
 
-function FishermanRegistration() {
-
-  const [img, setImg] = useState();
-  const onImageChange = (e) => {
-    const [file] = e.target.files;
-    setImg(URL.createObjectURL(file));
-  };
+function EditFishermanReg() {
 
   const progressStepsStyle = {
     activeStepIconBorderColor: '#333C8D',
@@ -124,13 +122,13 @@ function FishermanRegistration() {
   //=--------------------------------------------
   //radio button
   const [checked, setChecked] = React.useState();
-  const [value, setValue] = React.useState('yes');
+
 
   //------------------------------------
   //Dropdown Menu 
 
 
-  const [selectedzone, setselectedzone] = useState();
+  const [selectedZone, setSelectedZone] = useState();
   const [selectedOccupation, setSelectedOccupation] = useState();
   const [selectedNaocc, setSelectedNaocc] = useState();
   const [selectedNatrip, setSelectedNatrip] = useState();
@@ -145,7 +143,7 @@ function FishermanRegistration() {
   return (
 
     <Formik
-      validationSchema={fishermanregValidationSchema}
+      validationSchema={editfishermanregValidationSchema}
 
       initialValues={{
         fidivision: '',
@@ -155,13 +153,12 @@ function FishermanRegistration() {
         surname: '',
         othernames: '',
         nicno: '',
+        occupation: '',
         numofboats: '',
         insuarance: '',
         membershipno: '',
-        cname:'',
-        cday:'',
-        
-        
+        childrenname: '',
+        dependentname: '',
 
       }}
 
@@ -173,7 +170,7 @@ function FishermanRegistration() {
 
         <View style={styles.container}>
           <View style={styles.header}>
-            <Text style={styles.headTitle1}>Fisherman Registration</Text>
+            <Text style={styles.headTitle1}>Edit Fisherman Registration Details</Text>
 
 
           </View>
@@ -186,7 +183,7 @@ function FishermanRegistration() {
 
                 <ProgressStep>
 
-                  <View style={{ borderWidth: 1, borderRadius: 10, marginBottom: 10, borderColor: '#333C8D', padding: 5 }}>
+                  <View style={{ marginBottom: 10,padding: 5 }}>
                     <Text style={styles.text_footer}>Fishing Details</Text>
 
 
@@ -243,7 +240,7 @@ function FishermanRegistration() {
 
 
 
-                  <View style={{ borderWidth: 1, borderRadius: 10, marginTop: 10, borderColor: '#333C8D', padding: 5 }}>
+                  <View style={{marginTop: 10, padding: 5 }}>
                     <Text style={styles.text_footer}>Personal Details</Text>
 
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -292,21 +289,18 @@ function FishermanRegistration() {
                       <View style={{ borderRadius: 10, overflow: 'hidden', width: 210, height: 25, justifyContent: 'center', alignContent: 'center' }}>
                         <Picker style={styles.picker}
                           mode='dropdown'
-                          //selectedValue={selectedzone}
-                         onBlur={handleBlur('selectedzone')}
-                          onValueChange={handleChange('selectedzone')}
-
-                           
-                         >
-                          <Picker.Item label="Internal waters" value="Internal waters" />
-                          <Picker.Item label="Territorial Sea" value="Territorial Sea" />
-                          <Picker.Item label="Contiguous Zone" value="Contiguous Zone" />
-                          <Picker.Item label="Economic Zone" value="Economic Zone" />
-                          <Picker.Item label="Continental Shelf" value="Continental Shelf" />
-                          <Picker.Item label="High Seas and Deap Ocean" value="High Seas and Deap Ocean" />
+                          selectedValue={selectedZone}
+                          onValueChange={(itemValue, itemIndex) =>
+                            setSelectedZone(itemValue)
+                          }>
+                          <Picker.Item label="Internal waters" value="internal waters" />
+                          <Picker.Item label="Territorial Sea" value="territorial sea" />
+                          <Picker.Item label="Contiguous Zone" value="contiguous zone" />
+                          <Picker.Item label="Economic Zone" value="economic zone" />
+                          <Picker.Item label="Continental Shelf" value="continental shelf" />
+                          <Picker.Item label="High Seas and Deap Ocean" value="high and deep" />
 
                         </Picker>
-                        
                       </View>
 
 
@@ -323,8 +317,8 @@ function FishermanRegistration() {
 
                           mode='dropdown'
                           selectedValue={selectedOccupation}
-                          onBlur={handleBlur('selectedOccupation')}
-                          onValueChange={handleChange('selectedOccupation')
+                          onValueChange={(itemValue, itemIndex) =>
+                            setSelectedOccupation(itemValue)
                           }>
                           <Picker.Item label="Boat Owner" value="boat owner" />
                           <Picker.Item label="Skipper" value="skipper" />
@@ -342,12 +336,10 @@ function FishermanRegistration() {
                       <View style={styles.checkBox}>
                         <Checkbox
 
-                          value={imul}
-                          onValueChange={setImul}
-                          onSubmit={values => console.log(values)}
-
                           status={imul ? 'checked' : 'unchecked'}
-                          onPress={() => {setImul(!imul);}}
+                          onPress={() => {
+                            setImul(!imul);
+                          }}
                           color={'#333C8D'}
 
 
@@ -444,8 +436,8 @@ function FishermanRegistration() {
                         <Picker style={styles.picker}
                           mode='dropdown'
                           selectedValue={selectedNaocc}
-                          onBlur={handleBlur('selectedNaocc')}
-                          onValueChange={handleChange('selectedNaocc')
+                          onValueChange={(itemValue, itemIndex) =>
+                            setSelectedNaocc(itemValue)
                           }>
                           <Picker.Item label="Full Time" value="full time" />
                           <Picker.Item label="Part Time" value="part time" />
@@ -463,9 +455,9 @@ function FishermanRegistration() {
                         <Picker style={styles.picker}
                           mode='dropdown'
                           selectedValue={selectedNatrip}
-                          onBlur={handleBlur('selectedNatrip')}
-                          onValueChange={handleChange('selectedNatrip')}>
-
+                          onValueChange={(itemValue, itemIndex) =>
+                            setSelectedNatrip(itemValue)
+                          }>
                           <Picker.Item label="Multi Day" value="multiday" />
                           <Picker.Item label="One Day" value="one day" />
 
@@ -480,8 +472,8 @@ function FishermanRegistration() {
                         <Picker style={styles.picker}
                           mode='dropdown'
                           selectedValue={selectedOpact}
-                          onBlur={handleBlur('selectedOpact')}
-                          onValueChange={handleChange('selectedOpact')
+                          onValueChange={(itemValue, itemIndex) =>
+                            setSelectedOpact(itemValue)
                           }>
                           <Picker.Item label="Supply" value="supply" />
                           <Picker.Item label="Catch" value="catch" />
@@ -509,16 +501,27 @@ function FishermanRegistration() {
                       <Text style={styles.txt}>Membership of {"\n"}Fisheries Society</Text>
                       
                       <View style={{ flexDirection: 'row' }}>
+                        <RadioButton
+                          color='#333C8D'
+                          value="yes"
+                          status={checked === 'yes' ? 'checked' : 'unchecked'}
+                          onPress={() => setChecked('yes')}
 
-                      <RadioButton.Group onValueChange={value => setValue(value)} value={value}>
-                          <RadioButton.Item label="Yes" value="yes" />
-                          <RadioButton.Item label="No" value="no" />
-              
-          </RadioButton.Group>
+                        />
+                        <Text style={styles.label}>Yes</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row' }}>
+
+                        <RadioButton
+                          color='#333C8D'
+                          value="no"
+                          status={checked === 'no' ? 'checked' : 'unchecked'}
+                          onPress={() => setChecked('no')}
+                        />
+                        <Text style={styles.label}>No</Text>
                       </View>
                           
               
-
                     </View>
 
 
@@ -534,10 +537,6 @@ function FishermanRegistration() {
 
                   </View>
                 </ProgressStep>
-
-
-
-
 
 
                 <ProgressStep>
@@ -563,9 +562,6 @@ function FishermanRegistration() {
 
                   <View style={{ alignItems: 'center', paddingBottom: 10 }}>
 
-                
-                     <Image src={img} alt="" />
-
 
                     <TouchableOpacity
                       style={styles.button}
@@ -589,7 +585,6 @@ function FishermanRegistration() {
                       showNativeButtons={false}
                       showTitleLabel={false}
                       viewMode={'portrait'}
-                      
                     />
                   </View>
 
@@ -626,7 +621,7 @@ function FishermanRegistration() {
     </Formik >
   )
 };
-export default FishermanRegistration;
+export default EditFishermanReg;
 
 
 const { height } = Dimensions.get("screen");
