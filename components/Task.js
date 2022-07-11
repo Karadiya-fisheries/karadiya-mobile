@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 
 
@@ -8,10 +9,10 @@ const Task = (props) => {
     return (
         <View style={styles.item}>
             <View style={styles.itemLeft}>
-                <View style={styles.square}><Text style={styles.itemText}>X</Text></View>
-                <Text style={styles.itemText}>{props.text3}</Text>
+                {/* <View style={styles.square}><Text style={styles.itemText}>X</Text></View> */}
                 <Text style={styles.itemText}>{props.text1}</Text>
                 <Text style={styles.itemText}>{props.text2}</Text>
+                <Text style={styles.itemText}>{props.text3}</Text>
 
             </View>
 
@@ -61,7 +62,11 @@ const styles = StyleSheet.create({
         maxWidth: '80%',
         justifyContent: 'center',
         alignItems: 'center',
-        marginLeft: 20,
+        //marginLeft: 20,
+        marginRight: 50,
+        color: '#333C8D',
+        fontWeight: 'bold',
+        fontSize: RFPercentage(2.5),
 
     },
 

@@ -10,31 +10,34 @@ import { Picker } from '@react-native-picker/picker';
 
 const FishCatchContainer = () => {
 
-  const [latitude, setLatitude] = useState();
-  const [longitude, setLongitude] = useState();
-  const [GPS, setGPS] = useState();
-  const [taskItems, setTaskItems] = useState([]);
+  const [item, setItem] = useState([]);
+
+  const [fishType, setfishType] = useState();
+  const [subfishType, setsubfishType] = useState();
+  const [QTY, setQTY] = useState();
+  const [Weight, setWeight] = useState();
+
+  //const [taskItems, setTaskItems] = useState([]);
 
   const handleAddTask = () => {
-    setTaskItems([...taskItems, latitude]);
-    setTaskItems([...taskItems, longitude]);
-    setTaskItems([...taskItems, GPS]);
-    setLatitude(null);
-    setLongitude(null);
-    setGPS(null);
 
-    console.log(taskItems);
+    setItem([...item, {
+      fishType: fishType,
+      subFishType: subfishType,
+      QTY: QTY,
+      Weight: Weight,
+    }])
 
-
-
+    console.log(item);
 
   }
 
   const deleteItem = (index) => {
-    let itemsCopy = [...taskItems];
+    let itemsCopy = [...item];
     itemsCopy.splice(index, 1);
-    setTaskItems(itemsCopy);
+    setItem(item);
   }
+
 
   return (
     <View>
@@ -47,8 +50,8 @@ const FishCatchContainer = () => {
           <Picker
             mode='dropdown'
             style={styles.pickerStyle}
-            selectedValue={GPS}
-            onValueChange={text3 => setGPS(text3)}
+            selectedValue={fishType}
+            onValueChange={setfishType}
           >
             <Picker.Item label="Tuna" value="Tuna" />
             <Picker.Item label="End GPS" value="EndGPS" />
@@ -64,11 +67,11 @@ const FishCatchContainer = () => {
           <Picker
             mode='dropdown'
             style={styles.pickerStyle}
-            selectedValue={GPS}
-            onValueChange={text3 => setGPS(text3)}
+            selectedValue={subfishType}
+            onValueChange={setsubfishType}
           >
             <Picker.Item label="Yellow Fin" value="Yellow_Fin" />
-            <Picker.Item label="End GPS" value="EndGPS" />
+            <Picker.Item label="Red Fin " value="Red_Fin" />
           </Picker>
 
 
@@ -78,19 +81,19 @@ const FishCatchContainer = () => {
 
           <TextInput
             style={styles.textInput}
-            onChangeText={text2 => setLongitude(text2)}
-            placeholder={'Longitude'}
-            value={longitude}
-          //placeholder='QTY'
+            onChangeText={setQTY}
+            placeholder={'QTY'}
+            value={QTY}
+
           />
 
 
           <TextInput
             style={styles.textInput}
-            onChangeText={text2 => setLongitude(text2)}
-            placeholder={'Longitude'}
-            value={longitude}
-          //placeholder='Weight'
+            onChangeText={setWeight}
+            placeholder={'Weight'}
+            value={Weight}
+
           />
 
         </View>
@@ -110,17 +113,17 @@ const FishCatchContainer = () => {
 
       <ScrollView style={{ borderWidth: 1, borderRadius: 10, marginBottom: 10, borderColor: '#333C8D', padding: 5 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5, flex: 1 }}>
-          <Text style={{ flex: 1, alignItems: 'center', marginLeft: 30 }}>Fish Type</Text>
+          <Text style={{ flex: 1, alignItems: 'center' }}>Fish Type</Text>
           <Text style={{ flex: 1, alignItems: 'center' }}>Qty</Text>
           <Text style={{ flex: 1, alignItems: 'center' }}>Weight</Text>
 
         </View>
         {/* this is the where tasks will go */}
         {
-          taskItems.map((item, index) => {
+          item.map((item, index) => {
             return (
               <TouchableOpacity key={index} onPress={() => deleteItem(index)}>
-                <Task text1={item} text2={item} text3={item} />
+                <Task text1={item.subFishType} text2={item.QTY} text3={item.Weight} />
               </TouchableOpacity>
 
             )

@@ -8,32 +8,32 @@ import { Picker } from '@react-native-picker/picker';
 
 
 
+
 const TaskContainer = () => {
+
+  const [item, setItem] = useState([]);
 
   const [latitude, setLatitude] = useState();
   const [longitude, setLongitude] = useState();
-  const [GPS, setGPS] = useState();
-  const [taskItems, setTaskItems] = useState([]);
+  const [GPS, setGPS] = useState('StartGPS');
+  //const [taskItems, setTaskItems] = useState([]);
 
   const handleAddTask = () => {
-    setTaskItems([...taskItems, latitude]);
-    setTaskItems([...taskItems, longitude]);
-    setTaskItems([...taskItems, GPS]);
-    setLatitude(null);
-    setLongitude(null);
-    setGPS(null);
 
-    console.log(taskItems);
+    setItem([...item, {
+      gps: GPS,
+      lat: latitude,
+      lon: longitude,
+    }])
 
-
-
+    console.log(item);
 
   }
 
   const deleteItem = (index) => {
-    let itemsCopy = [...taskItems];
+    let itemsCopy = [...item];
     itemsCopy.splice(index, 1);
-    setTaskItems(itemsCopy);
+    setItem(item);
   }
 
   return (
@@ -48,7 +48,7 @@ const TaskContainer = () => {
             mode='dropdown'
             style={styles.pickerStyle}
             selectedValue={GPS}
-            onValueChange={text3 => setGPS(text3)}
+            onValueChange={setGPS}
           >
             <Picker.Item label="Start GPS" value="StartGPS" />
             <Picker.Item label="End GPS" value="EndGPS" />
@@ -62,9 +62,9 @@ const TaskContainer = () => {
           <Text style={styles.label}>Latitude</Text>
           <TextInput
             style={styles.textInput}
-            placeholder={'Latitude'}
+            //placeholder={'Latitude'}
             value={latitude}
-            onChangeText={text1 => setLatitude(text1)}
+            onChangeText={setLatitude}
           />
 
 
@@ -77,8 +77,8 @@ const TaskContainer = () => {
           <Text style={styles.label}>Longitude</Text>
           <TextInput
             style={styles.textInput}
-            onChangeText={text2 => setLongitude(text2)}
-            placeholder={'Longitude'}
+            onChangeText={setLongitude}
+            //placeholder={'Longitude'}
             value={longitude}
           />
 
@@ -99,17 +99,17 @@ const TaskContainer = () => {
 
       <View style={{ borderWidth: 1, borderRadius: 10, marginBottom: 10, borderColor: '#333C8D', padding: 5 }}>
         {/* this is the where tasks will go */}
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5, flex: 1 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5, flex: 1, fontWeight: 'bold' }}>
           <Text style={{ flex: 1, alignItems: 'center', marginLeft: 30 }}>GPS Point</Text>
           <Text style={{ flex: 1, alignItems: 'center' }}>Latitude</Text>
           <Text style={{ flex: 1, alignItems: 'center' }}>Longitude</Text>
 
         </View>
         {
-          taskItems.map((item, index) => {
+          item.map((item, index) => {
             return (
               <TouchableOpacity key={index} onPress={() => deleteItem(index)}>
-                <Task text1={item} text2={item} text3={item} />
+                <Task text1={item.gps} text2={item.lat} text3={item.lon} />
               </TouchableOpacity>
 
             )
@@ -130,11 +130,12 @@ const styles = StyleSheet.create({
 
   textInput: {
     flex: 2,
-    height: 35,
+    height: 45,
     marginRight: 15,
     borderWidth: 1,
     width: '100%',
     borderRadius: 10,
+
 
 
   },
