@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import React from "react";
 import { ScrollView, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View } from 'react-native';
 import Task from "./Task";
@@ -7,13 +7,16 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 
+
 import TaskContainer from './TaskContainer';
 
 
 
 
 
-const CoodinateContainer = () => {
+const CoodinateContainer = ({ childToParent }) => {
+
+
 
     const [datePicker, setDatePicker] = useState(false);
 
@@ -40,7 +43,34 @@ const CoodinateContainer = () => {
         setTimePicker(false);
     };
 
+    const [item, setItem] = useState([]);
 
+    const [latitude, setLatitude] = useState();
+    const [longitude, setLongitude] = useState();
+    const [GPS, setGPS] = useState('StartGPS');
+
+    const handleAddTask = () => {
+
+        setItem([...item, {
+            fishDate: date,
+            fishTime: time,
+            gps: GPS,
+            lat: latitude,
+            lon: longitude,
+        }])
+
+        //console.log(item);
+
+    }
+    const deleteItem = (index) => {
+        let itemsCopy = [...item];
+        itemsCopy.splice(index, 1);
+        setItem(itemsCopy);
+    }
+
+    useEffect(() => {
+        childToParent(item);
+    });
 
 
 
@@ -133,14 +163,95 @@ const CoodinateContainer = () => {
 
             </View>
 
-            <View >
+            <View style={{ borderWidth: 1, borderRadius: 10, marginBottom: 10, borderColor: '#333C8D', padding: 5 }}>
 
-                <TaskContainer />
+                <View >
+
+                    <View style={styles.rowContainer}>
+
+
+                        <Text style={styles.label}>GPS Point</Text>
+                        <Picker
+                            mode='dropdown'
+                            style={styles.pickerStyle}
+                            selectedValue={GPS}
+                            onValueChange={setGPS}
+                        >
+                            <Picker.Item label="Start GPS" value="StartGPS" />
+                            <Picker.Item label="End GPS" value="EndGPS" />
+                        </Picker>
+
+
+                    </View>
+
+                    <View style={styles.rowContainer}>
+
+                        <Text style={styles.label}>Latitude</Text>
+                        <TextInput
+                            style={styles.textInput}
+                            //placeholder={'Latitude'}
+                            value={latitude}
+                            onChangeText={setLatitude}
+                        />
+
+
+                    </View>
+
+                    <View style={styles.rowContainer}>
+
+
+
+                        <Text style={styles.label}>Longitude</Text>
+                        <TextInput
+                            style={styles.textInput}
+                            onChangeText={setLongitude}
+                            //placeholder={'Longitude'}
+                            value={longitude}
+                        />
+
+                    </View>
+
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => handleAddTask()}
+                    >
+                        <Text style={styles.textADD}>ADD</Text>
+                    </TouchableOpacity>
+
+
+
+
+
+                </View>
+
+                <View style={{ borderWidth: 1, borderRadius: 10, marginBottom: 10, borderColor: '#333C8D', padding: 5 }}>
+                    {/* this is the where tasks will go */}
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5, flex: 1, fontWeight: 'bold' }}>
+                        <Text style={{ flex: 1, alignItems: 'center', marginLeft: 30 }}>GPS Point</Text>
+                        <Text style={{ flex: 1, alignItems: 'center' }}>Latitude</Text>
+                        <Text style={{ flex: 1, alignItems: 'center' }}>Longitude</Text>
+
+                    </View>
+                    {
+                        item.map((item, index) => {
+                            return (
+                                <TouchableOpacity key={index} onPress={() => deleteItem(index)}>
+                                    <Task text1={item.gps} text2={item.lat} text3={item.lon} />
+                                </TouchableOpacity>
+
+                            )
+                        })
+                    }
+
+
+                </View>
+
 
             </View>
-
-
         </View>
+
+
+
 
     )
 

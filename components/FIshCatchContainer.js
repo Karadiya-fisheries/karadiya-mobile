@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import React from "react";
 import { ScrollView, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View } from 'react-native';
 import Task from "./Task";
@@ -8,12 +8,12 @@ import { Picker } from '@react-native-picker/picker';
 
 
 
-const FishCatchContainer = () => {
+const FishCatchContainer = ({ childToParent }) => {
 
   const [item, setItem] = useState([]);
 
-  const [fishType, setfishType] = useState();
-  const [subfishType, setsubfishType] = useState();
+  const [fishType, setfishType] = useState('Tuna');
+  const [subfishType, setsubfishType] = useState('None');
   const [QTY, setQTY] = useState();
   const [Weight, setWeight] = useState();
 
@@ -28,14 +28,20 @@ const FishCatchContainer = () => {
       Weight: Weight,
     }])
 
-    console.log(item);
+    //console.log(item);
 
   }
+
+  useEffect(() => {
+    childToParent(item);
+  });
+
+
 
   const deleteItem = (index) => {
     let itemsCopy = [...item];
     itemsCopy.splice(index, 1);
-    setItem(item);
+    setItem(itemsCopy);
   }
 
 
@@ -54,7 +60,10 @@ const FishCatchContainer = () => {
             onValueChange={setfishType}
           >
             <Picker.Item label="Tuna" value="Tuna" />
-            <Picker.Item label="End GPS" value="EndGPS" />
+            <Picker.Item label="Senric Tuna" value="Sentic_Tuna" />
+            <Picker.Item label="Bill Fish" value="Bill_Fish" />
+            <Picker.Item label="Sharks Rays" value="Sharks_Rays" />
+            <Picker.Item label="Other Fish" value="Other_Fish" />
           </Picker>
 
 
@@ -70,8 +79,13 @@ const FishCatchContainer = () => {
             selectedValue={subfishType}
             onValueChange={setsubfishType}
           >
+            <Picker.Item label="None" value="None" />
             <Picker.Item label="Yellow Fin" value="Yellow_Fin" />
-            <Picker.Item label="Red Fin " value="Red_Fin" />
+            <Picker.Item label="Bigeye Tuna" value="Big_Eye" />
+            <Picker.Item label="Skip Jack Tuna" value="Skip_Jack" />
+            <Picker.Item label="Albacore" value="Albacore" />
+            <Picker.Item label="Other Tuna" value="Other_Tuna" />
+
           </Picker>
 
 
@@ -114,6 +128,7 @@ const FishCatchContainer = () => {
       <ScrollView style={{ borderWidth: 1, borderRadius: 10, marginBottom: 10, borderColor: '#333C8D', padding: 5 }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 5, flex: 1 }}>
           <Text style={{ flex: 1, alignItems: 'center' }}>Fish Type</Text>
+          <Text style={{ flex: 1, alignItems: 'center' }}>Sub Type</Text>
           <Text style={{ flex: 1, alignItems: 'center' }}>Qty</Text>
           <Text style={{ flex: 1, alignItems: 'center' }}>Weight</Text>
 
@@ -123,7 +138,7 @@ const FishCatchContainer = () => {
           item.map((item, index) => {
             return (
               <TouchableOpacity key={index} onPress={() => deleteItem(index)}>
-                <Task text1={item.subFishType} text2={item.QTY} text3={item.Weight} />
+                <Task text1={item.fishType} text2={item.subFishType} text3={item.QTY} text4={item.Weight} />
               </TouchableOpacity>
 
             )

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import React from "react";
 import { Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View } from 'react-native';
 import Task from "./Task";
@@ -9,7 +9,7 @@ import { Picker } from '@react-native-picker/picker';
 
 
 
-const TaskContainer = () => {
+const TaskContainer = ({ childToParent }) => {
 
   const [item, setItem] = useState([]);
 
@@ -17,6 +17,8 @@ const TaskContainer = () => {
   const [longitude, setLongitude] = useState();
   const [GPS, setGPS] = useState('StartGPS');
   //const [taskItems, setTaskItems] = useState([]);
+
+
 
   const handleAddTask = () => {
 
@@ -26,14 +28,14 @@ const TaskContainer = () => {
       lon: longitude,
     }])
 
-    console.log(item);
+    //console.log(item);
 
   }
 
   const deleteItem = (index) => {
     let itemsCopy = [...item];
     itemsCopy.splice(index, 1);
-    setItem(item);
+    setItem(itemsCopy);
   }
 
   return (

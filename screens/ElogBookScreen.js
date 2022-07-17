@@ -104,6 +104,23 @@ function FishermanRegistration() {
         setTimePicker(false);
     };
 
+    const [coods, setCoods] = useState([]);
+    const [fishList, setFish] = useState([]);
+
+    const childToParent1 = (childdata) => {
+        setCoods(childdata);
+        //console.log("child data");
+        //console.log(childdata);
+    }
+
+    const childToParent2 = (childdata) => {
+        setFish(childdata);
+        //console.log("child data");
+        //console.log(childdata);
+    }
+
+
+
 
 
     useEffect(() => {
@@ -134,7 +151,15 @@ function FishermanRegistration() {
 
             }}
 
-            onSubmit={values => console.log(values)}
+
+            onSubmit={values => {
+                //childToParent();
+                //console.log("coods");
+                //console.log(coods);
+                console.log(values);
+                console.log(coods);
+                console.log(fishList);
+            }}
 
         >
 
@@ -462,7 +487,7 @@ function FishermanRegistration() {
 
                                 <ProgressStep>
 
-                                    <CoodinateContainer />
+                                    <CoodinateContainer childToParent={childToParent1} />
 
                                 </ProgressStep>
 
@@ -471,7 +496,7 @@ function FishermanRegistration() {
                                     disabled={!isValid}
                                 >
 
-                                    <FishCatchContainer />
+                                    <FishCatchContainer childToParent={childToParent2} />
 
                                 </ProgressStep>
 

@@ -13,6 +13,7 @@ const Task = (props) => {
                 <Text style={styles.itemText}>{props.text1}</Text>
                 <Text style={styles.itemText}>{props.text2}</Text>
                 <Text style={styles.itemText}>{props.text3}</Text>
+                <Text style={styles.itemText}>{props.text4}</Text>
 
             </View>
 
@@ -34,7 +35,6 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderColor: 'black',
         borderWidth: 1,
-        marginLeft: 5,
         marginRight: 5,
         shadowColor: 'black',
         marginTop: 10,
@@ -59,14 +59,14 @@ const styles = StyleSheet.create({
     },
 
     itemText: {
-        maxWidth: '80%',
+        maxWidth: '70%',
         justifyContent: 'center',
         alignItems: 'center',
-        //marginLeft: 20,
-        marginRight: 50,
+        marginLeft: 20,
+        marginRight: 25,
         color: '#333C8D',
         fontWeight: 'bold',
-        fontSize: RFPercentage(2.5),
+        fontSize: RFPercentage(2),
 
     },
 
