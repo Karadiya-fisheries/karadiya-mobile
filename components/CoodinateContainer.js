@@ -211,14 +211,18 @@ const CoodinateContainer = ({ childToParent }) => {
 
                     </View>
 
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => handleAddTask()}
-                    >
-                        <Text style={styles.textADD}>ADD</Text>
-                    </TouchableOpacity>
 
 
+                    {item.length <= 2 ?
+
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => handleAddTask()}
+                        >
+                            <Text style={styles.textADD}>ADD</Text>
+                        </TouchableOpacity>
+
+                        : null}
 
 
 

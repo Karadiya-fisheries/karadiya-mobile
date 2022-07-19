@@ -153,12 +153,11 @@ function FishermanRegistration() {
 
 
             onSubmit={values => {
-                //childToParent();
-                //console.log("coods");
-                //console.log(coods);
+
                 console.log(values);
                 console.log(coods);
                 console.log(fishList);
+                console.log("Submitted");
             }}
 
         >
