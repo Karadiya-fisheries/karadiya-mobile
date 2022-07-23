@@ -12,7 +12,7 @@ import {
     StatusBar,
 
 } from "react-native";
-import ReactWeather, { useOpenWeather } from 'react-open-weather';
+
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import Geolocation from 'react-native-geolocation-service';
 import WeatherTask from "../../components/WeatherUpdate";
@@ -65,9 +65,7 @@ export class Forcasting extends Component {
     getWeather = async () => {
         if (this.state.lat != null) {
 
-            /*const response = await fetch(
-                `https://api.openweathermap.org/data/2.5/weather?lat=${this.state.lat}&lon=${this.state.lon}&appid=${this.Api.key}`
-            );*/
+
 
             const response = await fetch(
                 `https://api.openweathermap.org/data/2.5/onecall?lat=${this.state.lat}&lon=${this.state.lon}&exclude=minutely,hourly&appid=${this.Api.key}`
