@@ -1,28 +1,50 @@
-import React, { Component, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, Dimensions, PermissionsAndroid } from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import Geolocation from 'react-native-geolocation-service';
 MapboxGL.setAccessToken("pk.eyJ1IjoibGFzaXRoYTk3IiwiYSI6ImNsNWd3a2g2cjAzcTgzanVyemE5Y3hnMGgifQ.Q00itaRuT0oH6oUN6lYFlQ");
 
 
-export default class WayPoint extends Component {
 
-    state = {
-        lat: 6.9641717,
-        lon: 80.0473799,
+const WayPonit = () => {
+
+    const [lat, setLat] = useState(0);
+    const [lon, setLon] = useState(0);
+
+
+    useEffect(() => {
+        MapboxGL.setTelemetryEnabled(false);
+        getLoaction();
+    });
+
+    const getLoaction = async () => {
+
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        );
+        if (granted == PermissionsAndroid.RESULTS.GRANTED) {
+            Geolocation.getCurrentPosition(
+                (position) => {
+                    //console.log(position);
+
+                    setLat(position.coords.latitude);
+                    setLon(position.coords.longitude);
+
+                    console.log(position);
+
+
+                },
+                (error) => {
+                    console.log(error.code, error.message);
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+            );
+        }
 
     };
 
 
-
-    componentDidMount() {
-        MapboxGL.setTelemetryEnabled(false);
-        this.getLoaction();
-
-
-    }
-
-    renderAnnotations = () => {
+    const renderAnnotations = () => {
         return (
             <MapboxGL.PointAnnotation
                 key="pointAnnotation"
@@ -44,68 +66,29 @@ export default class WayPoint extends Component {
     };
 
 
-    getLoaction = async () => {
-        const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        );
-        if (granted == PermissionsAndroid.RESULTS.GRANTED) {
-            Geolocation.getCurrentPosition(
-                (position) => {
-                    console.log(position);
-                    this.setState({
-                        lat: position.coords.latitude,
-                        lon: position.coords.longitude,
-                    });
 
-                    console.log(this.state.lat);
-                    console.log(this.state.lon);
-
-                },
-                (error) => {
-                    console.log(error.code, error.message);
-                },
-                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
-            );
-        }
-
-    };
-
-
-
-
-
-
-
-
-    render() {
-
-
-        return (
-            <View style={styles.page}>
-                <View style={styles.container}>
-
-
-                    <MapboxGL.MapView style={styles.map}>
-                        <MapboxGL.Camera
-                            zoomLevel={2}
-                            //centerCoordinate={[this.state.lat, this.state.lon]}
-                            centerCoordinate={[6.0329, 80.2168]}
-                            showUserLocation={true}
-                            animationMode={'flyTo'}
-                        />
-                        <MapboxGL.PointAnnotation
-
-                            coordinate={[this.state.lon, this.state.lat]} />
-                        <View>{this.renderAnnotations()}</View>
-
-
-                    </MapboxGL.MapView>
-
-                </View>
+    return (
+        <View style={styles.page}>
+            <View style={styles.container}>
+                <MapboxGL.MapView style={styles.map}>
+                    <MapboxGL.Camera
+                        zoomLevel={6}
+                        centerCoordinate={[lon, lat]}
+                    />
+                    <MapboxGL.PointAnnotation
+                        title="Current Location"
+                        coordinate={[lon, lat]} />
+                    {/* <View>{renderAnnotations()}</View> */}
+                </MapboxGL.MapView>
             </View>
-        );
-    }
-}
+        </View>
+    );
+};
+
+
+export default WayPonit;
+
+
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -113,7 +96,7 @@ const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -121,7 +104,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#F5FCFF"
+        backgroundColor: "#333C8D"
     },
     container: {
         height: windowHeight,
