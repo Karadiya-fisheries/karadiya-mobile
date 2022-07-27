@@ -214,7 +214,12 @@ const App = () => {
               name="Departure-Approval"
               component={DepartureApprovalScreen}
             />
-            <Drawer.Screen name="Profile" component={ProfileScreen} />
+
+            <Drawer.Screen
+              name="Profile"
+              component={ProfileScreen}
+            />
+
 
 
           </Drawer.Navigator>

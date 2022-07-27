@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableNativeFeedbackBase } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import {
     useTheme,
     Avatar,
@@ -48,18 +48,23 @@ export function DrawerContent(props) {
                     <View style={styles.userInfoSection}>
                         <View style={{ flexDirection: 'row', marginTop: 15 }}>
 
-
-                            <Avatar.Image
-                                source={require('../assets/avatar.jpg')}
-                                size={50}
+                            <TouchableOpacity
                                 onPress={() => { props.navigation.navigate('Profile') }}
+                                style={styles.row}>
+
+                                <Avatar.Image
+                                    source={require('../assets/avatar.jpg')}
+                                    size={50}
 
 
-                            />
-                            <View style={{ marginLeft: 15, flexDirection: 'column' }}>
-                                <Title style={styles.title}>{user.fullname}</Title>
-                                <Caption style={styles.caption}>role</Caption>
-                            </View>
+                                />
+                                <View style={{ marginLeft: 15, flexDirection: 'column' }}>
+                                    <Title style={styles.title}>{user.fullname}</Title>
+                                    <Caption style={styles.caption}>{user.roles}</Caption>
+                                </View>
+
+                            </TouchableOpacity>
+
                         </View>
 
 
@@ -189,7 +194,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     caption: {
-        fontSize: RFPercentage(2),
+        fontSize: RFPercentage(1.5),
         lineHeight: 14,
     },
     row: {
