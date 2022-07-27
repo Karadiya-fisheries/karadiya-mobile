@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, Dimensions, PermissionsAndroid } from 'react-native';
+import { TextInput, Modal, View, Text, Button, StyleSheet, Dimensions, PermissionsAndroid } from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import Geolocation from 'react-native-geolocation-service';
+import { FloatingAction } from "react-native-floating-action";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 MapboxGL.setAccessToken("pk.eyJ1IjoibGFzaXRoYTk3IiwiYSI6ImNsNWd3a2g2cjAzcTgzanVyemE5Y3hnMGgifQ.Q00itaRuT0oH6oUN6lYFlQ");
 
 
@@ -67,10 +70,80 @@ const WayPonit = () => {
 
 
 
+    const actions = [
+        {
+            text: "Add Location",
+            icon: ({ color, size }) => (
+                <Icon
+                    name="account-outline"
+                    color={color}
+                    size={size}
+                />
+            ),
+            name: "add_location",
+            position: 1
+        },
+        {
+            text: "Save Waypoint",
+            icon: ({ color, size }) => (
+                <Icon
+                    name="account-outline"
+                    color={color}
+                    size={size}
+                />
+            ),
+            name: "save_waypoint",
+            position: 2
+        },
+        {
+            text: "Load Waypoint",
+            icon: ({ color, size }) => (
+                <Icon
+                    name="account-outline"
+                    color={color}
+                    size={size}
+                />
+            ),
+            name: "load_waypoint",
+            position: 3
+        },
+
+    ];
+
+    const floatonPress = () => {
+        console.log("Action button Pressed");
+
+    };
+
+    const [polygon, setPolygon] = useState({
+        type: "Feature",
+        geometry: {
+            type: "Polygon",
+            coordinates: [
+                [
+                    [72.685547, 20.055931],
+                    [76.640625, 21.207458],
+                    [76.904297, 17.978733],
+                    [72.685547, 20.055931],
+                ],
+            ],
+        },
+    });
+
+    const [isModalVisible, setModalVisible] = useState(false);
+
+    const [inputValue, setInputValue] = useState("");
+    const toggleModalVisibility = () => {
+        setModalVisible(!isModalVisible);
+    };
+
+
     return (
         <View style={styles.page}>
             <View style={styles.container}>
-                <MapboxGL.MapView style={styles.map}>
+                <MapboxGL.MapView
+                    //onDidFailLoadingMap={() => { console.log("Map is Not Loaded"); }}
+                    style={styles.map}>
                     <MapboxGL.Camera
                         zoomLevel={6}
                         centerCoordinate={[lon, lat]}
@@ -78,9 +151,37 @@ const WayPonit = () => {
                     <MapboxGL.PointAnnotation
                         title="Current Location"
                         coordinate={[lon, lat]} />
-                    {/* <View>{renderAnnotations()}</View> */}
+
+                    <MapboxGL.ShapeSource id="source" shape={polygon}>
+                        <MapboxGL.FillLayer id="fill" style={{ fillColor: "blue" }} />
+                        <MapboxGL.LineLayer
+                            id="line"
+                            style={{ lineColor: "red", lineWidth: 2 }}
+                        />
+                    </MapboxGL.ShapeSource>
+
+
                 </MapboxGL.MapView>
+
+
+
+
+
             </View>
+
+            <View >
+
+                <FloatingAction
+                    actions={actions}
+                    color='#333C8D'
+                    position='left'
+                    //style={styles.floatView}
+                    onPressItem={floatonPress}
+                />
+
+
+            </View>
+
         </View>
     );
 };
@@ -109,9 +210,10 @@ const styles = StyleSheet.create({
     container: {
         height: windowHeight,
         width: windowWidth,
-        backgroundColor: "tomato"
+        backgroundColor: "#333C8D"
     },
     map: {
         flex: 1
     },
+
 });
