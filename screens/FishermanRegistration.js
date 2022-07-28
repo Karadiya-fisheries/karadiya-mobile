@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Component, useRef, createRef} from 'react';
+import React, { useState, useEffect, Component, useRef, createRef } from 'react';
 import {
   TouchableHighlight,
   Image,
@@ -15,15 +15,16 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
-import {Checkbox, RadioButton, RadioButtonGroup} from 'react-native-paper';
-import {Picker} from '@react-native-picker/picker';
+import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
+import { Checkbox, RadioButton, RadioButtonGroup } from 'react-native-paper';
+import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from 'react-native-image-picker';
 import SignatureCapture from 'react-native-signature-capture';
-import {Formik, Field, Form, ErrorMessage} from 'formik';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as yup from 'yup';
 import fishermenService from '../service/fishermen.service';
+import authService from '../service/auth.service';
 
 const fishermanregValidationSchema = yup.object().shape({
   fidivision: yup.string().required('*This is a required field'),
@@ -101,16 +102,13 @@ function FishermanRegistration() {
   const [ntrb, setNtrb] = React.useState(false);
   const [nbsb, setNbsb] = React.useState(false);
 
-  /*const [boatCat, setboatCat] = useState([...boatCat, {
-    imul: imul,
-    iday: iday,
-    mtrb: mtrb,
-    ofrp: ofrp,
-    ntrb: ntrb,
-    nbsb: nbsb,
-  }
 
-  ]);*/
+
+  const [uid, setUid] = useState(null);
+  authService.getCurrentUser().then(res => {
+    setUid(JSON.parse(res).uid);
+  });
+
 
   //=--------------------------------------------
   //radio button
@@ -120,11 +118,11 @@ function FishermanRegistration() {
   //Dynamiccaly Adding input fields
   //children details
 
-  const [inputs, setInputs] = useState([{key: '', value: ''}]);
+  const [inputs, setInputs] = useState([{ key: '', value: '' }]);
 
   const addHandler = () => {
     const _inputs = [...inputs];
-    _inputs.push({key: '', value: ''});
+    _inputs.push({ key: '', value: '' });
     setInputs(_inputs);
   };
   const deleteHandler = key => {
@@ -133,11 +131,11 @@ function FishermanRegistration() {
   };
 
   //dependant details
-  const [inputs1, setInputs1] = useState([{key1: '', value1: ''}]);
+  const [inputs1, setInputs1] = useState([{ key1: '', value1: '' }]);
 
   const addHandler1 = () => {
     const _inputs1 = [...inputs1];
-    _inputs1.push({key1: '', value1: ''});
+    _inputs1.push({ key1: '', value1: '' });
     setInputs1(_inputs1);
   };
 
@@ -207,64 +205,52 @@ function FishermanRegistration() {
         console.log(inputs);
         console.log(inputs1);
         const boatCat = [
-          {label: 'IMUL', value: imul},
-          {label: 'IDAY', value: iday},
-          {label: 'MTRB', value: mtrb},
-          {label: 'OFRP', value: ofrp},
-          {label: 'NBSB', value: nbsb},
-          {label: 'NTRB', value: ntrb},
+          { label: 'IMUL', value: imul },
+          { label: 'IDAY', value: iday },
+          { label: 'MTRB', value: mtrb },
+          { label: 'OFRP', value: ofrp },
+          { label: 'NBSB', value: nbsb },
+          { label: 'NTRB', value: ntrb },
         ].map(boat => {
           if (boat.value) {
             return boat.label;
           }
-        });
+        })
+          .filter(element => {
+            return element !== undefined;
+          });
+
         console.log();
-        console.log({
-          FIDivision: values.fidivision,
-          GNDivision: values.gndivision,
-          DSDivision: values.dsdivision,
-          FDistrict: values.district,
-          Surname: values.surname,
-          OtherNames: values.othernames,
-          NicNo: values.nicno,
-          FZone: values.fishingZone,
-          Occupation: values.occupation,
-          BoatCat: boatCat,
-          OccuType: values.natureOfOccu,
-          FOpType: values.natureOfFishing,
-          AssocAct: values.associateOccu,
-          MemberOfSoc: values.membershipStatus,
-          MemberNo: values.membershipno,
-          Children: null,
-          Dependent: null,
-          Sign: null,
-          NumOfBoats: values.numofboats,
-          LInsuaracneNo: values.insuarance,
-        });
-        // fishermenService
-        //   .createFishermen({
-        //     FIDivision: values.fidivision,
-        //     GNDivision: values.gndivision,
-        //     DSDivision: values.dsdivision,
-        //     FDistrict: values.district,
-        //     Surname: values.surname,
-        //     OtherNames: values.othernames,
-        //     NicNo: values.nicno,
-        //     FZone: values.fishingZone,
-        //     Occupation: values.occupation,
-        //     BoatCat: boatCat,
-        //     OccuType: values.natureOfOccu,
-        //     FOpType: values.natureOfFishing,
-        //     AssocAct: values.associateOccu,
-        //     MemberOfSoc: values.membershipStatus,
-        //     MemberNo: values.membershipno,
-        //     Children: null,
-        //     Dependent: null,
-        //     Sign: null,
-        //     NumOfBoats: values.numofboats,
-        //     LInsuaracneNo: values.insuarance,
-        //   })
-        //   .then(() => {});
+
+
+
+        fishermenService
+          .createFishermen({
+            uid: uid,
+            FIDivision: values.fidivision,
+            GNDivision: values.gndivision,
+            DSDivision: values.dsdivision,
+            FDistrict: values.district,
+            Surname: values.surname,
+            OtherNames: values.othernames,
+            NicNo: values.nicno,
+            FZone: values.fishingZone,
+            Occupation: values.occupation,
+            BoatCat: boatCat,
+            OccuType: values.natureOfOccu,
+            FOpType: values.natureOfFishing,
+            AssocAct: values.associateOccu,
+            MemberOfSoc: values.membershipStatus,
+            MemberNo: values.membershipno,
+            Children: null,
+            Dependent: null,
+            Sign: null,
+            NumOfBoats: values.numofboats,
+            LInsuaracneNo: values.insuarance,
+          })
+          .then((value) => {
+            console.log(value);
+          });
       }}>
       {({
         handleChange,
@@ -280,7 +266,7 @@ function FishermanRegistration() {
             <Text style={styles.headTitle1}>Fisherman Registration</Text>
           </View>
           <View style={styles.footer}>
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
               <ProgressSteps {...progressStepsStyle}>
                 <ProgressStep>
                   <View
@@ -293,7 +279,7 @@ function FishermanRegistration() {
                     }}>
                     <Text style={styles.text_footer}>Fishing Details</Text>
 
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>
                         Fisheries Inspector {'\n'}Division
                       </Text>
@@ -309,7 +295,7 @@ function FishermanRegistration() {
                       <Text style={styles.errorText}>{errors.fidivision}</Text>
                     ) : null}
 
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>GN Division</Text>
                       <TextInput
                         style={styles.textInput}
@@ -322,7 +308,7 @@ function FishermanRegistration() {
                       <Text style={styles.errorText}>{errors.gndivision}</Text>
                     ) : null}
 
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>
                         Divisional {'\n'}Secretariat {'\n'}Division
                       </Text>
@@ -337,7 +323,7 @@ function FishermanRegistration() {
                       <Text style={styles.errorText}>{errors.dsdivision}</Text>
                     ) : null}
 
-                    <View style={{alignItems: 'center', flexDirection: 'row'}}>
+                    <View style={{ alignItems: 'center', flexDirection: 'row' }}>
                       <Text style={styles.txt}>Fisheries District</Text>
                       <TextInput
                         style={styles.textInput}
@@ -361,7 +347,7 @@ function FishermanRegistration() {
                     }}>
                     <Text style={styles.text_footer}>Personal Details</Text>
 
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>Surname</Text>
                       <TextInput
                         style={styles.textInput}
@@ -373,7 +359,7 @@ function FishermanRegistration() {
                     {errors.surname && touched.surname ? (
                       <Text style={styles.errorText}>{errors.surname}</Text>
                     ) : null}
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>Other Names</Text>
                       <TextInput
                         style={styles.textInput}
@@ -386,7 +372,7 @@ function FishermanRegistration() {
                       <Text style={styles.errorText}>{errors.othernames}</Text>
                     ) : null}
 
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>NIC Number</Text>
                       <TextInput
                         style={styles.textInput}
@@ -403,7 +389,7 @@ function FishermanRegistration() {
 
                 <ProgressStep>
                   <View>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>Fishing Zone</Text>
                       <View
                         style={{
@@ -447,7 +433,7 @@ function FishermanRegistration() {
                       </View>
                     </View>
 
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>Occupation</Text>
 
                       <View
@@ -471,7 +457,7 @@ function FishermanRegistration() {
                       </View>
                     </View>
 
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>Categories of Boats</Text>
 
                       <View style={styles.checkBox}>
@@ -539,7 +525,7 @@ function FishermanRegistration() {
                       </View>
                     </View>
 
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>Number of Boats</Text>
                       <TextInput
                         style={styles.textInput}
@@ -555,7 +541,7 @@ function FishermanRegistration() {
                       <Text style={styles.errorText}>{errors.numofboats}</Text>
                     ) : null}
 
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>Nature of {'\n'}Occupation</Text>
                       <View
                         style={{
@@ -577,7 +563,7 @@ function FishermanRegistration() {
                       </View>
                     </View>
 
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>
                         Nature of Fishing {'\n'}Operation
                       </Text>
@@ -601,7 +587,7 @@ function FishermanRegistration() {
                       </View>
                     </View>
 
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>
                         For associate {'\n'}Occupational {'\n'}activities
                       </Text>
@@ -625,7 +611,7 @@ function FishermanRegistration() {
                       </View>
                     </View>
 
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>Life insurance Number</Text>
                       <TextInput
                         style={styles.textInput}
@@ -638,7 +624,7 @@ function FishermanRegistration() {
                       <Text style={styles.errorText}>{errors.insuarance}</Text>
                     ) : null}
 
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>
                         Membership of {'\n'}Fisheries Society
                       </Text>
@@ -646,19 +632,19 @@ function FishermanRegistration() {
                       <RadioButton.Group
                         onValueChange={handleChange('membershipStatus')}
                         value={values.membershipStatus}>
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{ flexDirection: 'row' }}>
                           <RadioButton color="#333C8D" value="yes" />
                           <Text style={styles.txt}>Yes</Text>
                         </View>
 
-                        <View style={{flexDirection: 'row'}}>
+                        <View style={{ flexDirection: 'row' }}>
                           <RadioButton value="no" color="#333C8D" />
                           <Text style={styles.txt}>No</Text>
                         </View>
                       </RadioButton.Group>
                     </View>
 
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>
                         Fisheries Society {'\n'}Membership Number
                       </Text>
@@ -751,7 +737,7 @@ function FishermanRegistration() {
                         </View>
                       ))}
 
-                      <View style={{margin: 10, marginLeft: 200}}>
+                      <View style={{ margin: 10, marginLeft: 200 }}>
                         <TouchableOpacity
                           style={styles.button}
                           onPress={addHandler}>
@@ -825,7 +811,7 @@ function FishermanRegistration() {
 
                             <TouchableOpacity
                               onPress={() => deleteHandler1(key1)}>
-                              <Text style={{color: '#333C8D', fontSize: 16}}>
+                              <Text style={{ color: '#333C8D', fontSize: 16 }}>
                                 Remove
                               </Text>
                             </TouchableOpacity>
@@ -834,7 +820,7 @@ function FishermanRegistration() {
                       ))}
                     </View>
 
-                    <View style={{margin: 20, marginLeft: 200}}>
+                    <View style={{ margin: 20, marginLeft: 200 }}>
                       <TouchableOpacity
                         style={styles.button}
                         onPress={addHandler1}>
@@ -847,7 +833,7 @@ function FishermanRegistration() {
                 <ProgressStep onSubmit={handleSubmit} disabled={!isValid}>
                   <Text style={styles.text_footer}>Photo of Applicant</Text>
 
-                  <View style={{alignItems: 'center', paddingBottom: 10}}>
+                  <View style={{ alignItems: 'center', paddingBottom: 10 }}>
                     <Image
                       source={require('../assets/fish.png')}
                       style={styles.logo}
@@ -855,7 +841,7 @@ function FishermanRegistration() {
                     />
                   </View>
 
-                  <View style={{alignItems: 'center', paddingBottom: 10}}>
+                  <View style={{ alignItems: 'center', paddingBottom: 10 }}>
                     <TouchableOpacity
                       style={styles.button}
                       onPress={openPicker}>
@@ -886,7 +872,7 @@ function FishermanRegistration() {
                     />
                   </View>
 
-                  <View style={{flexDirection: 'row-reverse'}}>
+                  <View style={{ flexDirection: 'row-reverse' }}>
                     <TouchableHighlight
                       style={styles.button}
                       onPress={() => {
@@ -913,7 +899,7 @@ function FishermanRegistration() {
 }
 export default FishermanRegistration;
 
-const {height} = Dimensions.get('screen');
+const { height } = Dimensions.get('screen');
 const height_logo = height * 0.15;
 
 const styles = StyleSheet.create({
