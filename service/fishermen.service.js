@@ -24,4 +24,4 @@ class FishermenService {
 }
 
 // export as a EmployeeService object
-export default new fishermenService();
+export default new FishermenService();
