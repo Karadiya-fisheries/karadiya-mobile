@@ -116,23 +116,22 @@ function FishermanRegistration() {
   const [ofrp, setOfrp] = React.useState(false);
   const [ntrb, setNtrb] = React.useState(false);
   const [nbsb, setNbsb] = React.useState(false);
+  /*const [boatCat, setboatCat] = useState([...boatCat, {
+    imul: imul,
+    iday: iday,
+    mtrb: mtrb,
+    ofrp: ofrp,
+    ntrb: ntrb,
+    nbsb: nbsb,
+  }
+
+  ]);*/
 
 
 
   //=--------------------------------------------
   //radio button
   const [value, setValue] = React.useState('Yes');
-
-
-  //------------------------------------
-  //Dropdown Menu 
-
-
-  const [selectedZone, setSelectedZone] = useState();
-  const [selectedOccupation, setSelectedOccupation] = useState();
-  const [selectedNaocc, setSelectedNaocc] = useState();
-  const [selectedNatrip, setSelectedNatrip] = useState();
-  const [selectedOpact, setSelectedOpact] = useState();
 
   //-----------------------------
   //Dynamiccaly Adding input fields 
@@ -210,20 +209,32 @@ function FishermanRegistration() {
         surname: '',
         othernames: '',
         nicno: '',
-        occupation: '',
+        fishingZone: 'internal waters',
+        occupation: 'boat owner',
         numofboats: '',
+        natureOfOccu: 'full time',
+        natureOfFishing: 'multiday',
+        associateOccu: 'supply',
         insuarance: '',
-        membershipno: '',
+        //membershipStatus: 'no',
+        membershipno: 'no',
         childrenname: '',
         dependentname: '',
 
       }}
 
-      onSubmit={values => console.log(values)}
+      onSubmit={values => {
+
+        console.log(values);
+        //console.log(boatCat);
+        console.log(inputs);
+        console.log(inputs1);
+        console.log("submitted");
+      }}
 
     >
 
-      {({ handleChange, handleBlur, handleSubmit, values, errors, isValid, touched, }) => (
+      {({ handleChange, handleBlur, handleSubmit, values, errors, isValid, touched }) => (
 
         <View style={styles.container}>
           <View style={styles.header}>
@@ -345,10 +356,8 @@ function FishermanRegistration() {
                       <View style={{ borderRadius: 10, overflow: 'hidden', width: 210, height: 25, justifyContent: 'center', alignContent: 'center' }}>
                         <Picker style={styles.picker}
                           mode='dropdown'
-                          selectedValue={selectedZone}
-                          onValueChange={(itemValue, itemIndex) =>
-                            setSelectedZone(itemValue)
-                          }>
+                          selectedValue={values.fishingZone}
+                          onValueChange={handleChange('fishingZone')}>
                           <Picker.Item label="Internal waters" value="internal waters" />
                           <Picker.Item label="Territorial Sea" value="territorial sea" />
                           <Picker.Item label="Contiguous Zone" value="contiguous zone" />
@@ -372,10 +381,8 @@ function FishermanRegistration() {
 
 
                           mode='dropdown'
-                          selectedValue={selectedOccupation}
-                          onValueChange={(itemValue, itemIndex) =>
-                            setSelectedOccupation(itemValue)
-                          }>
+                          selectedValue={values.occupation}
+                          onValueChange={handleChange('occupation')}>
                           <Picker.Item label="Boat Owner" value="boat owner" />
                           <Picker.Item label="Skipper" value="skipper" />
                           <Picker.Item label="Fisherman" value="Fisherman" />
@@ -491,10 +498,8 @@ function FishermanRegistration() {
                       <View style={{ borderRadius: 10, overflow: 'hidden', width: 210, height: 25, justifyContent: 'center', alignContent: 'center' }}>
                         <Picker style={styles.picker}
                           mode='dropdown'
-                          selectedValue={selectedNaocc}
-                          onValueChange={(itemValue, itemIndex) =>
-                            setSelectedNaocc(itemValue)
-                          }>
+                          selectedValue={values.natureOfOccu}
+                          onValueChange={handleChange('natureOfOccu')}>
                           <Picker.Item label="Full Time" value="full time" />
                           <Picker.Item label="Part Time" value="part time" />
 
@@ -510,10 +515,8 @@ function FishermanRegistration() {
                       <View style={{ borderRadius: 10, overflow: 'hidden', width: 210, height: 25, justifyContent: 'center', alignContent: 'center' }}>
                         <Picker style={styles.picker}
                           mode='dropdown'
-                          selectedValue={selectedNatrip}
-                          onValueChange={(itemValue, itemIndex) =>
-                            setSelectedNatrip(itemValue)
-                          }>
+                          selectedValue={values.natureOfFishing}
+                          onValueChange={handleChange('natureOfFishing')}>
                           <Picker.Item label="Multi Day" value="multiday" />
                           <Picker.Item label="One Day" value="one day" />
 
@@ -527,10 +530,8 @@ function FishermanRegistration() {
                       <View style={{ borderRadius: 10, overflow: 'hidden', width: 210, height: 25, justifyContent: 'center', alignContent: 'center' }}>
                         <Picker style={styles.picker}
                           mode='dropdown'
-                          selectedValue={selectedOpact}
-                          onValueChange={(itemValue, itemIndex) =>
-                            setSelectedOpact(itemValue)
-                          }>
+                          selectedValue={values.associateOccu}
+                          onValueChange={handleChange('associateOccu')}>
                           <Picker.Item label="Supply" value="supply" />
                           <Picker.Item label="Catch" value="catch" />
 
@@ -556,7 +557,7 @@ function FishermanRegistration() {
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text style={styles.txt}>Membership of {"\n"}Fisheries Society</Text>
 
-                      <RadioButton.Group onValueChange={newValue => setValue(newValue)} value={value}>
+                      <RadioButton.Group onValueChange={handleChange('membershipStatus')} value={values.membershipStatus}>
                         <View style={{ flexDirection: 'row' }}>
 
                           <RadioButton color='#333C8D' value="yes" />
@@ -628,7 +629,7 @@ function FishermanRegistration() {
 
                             )}
                             <Text style={{ fontSize: 18, margin: 20, color: '#333C8D' }}>{text}</Text>
-                            < TouchableOpacity onPress={() => deleteHandler(key)}>
+                            <TouchableOpacity onPress={() => deleteHandler(key)}>
                               <Text style={{ color: "#333C8D", fontSize: 15, paddingRight: 10 }}>Remove</Text>
                             </TouchableOpacity>
 
@@ -693,7 +694,7 @@ function FishermanRegistration() {
                             )}
                             <Text style={{ fontSize: 18, margin: 20, color: '#333C8D' }}>{text}</Text>
 
-                            < TouchableOpacity onPress={() => deleteHandler1(key1)}>
+                            <TouchableOpacity onPress={() => deleteHandler1(key1)}>
                               <Text style={{ color: "#333C8D", fontSize: 16, }}>Remove</Text>
                             </TouchableOpacity>
 
