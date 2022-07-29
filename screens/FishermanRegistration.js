@@ -24,6 +24,7 @@ import {Formik, Field, Form, ErrorMessage} from 'formik';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as yup from 'yup';
 import fishermenService from '../service/fishermen.service';
+import authService from '../service/auth.service';
 
 const fishermanregValidationSchema = yup.object().shape({
   fidivision: yup.string().required('*This is a required field'),
@@ -101,16 +102,10 @@ function FishermanRegistration() {
   const [ntrb, setNtrb] = React.useState(false);
   const [nbsb, setNbsb] = React.useState(false);
 
-  /*const [boatCat, setboatCat] = useState([...boatCat, {
-    imul: imul,
-    iday: iday,
-    mtrb: mtrb,
-    ofrp: ofrp,
-    ntrb: ntrb,
-    nbsb: nbsb,
-  }
-
-  ]);*/
+  const [uid, setUid] = useState(null);
+  authService.getCurrentUser().then(res => {
+    setUid(JSON.parse(res).uid);
+  });
 
   //=--------------------------------------------
   //radio button
@@ -220,30 +215,36 @@ function FishermanRegistration() {
           .filter(element => {
             return element !== undefined;
           });
-        // fishermenService
-        //   .createFishermen({
-        //     FIDivision: values.fidivision,
-        //     GNDivision: values.gndivision,
-        //     DSDivision: values.dsdivision,
-        //     FDistrict: values.district,
-        //     Surname: values.surname,
-        //     OtherNames: values.othernames,
-        //     NicNo: values.nicno,
-        //     FZone: values.fishingZone,
-        //     Occupation: values.occupation,
-        //     BoatCat: boatCat,
-        //     OccuType: values.natureOfOccu,
-        //     FOpType: values.natureOfFishing,
-        //     AssocAct: values.associateOccu,
-        //     MemberOfSoc: values.membershipStatus,
-        //     MemberNo: values.membershipno,
-        //     Children: null,
-        //     Dependent: null,
-        //     Sign: null,
-        //     NumOfBoats: values.numofboats,
-        //     LInsuaracneNo: values.insuarance,
-        //   })
-        //   .then(() => {});
+
+        console.log();
+
+        fishermenService
+          .createFishermen({
+            uid: uid,
+            FIDivision: values.fidivision,
+            GNDivision: values.gndivision,
+            DSDivision: values.dsdivision,
+            FDistrict: values.district,
+            Surname: values.surname,
+            OtherNames: values.othernames,
+            NicNo: values.nicno,
+            FZone: values.fishingZone,
+            Occupation: values.occupation,
+            BoatCat: boatCat,
+            OccuType: values.natureOfOccu,
+            FOpType: values.natureOfFishing,
+            AssocAct: values.associateOccu,
+            MemberOfSoc: values.membershipStatus,
+            MemberNo: values.membershipno,
+            Children: null,
+            Dependent: null,
+            Sign: null,
+            NumOfBoats: values.numofboats,
+            LInsuaracneNo: values.insuarance,
+          })
+          .then(value => {
+            console.log(value);
+          });
       }}>
       {({
         handleChange,
