@@ -204,8 +204,6 @@ function FishermanRegistration() {
         dependentname: '',
       }}
       onSubmit={values => {
-        console.log(inputs);
-        console.log(inputs1);
         const boatCat = [
           {label: 'IMUL', value: imul},
           {label: 'IDAY', value: iday},
@@ -213,34 +211,15 @@ function FishermanRegistration() {
           {label: 'OFRP', value: ofrp},
           {label: 'NBSB', value: nbsb},
           {label: 'NTRB', value: ntrb},
-        ].map(boat => {
-          if (boat.value) {
-            return boat.label;
-          }
-        });
-        console.log();
-        console.log({
-          FIDivision: values.fidivision,
-          GNDivision: values.gndivision,
-          DSDivision: values.dsdivision,
-          FDistrict: values.district,
-          Surname: values.surname,
-          OtherNames: values.othernames,
-          NicNo: values.nicno,
-          FZone: values.fishingZone,
-          Occupation: values.occupation,
-          BoatCat: boatCat,
-          OccuType: values.natureOfOccu,
-          FOpType: values.natureOfFishing,
-          AssocAct: values.associateOccu,
-          MemberOfSoc: values.membershipStatus,
-          MemberNo: values.membershipno,
-          Children: null,
-          Dependent: null,
-          Sign: null,
-          NumOfBoats: values.numofboats,
-          LInsuaracneNo: values.insuarance,
-        });
+        ]
+          .map(boat => {
+            if (boat.value) {
+              return boat.label;
+            }
+          })
+          .filter(element => {
+            return element !== undefined;
+          });
         // fishermenService
         //   .createFishermen({
         //     FIDivision: values.fidivision,
