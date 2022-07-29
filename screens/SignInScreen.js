@@ -11,11 +11,11 @@ import {
 import * as Animatable from 'react-native-animatable';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
-import { Checkbox } from 'react-native-paper';
+import {Checkbox} from 'react-native-paper';
 
-import { AuthContext } from '../components/context';
+import {AuthContext} from '../components/context';
 
-const SignInScreen = ({ navigation }) => {
+const SignInScreen = ({navigation}) => {
   const [checked, setChecked] = React.useState(false);
 
   const [data, setData] = React.useState({
@@ -25,7 +25,7 @@ const SignInScreen = ({ navigation }) => {
     secureTextEntry: true,
   });
 
-  const { signIn } = React.useContext(AuthContext);
+  const {signIn} = React.useContext(AuthContext);
 
   const textInpitChange = val => {
     if (val.length != 0) {
