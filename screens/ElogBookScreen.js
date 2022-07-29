@@ -1,318 +1,539 @@
-import React, {Component, useState} from 'react';
+import React, {useState, useEffect, Component, useRef, createRef} from 'react';
 import {
+  TouchableHighlight,
+  Image,
+  Platform,
+  LogBox,
   View,
   Text,
-  Button,
-  TextInput,
   StyleSheet,
-  Alert,
+  TextInput,
   TouchableOpacity,
-  FlatList,
+  Dimensions,
+  Button,
+  SafeAreaView,
+  ScrollView,
+  Alert,
 } from 'react-native';
-import {Formik} from 'formik';
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import moment from 'moment';
+import {Checkbox, RadioButton, RadioButtonGroup} from 'react-native-paper';
 import {Picker} from '@react-native-picker/picker';
-import TaskContainer from '../components/TaskContainer';
+import * as ImagePicker from 'react-native-image-picker';
+import {Formik, Field, Form, ErrorMessage, formik} from 'formik';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as yup from 'yup';
+import CoodinateContainer from '../components/CoodinateContainer';
 import FishCatchContainer from '../components/FIshCatchContainer';
 
-class ElogBook extends Component {
-  constructor() {
-    super();
+const fishermanregValidationSchema = yup.object().shape({
+  wesselId: yup.string().required('*This is a required field'),
+  skipperId: yup.string().required('*This is a required field'),
+  depharbor: yup.string().required('*This is a required field'),
+  depDate: yup.string().required('*This is a required field'),
+  depTime: yup.string().required('*This is a required field'),
+  gearType: yup.string().required('*This is a required field'),
+  mainLine: yup.string().required('*This is a required field'),
+  branchLine: yup.number().required('*This is a required field'),
+  hookNo: yup.string().required('*This is a required field'),
+  hookType: yup.string().required('*This is a required field'),
+
+  depth: yup.string().required('*This is a required field'),
+
+  bait: yup.string().required('*This is a required field'),
+});
+
+function FishermanRegistration() {
+  const progressStepsStyle = {
+    activeStepIconBorderColor: '#333C8D',
+    activeLabelColor: '#333C8D',
+    activeStepNumColor: '#333C8D',
+    completedStepIconColor: '#333C8D',
+    completedProgressBarColor: '#333C8D',
+    completedCheckColor: 'white',
+    marginBottom: 35,
+  };
+
+  const [datePicker, setDatePicker] = useState(false);
+
+  const [date, setDate] = useState(new Date());
+
+  const [timePicker, setTimePicker] = useState(false);
+
+  const [time, setTime] = useState(new Date(Date.now()));
+  function showDatePicker() {
+    setDatePicker(true);
   }
 
-  static navigationOptions = {
-    header: null,
-  };
-
-  defaultScrollViewProps = {
-    keyboardShouldPersistTaps: 'handled',
-    contentContainerStyle: {
-      flex: 1,
-      justifyContent: 'center',
-    },
-  };
-
-  onNextStep = () => {
-    console.log('called next step');
-  };
-
-  onPrevStep = () => {
-    console.log('called previous step');
-  };
-
-  onSubmitSteps = () => {
-    console.log('called on submit step.');
-  };
-
-  setSelectedLanguage = Item => {
-    console.log(Item);
-  };
-
-  render() {
-    const progressStepsStyle = {
-      activeStepIconBorderColor: '#333C8D',
-      activeLabelColor: '#333C8D',
-      activeStepNumColor: 'white',
-      activeStepIconColor: '#333C8D',
-      completedStepIconColor: '#333C8D',
-      completedProgressBarColor: '#333C8D',
-      completedCheckColor: 'white',
-      disabledStepIconColor: '#AEBEE8',
-    };
-
-    const buttonTextStyle = {
-      color: '#333C8D',
-      fontWeight: 'bold',
-    };
-
-    return (
-      <View style={{flex: 1, marginTop: 50}}>
-        <Formik
-          initialValues={{
-            email: '',
-            age: '',
-            WesselID: '',
-            SkipperID: '',
-            Harbor: '',
-            DepartureDate: '',
-            DepartureTime: '',
-            GearType: '',
-            MainLine: '',
-            BranchLine: '',
-            HookTypes: '',
-            Depth: '',
-            Bait: '',
-            FishingDate: '',
-            FishingTime: '',
-          }}
-          onSubmit={values => console.log(values)}>
-          {({handleChange, handleBlur, handleSubmit, values}) => (
-            <ProgressSteps {...progressStepsStyle}>
-              <ProgressStep
-                label="First"
-                onNext={this.onNextStep}
-                onPrevious={this.onPrevStep}
-                scrollViewProps={this.defaultScrollViewProps}
-                nextBtnTextStyle={buttonTextStyle}
-                previousBtnTextStyle={buttonTextStyle}
-                scrollable={true}>
-                <View style={{alignItems: 'center', flex: 1}}>
-                  <View style={styles.rowContainer}>
-                    <Text style={styles.label}>Wessel ID</Text>
-
-                    <TextInput
-                      style={styles.textInput}
-                      onChangeText={handleChange('WesselID')}
-                      onBlur={handleBlur('WesselID')}
-                      value={values.WesselID}
-                    />
-                  </View>
-
-                  <View style={styles.rowContainer}>
-                    <Text style={styles.label}>Skipper ID</Text>
-
-                    <TextInput
-                      style={styles.textInput}
-                      onChangeText={handleChange('SkipperID')}
-                      onBlur={handleBlur('SkipperID')}
-                      value={values.SkipperID}
-                    />
-                  </View>
-
-                  <View style={styles.rowContainer}>
-                    <Text style={styles.label}>Departure Harbor</Text>
-
-                    <Picker
-                      mode="dropdown"
-                      style={styles.pickerStyle}
-                      selectedValue={values.Harbor}
-                      onValueChange={handleChange('Harbor')}>
-                      <Picker.Item label="Panadura" value="Panadura" />
-                      <Picker.Item label="Beruwala" value="Beruwala" />
-                      <Picker.Item label="Hikkaduwa" value="Hikkaduwa" />
-                      <Picker.Item label="Ambalangoda" value="Ambalangoda" />
-                      <Picker.Item label="Dodanduwa" value="Dodanduwa" />
-                      <Picker.Item label="Galle" value="Galle" />
-                      <Picker.Item label="Mirissa" value="Mirissa" />
-                      <Picker.Item label="Puranawella" value="Puranawella" />
-                      <Picker.Item label="Nilwella" value="Nilwella" />
-                      <Picker.Item label="Kudawella" value="Kudawella" />
-                      <Picker.Item label="Tangalle" value="Tangalle" />
-                      <Picker.Item label="Hambanthota" value="Hambanthota" />
-                      <Picker.Item label="Kirinda" value="Kirinda" />
-                      <Picker.Item label="Valachchanai" value="Valachchanai" />
-                      <Picker.Item label="Cod-Bay" value="Cod-Bay" />
-                      <Picker.Item label="Kalpitiya" value="Kalpitiya" />
-                      <Picker.Item label="Chilaw" value="Chilaw" />
-                      <Picker.Item label="Negombo" value="Negombo" />
-                      <Picker.Item label="Dikkovita" value="Dikkovita" />
-                    </Picker>
-                  </View>
-
-                  <View style={styles.rowContainer}>
-                    <Text style={styles.label}>Departure Date</Text>
-
-                    <TextInput
-                      style={styles.textInput}
-                      onChangeText={handleChange('DepartureDate')}
-                      onBlur={handleBlur('DepartureDate')}
-                      value={values.DepartureDate}
-                    />
-                  </View>
-
-                  <View style={styles.rowContainer}>
-                    <Text style={styles.label}>Departure Time</Text>
-
-                    <TextInput
-                      style={styles.textInput}
-                      onChangeText={handleChange('DepartureTime')}
-                      onBlur={handleBlur('DepartureTime')}
-                      value={values.DepartureTime}
-                    />
-                  </View>
-                </View>
-              </ProgressStep>
-              <ProgressStep
-                label="Second"
-                onNext={this.onNextStep}
-                onPrevious={this.onPrevStep}
-                scrollViewProps={this.defaultScrollViewProps}
-                nextBtnTextStyle={buttonTextStyle}
-                previousBtnTextStyle={buttonTextStyle}>
-                <View style={{alignItems: 'center', flex: 1}}>
-                  <View style={styles.rowContainer}>
-                    <Text style={styles.label}>Gear Type</Text>
-
-                    <TextInput
-                      style={styles.textInput}
-                      onChangeText={handleChange('GearType')}
-                      onBlur={handleBlur('GearType')}
-                      value={values.GearType}
-                    />
-                  </View>
-
-                  <View style={styles.rowContainer}>
-                    <Text style={styles.label}>Main Line</Text>
-
-                    <TextInput
-                      style={styles.textInput}
-                      onChangeText={handleChange('MainLine')}
-                      onBlur={handleBlur('MainLine')}
-                      value={values.MainLine}
-                    />
-                  </View>
-
-                  <View style={styles.rowContainer}>
-                    <Text style={styles.label}>Branch Line</Text>
-
-                    <TextInput
-                      style={styles.textInput}
-                      onChangeText={handleChange('BranchLine')}
-                      onBlur={handleBlur('BranchLine')}
-                      value={values.BranchLine}
-                    />
-                  </View>
-
-                  <View style={styles.rowContainer}>
-                    <Text style={styles.label}>Hook Types</Text>
-
-                    <TextInput
-                      style={styles.textInput}
-                      onChangeText={handleChange('HookTypes')}
-                      onBlur={handleBlur('HookTypes')}
-                      value={values.HookTypes}
-                    />
-                  </View>
-
-                  <View style={styles.rowContainer}>
-                    <Text style={styles.label}>Depth</Text>
-
-                    <TextInput
-                      style={styles.textInput}
-                      onChangeText={handleChange('Depth')}
-                      onBlur={handleBlur('Depth')}
-                      value={values.Depth}
-                    />
-                  </View>
-
-                  <View style={styles.rowContainer}>
-                    <Text style={styles.label}>Bait</Text>
-
-                    <TextInput
-                      style={styles.textInput}
-                      onChangeText={handleChange('Bait')}
-                      onBlur={handleBlur('Bait')}
-                      value={values.Bait}
-                    />
-                  </View>
-                </View>
-              </ProgressStep>
-              <ProgressStep
-                label="Third"
-                onNext={this.onNextStep}
-                onPrevious={this.onPrevStep}
-                scrollViewProps={this.defaultScrollViewProps}
-                nextBtnTextStyle={buttonTextStyle}
-                previousBtnTextStyle={buttonTextStyle}>
-                <View style={styles.rowContainer}>
-                  <Text style={styles.label}>Fishing Date</Text>
-
-                  <TextInput
-                    style={styles.textInput}
-                    onChangeText={handleChange('FishingDate')}
-                    onBlur={handleBlur('FishingDate')}
-                    value={values.FishingDate}
-                  />
-                </View>
-
-                <View style={styles.rowContainer}>
-                  <Text style={styles.label}>Fishing Time</Text>
-
-                  <TextInput
-                    style={styles.textInput}
-                    onChangeText={handleChange('FishingTime')}
-                    onBlur={handleBlur('FishingTime')}
-                    value={values.FishingTime}
-                  />
-                </View>
-                <View>
-                  <TaskContainer />
-                </View>
-              </ProgressStep>
-              <ProgressStep
-                label="Fourth"
-                onSubmit={handleSubmit}
-                onPrevious={this.onPrevStep}
-                scrollViewProps={this.defaultScrollViewProps}
-                nextBtnTextStyle={buttonTextStyle}
-                previousBtnTextStyle={buttonTextStyle}>
-                <FishCatchContainer />
-              </ProgressStep>
-            </ProgressSteps>
-          )}
-        </Formik>
-      </View>
-    );
+  function showTimePicker() {
+    setTimePicker(true);
   }
+
+  function onDateSelected(event, value) {
+    setDate(value);
+    setDatePicker(false);
+  }
+
+  function onTimeSelected(event, value) {
+    setTime(value);
+    setTimePicker(false);
+  }
+
+  const [coods, setCoods] = useState([]);
+  const [fishList, setFish] = useState([]);
+
+  const childToParent1 = childdata => {
+    setCoods(childdata);
+    //console.log("child data");
+    //console.log(childdata);
+  };
+
+  const childToParent2 = childdata => {
+    setFish(childdata);
+    //console.log("child data");
+    //console.log(childdata);
+  };
+
+  useEffect(() => {
+    LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
+  }, []);
+
+  return (
+    <Formik
+      validationSchema={fishermanregValidationSchema}
+      initialValues={{
+        wesselId: '',
+        skipperId: '',
+        depharbor: 'Panadura',
+        depDate: date.toString(),
+        depTime: time.toLocaleTimeString('en-US'),
+        gearType: 'Longline',
+        mainLine: '',
+        branchLine: '',
+        hookNo: '',
+        hookType: '17',
+        depth: '',
+        bait: 'Squid',
+      }}
+      onSubmit={values => {
+        console.log(values);
+        console.log(coods);
+        console.log(fishList);
+        console.log('Submitted');
+      }}>
+      {({
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        values,
+        errors,
+        isValid,
+        touched,
+      }) => (
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Text style={styles.headTitle1}>Fisherman Registration</Text>
+          </View>
+          <View style={styles.footer}>
+            <View style={{flex: 1}}>
+              <ProgressSteps {...progressStepsStyle}>
+                <ProgressStep>
+                  <View
+                    style={{
+                      borderWidth: 1,
+                      borderRadius: 10,
+                      marginBottom: 10,
+                      borderColor: '#333C8D',
+                      padding: 5,
+                    }}>
+                    <Text style={styles.text_footer}>Departure Details</Text>
+
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text style={styles.txt}>Wessel ID</Text>
+                      <TextInput
+                        style={styles.textInput}
+                        onChangeText={handleChange('wesselId')}
+                        onBlur={handleBlur('wesselId')}
+                        value={values.wesselId}
+                      />
+                    </View>
+
+                    {errors.wesselId && touched.wesselId ? (
+                      <Text style={styles.errorText}>{errors.wesselId}</Text>
+                    ) : null}
+
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text style={styles.txt}>Skipper ID</Text>
+                      <TextInput
+                        style={styles.textInput}
+                        onChangeText={handleChange('skipperId')}
+                        onBlur={handleBlur('skipperId')}
+                        value={values.skipperId}
+                      />
+                    </View>
+                    {errors.skipperId && touched.skipperId ? (
+                      <Text style={styles.errorText}>{errors.skipperId}</Text>
+                    ) : null}
+
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text style={styles.txt}>Departure Harbor</Text>
+                      {/* <TextInput style={styles.textInput}
+                                                onChangeText={handleChange('depharbor')}
+                                                onBlur={handleBlur('depharbor')}
+                                                value={values.depharbor}
+                                            /> */}
+
+                      <Picker
+                        mode="dropdown"
+                        style={styles.pickerStyle}
+                        selectedValue={values.depharbor}
+                        onValueChange={handleChange('depharbor')}>
+                        <Picker.Item label="Panadura" value="Panadura" />
+                        <Picker.Item label="Beruwala" value="Beruwala" />
+                        <Picker.Item label="Hikkaduwa" value="Hikkaduwa" />
+                        <Picker.Item label="Ambalangoda" value="Ambalangoda" />
+                        <Picker.Item label="Dodanduwa" value="Dodanduwa" />
+                        <Picker.Item label="Galle" value="Galle" />
+                        <Picker.Item label="Mirissa" value="Mirissa" />
+                        <Picker.Item label="Puranawella" value="Puranawella" />
+                        <Picker.Item label="Nilwella" value="Nilwella" />
+                        <Picker.Item label="Kudawella" value="Kudawella" />
+                        <Picker.Item label="Tangalle" value="Tangalle" />
+                        <Picker.Item label="Hambanthota" value="Hambanthota" />
+                        <Picker.Item label="Kirinda" value="Kirinda" />
+                        <Picker.Item
+                          label="Valachchanai"
+                          value="Valachchanai"
+                        />
+                        <Picker.Item label="Cod-Bay" value="Cod-Bay" />
+                        <Picker.Item label="Kalpitiya" value="Kalpitiya" />
+                        <Picker.Item label="Chilaw" value="Chilaw" />
+                        <Picker.Item label="Negombo" value="Negombo" />
+                        <Picker.Item label="Dikkovita" value="Dikkovita" />
+                      </Picker>
+                    </View>
+                    {errors.depharbor && touched.depharbor ? (
+                      <Text style={styles.errorText}>{errors.depharbor}</Text>
+                    ) : null}
+
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text style={styles.txt}>Departure Date</Text>
+                      {/* <TextInput style={styles.textInput}
+                                                onChangeText={handleChange('depDate')}
+                                                onBlur={handleBlur('depDate')}
+                                                value={values.depDate}
+                                            /> */}
+
+                      {!datePicker && (
+                        <TouchableOpacity onPress={showDatePicker}>
+                          <Icon name="calendar" size={30} color="#333C8D" />
+                        </TouchableOpacity>
+                      )}
+
+                      {datePicker && (
+                        <DateTimePicker
+                          value={date}
+                          mode={'date'}
+                          display={
+                            Platform.OS === 'ios' ? 'spinner' : 'default'
+                          }
+                          is24Hour={true}
+                          onChange={onDateSelected}
+                        />
+                      )}
+
+                      <Text
+                        style={{fontSize: 18, margin: 20, color: '#333C8D'}}>
+                        {date.toString()}
+                      </Text>
+                    </View>
+                    {errors.depDate && touched.depDate ? (
+                      <Text style={styles.errorText}>{errors.depDate}</Text>
+                    ) : null}
+
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text style={styles.txt}>Departure Time</Text>
+                      {/* <TextInput style={styles.textInput}
+                                                onChangeText={handleChange('depTime')}
+                                                onBlur={handleBlur('depTime')}
+                                                value={values.depTime}
+                                            /> */}
+                      {!timePicker && (
+                        <TouchableOpacity onPress={showTimePicker}>
+                          <Icon name="clock" size={30} color="#333C8D" />
+                        </TouchableOpacity>
+                      )}
+
+                      {timePicker && (
+                        <DateTimePicker
+                          value={time}
+                          mode={'time'}
+                          display={
+                            Platform.OS === 'ios' ? 'spinner' : 'default'
+                          }
+                          is24Hour={false}
+                          onChange={onTimeSelected}
+                          //style={styleSheet.datePicker}
+                        />
+                      )}
+
+                      <Text
+                        style={{fontSize: 18, margin: 20, color: '#333C8D'}}>
+                        {time.toLocaleTimeString('en-US')}
+                      </Text>
+                    </View>
+                    {errors.depTime && touched.depTime ? (
+                      <Text style={styles.errorText}>{errors.depTime}</Text>
+                    ) : null}
+                  </View>
+                </ProgressStep>
+
+                <ProgressStep>
+                  <View
+                    style={{
+                      borderWidth: 1,
+                      borderRadius: 10,
+                      marginBottom: 10,
+                      borderColor: '#333C8D',
+                      padding: 5,
+                    }}>
+                    <Text style={styles.text_footer}>Gear Details</Text>
+
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text style={styles.txt}>Gear Type</Text>
+                      {/* <TextInput style={styles.textInput}
+                                                onChangeText={handleChange('gearType')}
+                                                onBlur={handleBlur('gearType')}
+                                                value={values.gearType}
+                                            /> */}
+
+                      <Picker
+                        mode="dropdown"
+                        style={styles.pickerStyle}
+                        selectedValue={values.gearType}
+                        onValueChange={handleChange('gearType')}>
+                        <Picker.Item label="Longline" value="Longline" />
+                        <Picker.Item label="Gillnet" value="Gillnet" />
+                        <Picker.Item label="Ring Net" value="RingNet" />
+                      </Picker>
+                    </View>
+                    {errors.gearType && touched.gearType ? (
+                      <Text style={styles.errorText}>{errors.gearType}</Text>
+                    ) : null}
+
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text style={styles.txt}>Main Line</Text>
+                      <TextInput
+                        style={styles.textInput}
+                        onChangeText={handleChange('mainLine')}
+                        onBlur={handleBlur('mainLine')}
+                        value={values.mainLine}
+                      />
+                    </View>
+                    {errors.mainLine && touched.mainLine ? (
+                      <Text style={styles.errorText}>{errors.mainLine}</Text>
+                    ) : null}
+
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text style={styles.txt}>Branch Line</Text>
+                      <TextInput
+                        style={styles.textInput}
+                        onChangeText={handleChange('branchLine')}
+                        onBlur={handleBlur('branchLine')}
+                        value={values.branchLine}
+                      />
+                    </View>
+                    {errors.branchLine && touched.branchLine ? (
+                      <Text style={styles.errorText}>{errors.branchLine}</Text>
+                    ) : null}
+
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text style={styles.txt}>No of Hooks</Text>
+                      <TextInput
+                        style={styles.textInput}
+                        onChangeText={handleChange('hookNo')}
+                        onBlur={handleBlur('hookNo')}
+                        value={values.hookNo}
+                      />
+                    </View>
+                    {errors.hookNo && touched.hookNo ? (
+                      <Text style={styles.errorText}>{errors.hookNo}</Text>
+                    ) : null}
+
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text style={styles.txt}>Hook Type</Text>
+                      {/* <TextInput style={styles.textInput}
+                                                onChangeText={handleChange('hookType')}
+                                                onBlur={handleBlur('hookType')}
+                                                value={values.hookType}
+                                            /> */}
+
+                      <Picker
+                        mode="dropdown"
+                        style={styles.pickerStyle}
+                        selectedValue={values.hookType}
+                        onValueChange={handleChange('hookType')}>
+                        <Picker.Item label="17" value="17" />
+                        <Picker.Item label="26" value="26" />
+                        <Picker.Item label="36" value="36" />
+                        <Picker.Item label="83" value="83" />
+                      </Picker>
+                    </View>
+                    {errors.hookType && touched.hookType ? (
+                      <Text style={styles.errorText}>{errors.hookType}</Text>
+                    ) : null}
+
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text style={styles.txt}>Depth</Text>
+                      <TextInput
+                        style={styles.textInput}
+                        onChangeText={handleChange('depth')}
+                        onBlur={handleBlur('depth')}
+                        value={values.depth}
+                      />
+                    </View>
+                    {errors.depth && touched.depth ? (
+                      <Text style={styles.errorText}>{errors.depth}</Text>
+                    ) : null}
+
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <Text style={styles.txt}>Bait</Text>
+                      {/* <TextInput style={styles.textInput}
+                                                onChangeText={handleChange('bait')}
+                                                onBlur={handleBlur('bait')}
+                                                value={values.bait}
+                                            /> */}
+
+                      <Picker
+                        mode="dropdown"
+                        style={styles.pickerStyle}
+                        selectedValue={values.bait}
+                        onValueChange={handleChange('bait')}>
+                        <Picker.Item label="Squid" value="Squid" />
+                        <Picker.Item label="Flying Fish" value="Flying Fish" />
+                        <Picker.Item label="Milk Fish" value="Milk Fish" />
+                        <Picker.Item label="Other" value="Other" />
+                      </Picker>
+                    </View>
+                    {errors.bait && touched.bait ? (
+                      <Text style={styles.errorText}>{errors.bait}</Text>
+                    ) : null}
+                  </View>
+                </ProgressStep>
+
+                <ProgressStep>
+                  <CoodinateContainer childToParent={childToParent1} />
+                </ProgressStep>
+
+                <ProgressStep onSubmit={handleSubmit} disabled={!isValid}>
+                  <FishCatchContainer childToParent={childToParent2} />
+                </ProgressStep>
+              </ProgressSteps>
+            </View>
+          </View>
+        </View>
+      )}
+    </Formik>
+  );
 }
+export default FishermanRegistration;
 
-export default ElogBook;
+const {height} = Dimensions.get('screen');
+const height_logo = height * 0.15;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#333C8D',
+  },
+  header: {
+    flex: 0.8,
+    justifyContent: 'flex-end',
+    //paddingHorizontal: 10,
+    paddingBottom: 20,
+  },
+  footer: {
+    flex: 5,
+    backgroundColor: '#fff',
+    borderBottomRightRadius: 100,
+    paddingHorizontal: 20,
   },
 
   textInput: {
-    flex: 2,
-    height: 30,
-    marginRight: 15,
-    borderWidth: 1,
-    width: '100%',
-    borderRadius: 10,
+    flex: 1,
+    marginTop: Platform.OS === 'ios' ? 0 : -12,
+    color: '#333C8D',
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#333C8D',
+    fontSize: 18,
+    flexDirection: 'row-reverse',
+    //borderWidth: 5,
+    maxWidth: 250,
+    paddingRight: 10,
+  },
+
+  txt: {
+    fontSize: 16,
+    padding: 15,
+    paddingLeft: 5,
+    color: '#333C8D',
+    //marginEnd: 50,
+    minWidth: 160,
+  },
+
+  picker: {
+    backgroundColor: '#333C8D',
+    textAlign: 'center',
+  },
+
+  text_header: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 30,
+  },
+  text_footer: {
+    color: '#333C8D',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 20,
+    marginBottom: 5,
+  },
+  headTitle1: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+
+  headTitle2: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  button: {
+    alignItems: 'center',
+    flexDirection: 'column-reverse',
+    marginTop: 10,
+    backgroundColor: '#333C8D',
+    padding: 10,
+    width: 120,
+    borderRadius: 20,
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginRight: 10,
+  },
+  textSign: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+
+  rowContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   rowContainer: {
@@ -323,46 +544,57 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 
-  label: {
+  checkBox: {
+    marginEnd: 10,
     flex: 1,
-    width: '50%',
-    marginLeft: 15,
-    color: '#333C8D',
-    fontWeight: 'bold',
-    fontSize: 15,
+    flexDirection: 'row',
   },
+  label: {
+    marginTop: 8.5,
+    color: '#333C8D',
+    marginRight: 5,
+    marginEnd: 4,
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    marginBottom: 20,
+    marginTop: 30,
+  },
+
+  inputContainer: {
+    //flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+
+  buttonText: {
+    textAlign: 'center',
+    fontSize: 15,
+    color: '#fff',
+  },
+  logo: {
+    width: height_logo,
+    height: height_logo,
+    borderColor: '#333C8D',
+    borderWidth: 1,
+  },
+
+  signature: {
+    height: 250,
+    width: 350,
+  },
+  errorText: {
+    fontSize: 12,
+    color: 'red',
+    textAlign: 'right',
+  },
+
   pickerStyle: {
     marginRight: 15,
     height: 10,
     width: '60%',
     color: '#333C8D',
     fontWeight: 'bold',
-  },
-
-  cordinateContainer: {
-    margin: 10,
-    borderColor: 'black',
-    borderWidth: 1,
-    borderRadius: 20,
-    height: 400,
     backgroundColor: '#EEECEB',
-  },
-
-  button: {
-    flexDirection: 'row-reverse',
-    backgroundColor: '#333C8D',
-    padding: 10,
-    borderRadius: 20,
-    width: '40%',
-    margin: 10,
-    alignItems: 'center',
-  },
-  textADD: {
-    color: 'white',
-    alignContent: 'center',
-    alignContent: 'center',
-  },
-  items: {
-    marginTop: 30,
   },
 });

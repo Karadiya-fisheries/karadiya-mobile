@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, StatusBar } from 'react-native';
 import {
   Button,
   Divider,
@@ -19,9 +19,9 @@ import {
   Modal,
   Surface,
 } from 'react-native-paper';
-import {Subheader} from 'react-native-paper/lib/typescript/components/List/List';
+import { Subheader } from 'react-native-paper/lib/typescript/components/List/List';
 
-function ProfileScreen({navigation}) {
+function ProfileScreen({ navigation }) {
   const [user, setUser] = useState({});
   const [visible, setVisible] = React.useState(false);
   useEffect(() => {
@@ -29,7 +29,7 @@ function ProfileScreen({navigation}) {
       setUser(JSON.parse(res));
     });
   }, []);
-  console.log(user.fullname);
+  console.log(user);
   const DATA = [
     {
       title: 'Full Name',
@@ -59,15 +59,9 @@ function ProfileScreen({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Appbar.Header>
-        <Appbar.BackAction
-          onPress={() => {
-            navigation.navigate('HomeScreen');
-          }}
-        />
-        <Appbar.Content title="Profile" />
-        <Appbar.Action icon="dots-vertical" onPress={_handleMore} />
-      </Appbar.Header>
+      <StatusBar translucent backgroundColor="transparent" />
+
+
       <Portal.Host>
         <Modal
           visible={visible}
@@ -86,8 +80,8 @@ function ProfileScreen({navigation}) {
         style={styles.avatar}
       />
       <View style={styles.surface}>
-        <View style={{top: '23%'}}>
-          <View style={{alignItems: 'center'}}>
+        <View style={{ top: '23%' }}>
+          <View style={{ alignItems: 'center' }}>
             <Headline style={styles.name}>{user.fullname}</Headline>
             <Subheading>{user.email}</Subheading>
           </View>
@@ -99,9 +93,9 @@ function ProfileScreen({navigation}) {
             <Divider />
             <Paragraph style={styles.detail}>NIC : {user.nic}</Paragraph>
             <Divider />
-            <Paragraph style={styles.detail}>Boat License : {}</Paragraph>
+            <Paragraph style={styles.detail}>Boat License : { }</Paragraph>
             <Divider />
-            <Paragraph style={styles.detail}>Gear type : {}</Paragraph>
+            <Paragraph style={styles.detail}>Gear type : { }</Paragraph>
             <Divider />
           </View>
         </View>
@@ -116,7 +110,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#2B6ED3',
+    backgroundColor: '#333C8D',
     position: 'relative',
   },
   text_header: {

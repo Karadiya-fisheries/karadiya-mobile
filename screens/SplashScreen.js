@@ -20,7 +20,7 @@ const SplashScreen=({navigation})=>{
                         animation="bounceInDown"
                         
                          
-                    source={require('../assets/fisherman_1.png')}
+                    source={require('../assets/KaradiyaLogo.png')}
                     style={styles.logo}
                     resizeMode="stretch"
                 />
@@ -57,7 +57,7 @@ const height_logo = height * 0.28;
 const styles = StyleSheet.create({
     container: {
         flex: 1, 
-        backgroundColor: '#333C8D'
+        backgroundColor: '#BDD9F5'
       },
       header: {
           flex: 2,
