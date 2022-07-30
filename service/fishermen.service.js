@@ -7,6 +7,7 @@ class FishermenService {
   }
 
   createFishermen(fishermen) {
+    console.log(fishermen);
     return axios.post(BASE_URL, fishermen);
   }
 

@@ -175,6 +175,17 @@ function FishermanRegistration() {
     LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
   }, []);
 
+  // BoatCat: boatCat,
+  //           OccuType: values.natureOfOccu,
+  //           FOpType: values.natureOfFishing,
+  //           AssocAct: values.associateOccu,
+  //           MemberOfSoc: values.membershipStatus,
+  //           MemberNo: values.membershipno,
+  //           Children: null,
+  //           Dependent: null,
+  //           Sign: null,
+  //           NumOfBoats: values.numofboats,
+  //           LInsuaracneNo: values.insuarance,
   return (
     <Formik
       validationSchema={fishermanregValidationSchema}
@@ -219,31 +230,23 @@ function FishermanRegistration() {
         console.log();
 
         fishermenService
-          .createFishermen({
-            uid: uid,
-            FIDivision: values.fidivision,
-            GNDivision: values.gndivision,
-            DSDivision: values.dsdivision,
-            FDistrict: values.district,
-            Surname: values.surname,
-            OtherNames: values.othernames,
-            NicNo: values.nicno,
-            FZone: values.fishingZone,
-            Occupation: values.occupation,
-            BoatCat: boatCat,
-            OccuType: values.natureOfOccu,
-            FOpType: values.natureOfFishing,
-            AssocAct: values.associateOccu,
-            MemberOfSoc: values.membershipStatus,
-            MemberNo: values.membershipno,
-            Children: null,
-            Dependent: null,
-            Sign: null,
-            NumOfBoats: values.numofboats,
-            LInsuaracneNo: values.insuarance,
+          .createFishermen(
+            uid,
+            values.fidivision,
+            values.gndivision,
+            values.dsdivision,
+            values.district,
+            values.surname,
+            values.othernames,
+            values.nicno,
+            values.fishingZone,
+            values.occupation,
+          )
+          .then(res => {
+            console.log(res);
           })
-          .then(value => {
-            console.log(value);
+          .catch(err => {
+            console.log(err);
           });
       }}>
       {({
