@@ -227,23 +227,23 @@ function FishermanRegistration() {
             return element !== undefined;
           });
 
-        console.log();
+        const fisherman = {
+          uid: uid,
+          FIDivision: values.fidivision,
+          GNDivision: values.gndivision,
+          DSDivision: values.dsdivision,
+          FDistrict: values.district,
+          Surname: values.surname,
+          OtherNames: values.othernames,
+          NicNo: values.nicno,
+          FZone: values.fishingZone,
+          Occupation: values.occupation,
+        };
 
         fishermenService
-          .createFishermen(
-            uid,
-            values.fidivision,
-            values.gndivision,
-            values.dsdivision,
-            values.district,
-            values.surname,
-            values.othernames,
-            values.nicno,
-            values.fishingZone,
-            values.occupation,
-          )
+          .createFishermen(fisherman)
           .then(res => {
-            console.log(res);
+            console.log(res.data);
           })
           .catch(err => {
             console.log(err);
