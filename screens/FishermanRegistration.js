@@ -27,9 +27,9 @@ import fishermenService from '../service/fishermen.service';
 import authService from '../service/auth.service';
 
 const fishermanregValidationSchema = yup.object().shape({
-  fidivision: yup.string().required('*This is a required field'),
-  gndivision: yup.string().required('*This is a required field'),
-  dsdivision: yup.string().required('*This is a required field'),
+  FDivision: yup.string().required('*This is a required field'),
+  GNDivision: yup.string().required('*This is a required field'),
+  DSDivision: yup.string().required('*This is a required field'),
   district: yup.string().required('*This is a required field'),
   surname: yup.string().required('*This is a required field'),
   othernames: yup.string().required('*This is a required field'),
@@ -190,9 +190,9 @@ function FishermanRegistration() {
     <Formik
       validationSchema={fishermanregValidationSchema}
       initialValues={{
-        fidivision: '',
-        gndivision: '',
-        dsdivision: '',
+        FDivision: '',
+        GNDivision: '',
+        DSDivision: '',
         district: '',
         surname: '',
         othernames: '',
@@ -227,23 +227,21 @@ function FishermanRegistration() {
             return element !== undefined;
           });
 
-        const fisherman = {
-          uid: uid,
-          FIDivision: values.fidivision,
-          GNDivision: values.gndivision,
-          DSDivision: values.dsdivision,
-          FDistrict: values.district,
-          Surname: values.surname,
-          OtherNames: values.othernames,
-          NicNo: values.nicno,
-          FZone: values.fishingZone,
-          Occupation: values.occupation,
-        };
-
         fishermenService
-          .createFishermen(fisherman)
+          .createFishermen(
+            uid,
+            values.FDivision,
+            values.GNDivision,
+            values.DSDivision,
+            values.district,
+            values.surname,
+            values.othernames,
+            values.nicno,
+            values.fishingZone,
+            values.occupation,
+          )
           .then(res => {
-            console.log(res.data);
+            console.log(res);
           })
           .catch(err => {
             console.log(err);
@@ -282,27 +280,27 @@ function FishermanRegistration() {
                       </Text>
                       <TextInput
                         style={styles.textInput}
-                        onChangeText={handleChange('fidivision')}
-                        onBlur={handleBlur('fidivision')}
-                        value={values.fidivision}
+                        onChangeText={handleChange('FDivision')}
+                        onBlur={handleBlur('FDivision')}
+                        value={values.FDivision}
                       />
                     </View>
 
-                    {errors.fidivision && touched.fidivision ? (
-                      <Text style={styles.errorText}>{errors.fidivision}</Text>
+                    {errors.FDivision && touched.FDivision ? (
+                      <Text style={styles.errorText}>{errors.FDivision}</Text>
                     ) : null}
 
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                       <Text style={styles.txt}>GN Division</Text>
                       <TextInput
                         style={styles.textInput}
-                        onChangeText={handleChange('gndivision')}
-                        onBlur={handleBlur('gndivision')}
-                        value={values.gndivision}
+                        onChangeText={handleChange('GNDivision')}
+                        onBlur={handleBlur('GNDivision')}
+                        value={values.GNDivision}
                       />
                     </View>
-                    {errors.gndivision && touched.gndivision ? (
-                      <Text style={styles.errorText}>{errors.gndivision}</Text>
+                    {errors.GNDivision && touched.GNDivision ? (
+                      <Text style={styles.errorText}>{errors.GNDivision}</Text>
                     ) : null}
 
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -311,13 +309,13 @@ function FishermanRegistration() {
                       </Text>
                       <TextInput
                         style={styles.textInput}
-                        onChangeText={handleChange('dsdivision')}
-                        onBlur={handleBlur('dsdivision')}
-                        value={values.dsdivision}
+                        onChangeText={handleChange('DSDivision')}
+                        onBlur={handleBlur('DSDivision')}
+                        value={values.DSDivision}
                       />
                     </View>
-                    {errors.dsdivision && touched.dsdivision ? (
-                      <Text style={styles.errorText}>{errors.dsdivision}</Text>
+                    {errors.DSDivision && touched.DSDivision ? (
+                      <Text style={styles.errorText}>{errors.DSDivision}</Text>
                     ) : null}
 
                     <View style={{alignItems: 'center', flexDirection: 'row'}}>
