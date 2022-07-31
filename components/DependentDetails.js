@@ -8,8 +8,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 
-
-const ChildDetails = ({ childToParent }) => {
+const DependentDetails = ({ childToParent }) => {
 
 
 
@@ -299,4 +298,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default ChildDetails;
+export default DependentDetails;

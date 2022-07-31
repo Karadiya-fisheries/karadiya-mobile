@@ -25,6 +25,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import * as yup from 'yup';
 import fishermenService from '../service/fishermen.service';
 import authService from '../service/auth.service';
+import ChildDetails from '../components/ChildDetails';
+import DependentDetails from '../components/DependentDetails';
 
 const fishermanregValidationSchema = yup.object().shape({
   fidivision: yup.string().required('*This is a required field'),
@@ -175,17 +177,20 @@ function FishermanRegistration() {
     LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
   }, []);
 
-  // BoatCat: boatCat,
-  //           OccuType: values.natureOfOccu,
-  //           FOpType: values.natureOfFishing,
-  //           AssocAct: values.associateOccu,
-  //           MemberOfSoc: values.membershipStatus,
-  //           MemberNo: values.membershipno,
-  //           Children: null,
-  //           Dependent: null,
-  //           Sign: null,
-  //           NumOfBoats: values.numofboats,
-  //           LInsuaracneNo: values.insuarance,
+  const [childdata, setchildData] = useState();
+  const [dependentdata, setdependentData] = useState();
+
+  const childToParent1 = (childdata) => {
+    setchildData(childdata);
+
+  }
+
+  const childToParent2 = (childdata) => {
+    setdependentData(childdata);
+
+  }
+
+
   return (
     <Formik
       //validationSchema={fishermanregValidationSchema}
@@ -229,25 +234,55 @@ function FishermanRegistration() {
 
         console.log();
         const fishermen = {
-          uid: userUid,
-          FIDivision: values.fidivision,
-          GNDivision: values.gndivision,
-          DSDivision: values.dsdivision,
-          FDistrict: values.district,
-          Surname: values.surname,
-          OtherNames: values.othernames,
-          NicNo: values.nicno,
-          FZone: values.fishingZone,
-          Occupation: values.occupation,
+          uid: '5',
+          FIDivision: 'Matara',
+          GNDivision: '',
+          DSDivision: 'Walgama',
+          FDistrict: 'Matara',
+          Surname: 'Arachchi',
+          OtherNames: 'Gamage',
+          NicNo: '9809800V',
+          BoatCat: ['IMUL', 'NTRB', 'IDAY'],
+          NumofBoats: 9,
+          FZone: ['International'],
+          OccuType: 'Full Time',
+          FOpType: 'One Day',
+          AssocAct: 'Supply'
         };
 
         fishermenService
-          .createFishermen(fishermen)
+          .createFishermen({
+            uid: userUid,
+            FIDivision: values.fidivision,
+            GNDivision: values.gndivision,
+            DSDivision: values.dsdivision,
+            FDistrict: values.district,
+            Surname: values.surname,
+            OtherNames: values.othernames,
+            NicNo: values.nicno,
+            BoatCat: boatCat,
+            NumofBoats: values.numofboats,
+            FZone: [values.fishingZone],
+            OccuType: values.occupation,
+            FOpType: values.natureOfFishing,
+            AssocAct: values.associateOccu,
+            LInsuaranceNo: values.insuarance,
+            MemberOfSoc: values.membershipStatus,
+            MemberNo: values.membershipno,
+            Children: childdata,
+            Dependent: dependentdata,
+            Photo: null,
+            Sign: null,
+
+
+          })
           .then(res => {
             console.log(res);
           })
           .catch(err => {
-            console.log(err);
+            console.log(err.response);
+            console.log(err.request);
+            console.log(err.message);
           });
       }}>
       {({
@@ -667,81 +702,9 @@ function FishermanRegistration() {
                     }}>
                     <Text style={styles.text_footer}>Children Details</Text>
                     <View>
-                      {inputs.map((input, key) => (
-                        <View>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                            }}>
-                            <Text style={styles.txt}>Name</Text>
-                            <TextInput
-                              style={styles.textInput}
-                              onChangeText={handleChange('childrenname')}
-                              onBlur={handleBlur('childrenname')}
-                              value={values.childrenname}
-                            />
-                          </View>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                            }}>
-                            <Text
-                              style={{
-                                fontSize: 16,
-                                padding: 15,
-                                paddingLeft: 5,
-                                color: '#333C8D',
-                              }}>
-                              Birthday
-                            </Text>
-                            <Button
-                              onPress={showDatepicker}
-                              title="Select Date"
-                              color="#333C8D"
-                            />
 
-                            {show && (
-                              <DateTimePicker
-                                testID="dateTimePicker"
-                                value={date}
-                                mode={mode}
-                                is24Hour={true}
-                                display="default"
-                                onChange={onChange}
-                              />
-                            )}
-                            <Text
-                              style={{
-                                fontSize: 18,
-                                margin: 20,
-                                color: '#333C8D',
-                              }}>
-                              {text}
-                            </Text>
-                            <TouchableOpacity
-                              onPress={() => deleteHandler(key)}>
-                              <Text
-                                style={{
-                                  color: '#333C8D',
-                                  fontSize: 15,
-                                  paddingRight: 10,
-                                }}>
-                                Remove
-                              </Text>
-                            </TouchableOpacity>
-                          </View>
-                        </View>
-                      ))}
+                      <ChildDetails childToParent={childToParent1} />
 
-                      <View style={{ margin: 10, marginLeft: 200 }}>
-                        <TouchableOpacity
-                          style={styles.button}
-                          onPress={addHandler}>
-                          <Text style={styles.buttonText}>ADD</Text>
-                        </TouchableOpacity>
-                      </View>
                     </View>
                   </View>
                   <View
@@ -755,76 +718,11 @@ function FishermanRegistration() {
                     <Text style={styles.text_footer}>
                       Details of Other Dependent
                     </Text>
-
                     <View>
-                      {inputs1.map((input1, key1) => (
-                        <View>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                            }}>
-                            <Text style={styles.txt}>Name</Text>
-                            <TextInput style={styles.textInput} />
-                          </View>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                            }}>
-                            <Text
-                              style={{
-                                fontSize: 16,
-                                padding: 15,
-                                paddingLeft: 5,
-                                color: '#333C8D',
-                              }}>
-                              Birthday
-                            </Text>
+                      <DependentDetails childToParent={childToParent2} />
 
-                            <Button
-                              onPress={showDatepicker}
-                              title="Select Date"
-                              color="#333C8D"
-                            />
-
-                            {show && (
-                              <DateTimePicker
-                                testID="dateTimePicker2"
-                                value={date}
-                                mode={mode}
-                                is24Hour={true}
-                                display="default"
-                                onChange={onChange}
-                              />
-                            )}
-                            <Text
-                              style={{
-                                fontSize: 18,
-                                margin: 20,
-                                color: '#333C8D',
-                              }}>
-                              {text}
-                            </Text>
-
-                            <TouchableOpacity
-                              onPress={() => deleteHandler1(key1)}>
-                              <Text style={{ color: '#333C8D', fontSize: 16 }}>
-                                Remove
-                              </Text>
-                            </TouchableOpacity>
-                          </View>
-                        </View>
-                      ))}
                     </View>
 
-                    <View style={{ margin: 20, marginLeft: 200 }}>
-                      <TouchableOpacity
-                        style={styles.button}
-                        onPress={addHandler1}>
-                        <Text style={styles.buttonText}>ADD</Text>
-                      </TouchableOpacity>
-                    </View>
                   </View>
                 </ProgressStep>
 
