@@ -12,6 +12,8 @@ import * as yup from 'yup';
 import CoodinateContainer from "../components/CoodinateContainer";
 import FishCatchContainer from "../components/FIshCatchContainer";
 
+import triplogService from "../service/triplog.service";
+
 
 
 const fishermanregValidationSchema = yup.object().shape({
@@ -109,14 +111,12 @@ function FishermanRegistration() {
 
     const childToParent1 = (childdata) => {
         setCoods(childdata);
-        //console.log("child data");
-        //console.log(childdata);
+
     }
 
     const childToParent2 = (childdata) => {
         setFish(childdata);
-        //console.log("child data");
-        //console.log(childdata);
+
     }
 
 
@@ -158,6 +158,32 @@ function FishermanRegistration() {
                 console.log(coods);
                 console.log(fishList);
                 console.log("Submitted");
+
+                triplogService
+                    .createTripLog({
+
+                        boatBoatId: 1,
+                        WesselID: values.wesselId,
+                        SkipperID: values.skipperId,
+                        Harbor: values.depharbor,
+                        DepartureDate: values.depDate,
+                        DepartureTime: values.depTime,
+                        GearType: values.gearType,
+                        MainLine: values.mainLine,
+                        BranchLine: values.branchLine,
+                        HookNo: values.hookNo,
+                        HookTypes: values.hookType,
+                        Depth: values.depth,
+                        Bait: values.bait,
+
+                    }).then(res => {
+                        console.log(res);
+                    })
+                    .catch(err => {
+                        console.log(err.response);
+                        console.log(err.request);
+                        console.log(err.message);
+                    });
             }}
 
         >
@@ -211,11 +237,7 @@ function FishermanRegistration() {
 
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <Text style={styles.txt}>Departure Harbor</Text>
-                                            {/* <TextInput style={styles.textInput}
-                                                onChangeText={handleChange('depharbor')}
-                                                onBlur={handleBlur('depharbor')}
-                                                value={values.depharbor}
-                                            /> */}
+
 
                                             <Picker
                                                 mode='dropdown'
@@ -251,11 +273,7 @@ function FishermanRegistration() {
 
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <Text style={styles.txt}>Departure Date</Text>
-                                            {/* <TextInput style={styles.textInput}
-                                                onChangeText={handleChange('depDate')}
-                                                onBlur={handleBlur('depDate')}
-                                                value={values.depDate}
-                                            /> */}
+
 
 
                                             {!datePicker && (
@@ -343,11 +361,6 @@ function FishermanRegistration() {
 
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <Text style={styles.txt}>Gear Type</Text>
-                                            {/* <TextInput style={styles.textInput}
-                                                onChangeText={handleChange('gearType')}
-                                                onBlur={handleBlur('gearType')}
-                                                value={values.gearType}
-                                            /> */}
 
                                             <Picker
                                                 mode='dropdown'
@@ -408,11 +421,6 @@ function FishermanRegistration() {
 
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <Text style={styles.txt}>Hook Type</Text>
-                                            {/* <TextInput style={styles.textInput}
-                                                onChangeText={handleChange('hookType')}
-                                                onBlur={handleBlur('hookType')}
-                                                value={values.hookType}
-                                            /> */}
 
                                             <Picker
                                                 mode='dropdown'
@@ -449,11 +457,7 @@ function FishermanRegistration() {
 
                                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                             <Text style={styles.txt}>Bait</Text>
-                                            {/* <TextInput style={styles.textInput}
-                                                onChangeText={handleChange('bait')}
-                                                onBlur={handleBlur('bait')}
-                                                value={values.bait}
-                                            /> */}
+
 
 
                                             <Picker

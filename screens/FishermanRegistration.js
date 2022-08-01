@@ -193,7 +193,7 @@ function FishermanRegistration() {
 
   return (
     <Formik
-      //validationSchema={fishermanregValidationSchema}
+      validationSchema={fishermanregValidationSchema}
       initialValues={{
         fidivision: '',
         gndivision: '',
@@ -232,23 +232,7 @@ function FishermanRegistration() {
             return element !== undefined;
           });
 
-        console.log();
-        const fishermen = {
-          uid: '5',
-          FIDivision: 'Matara',
-          GNDivision: '',
-          DSDivision: 'Walgama',
-          FDistrict: 'Matara',
-          Surname: 'Arachchi',
-          OtherNames: 'Gamage',
-          NicNo: '9809800V',
-          BoatCat: ['IMUL', 'NTRB', 'IDAY'],
-          NumofBoats: 9,
-          FZone: ['International'],
-          OccuType: 'Full Time',
-          FOpType: 'One Day',
-          AssocAct: 'Supply'
-        };
+
 
         fishermenService
           .createFishermen({

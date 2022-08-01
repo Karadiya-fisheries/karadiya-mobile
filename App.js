@@ -48,6 +48,7 @@ import ManOverBoard from './screens/Navigation/ManOverBoard';
 import Forcasting from './screens/Navigation/Forecast';
 import Compass from './screens/Navigation/Compass';
 import WayPoint from './screens/Navigation/WayPoint';
+import Setwaypoint from './screens/Navigation/Setwaypoint.js';
 
 const Drawer = createDrawerNavigator();
 const NaviDrawer = createDrawerNavigator();
@@ -218,6 +219,11 @@ const App = () => {
             <Drawer.Screen
               name="Profile"
               component={ProfileScreen}
+            />
+
+            <Drawer.Screen
+              name="SetWayPoint"
+              component={Setwaypoint}
             />
 
 

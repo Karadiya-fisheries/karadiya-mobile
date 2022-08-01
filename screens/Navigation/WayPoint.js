@@ -4,15 +4,30 @@ import MapboxGL from '@react-native-mapbox-gl/maps';
 import Geolocation from 'react-native-geolocation-service';
 import { FloatingAction } from "react-native-floating-action";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useRoute } from '@react-navigation/native';
+
 
 MapboxGL.setAccessToken("pk.eyJ1IjoibGFzaXRoYTk3IiwiYSI6ImNsNWd3a2g2cjAzcTgzanVyemE5Y3hnMGgifQ.Q00itaRuT0oH6oUN6lYFlQ");
 
 
 
-const WayPonit = () => {
+const WayPonit = ({ route, navigation }) => {
 
     const [lat, setLat] = useState(0);
     const [lon, setLon] = useState(0);
+    //const { lat1, lon1 } = route.params;
+
+
+
+    //const [location, setLocation] = useState(route.params.location);
+    // console.log("location1");
+    // console.log(lat1);
+    // console.log(lon1);
+    // console.log("location2");
+
+
+
+
 
 
     useEffect(() => {
@@ -33,7 +48,7 @@ const WayPonit = () => {
                     setLat(position.coords.latitude);
                     setLon(position.coords.longitude);
 
-                    console.log(position);
+                    //console.log(position);
 
 
                 },
@@ -112,6 +127,7 @@ const WayPonit = () => {
 
     const floatonPress = () => {
         console.log("Action button Pressed");
+        navigation.navigate('SetWayPoint')
 
     };
 
