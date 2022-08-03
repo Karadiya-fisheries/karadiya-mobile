@@ -1,34 +1,82 @@
 import { useState, useEffect } from 'react';
 import * as React from 'react';
-import { View, Text, StyleSheet, Dimensions, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TextInput, TouchableOpacity, PermissionsAndroid } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import Geolocation from 'react-native-geolocation-service';
 
 
-function Setwaypoint() {
-
+function Setwaypoint({ navigation }) {
+    const [geolat, setgeolat] = React.useState();
+    const [geolon, setgeolon] = React.useState();
     const [lat, setlat] = React.useState('');
     const [lon, setlon] = React.useState('');
     const [location, setLocation] = useState([]);
 
-    const navigation = useNavigation();
+
+
+    useEffect(() => {
+
+        getLoaction();
+
+    });
+
+    const getLoaction = async () => {
+
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        );
+        if (granted == PermissionsAndroid.RESULTS.GRANTED) {
+            Geolocation.getCurrentPosition(
+                (position) => {
+                    //console.log(position);
+
+                    setgeolat(position.coords.latitude);
+                    setgeolon(position.coords.longitude);
+
+                    //console.log(position);
+
+
+                },
+                (error) => {
+                    console.log(error.code, error.message);
+                },
+                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
+            );
+        }
+
+    };
 
 
     const handleAddLocation = () => {
-
-        /*setLocation([...location, {
+        setlat(lat);
+        setlon(lon);
+        setLocation([...location, {
 
             lat: lat,
             lon: lon,
         }])
 
-        //console.log(location);
-        setlat('');
-        setlon('');*/
 
-        navigation.navigate('WayPoint', {
-            lat: lat,
-            lon: lon,
+
+
+        navigation.navigate('Navigation', {
+
+            screen: 'WayPoint',
+            params: {
+                location: location
+                // lat: geolat,
+                // lon: geolon
+
+            }
         });
+    }
+
+    const handleCurrentLocation = () => {
+
+
+        setlat(geolat.toString());
+        setlon(geolon.toString());
+
 
     }
 
@@ -48,6 +96,8 @@ function Setwaypoint() {
                         onChangeText={setlat}
                         placeholder={'Latitude'}
                         value={lat}
+                        keyboardType={'numeric'}
+                    //defaultValue={geolat}
                     />
 
                 </View>
@@ -61,13 +111,15 @@ function Setwaypoint() {
                         onChangeText={setlon}
                         placeholder={'Longitude'}
                         value={lon}
+                        keyboardType={'numeric'}
+                    //defaultValue={geolon.toString()}
                     />
 
                 </View>
                 <View style={{ alignItems: 'center' }}>
                     <TouchableOpacity
                         style={styles.button}
-                    //onPress={() => handleAddTask()}
+                        onPress={() => handleCurrentLocation()}
                     >
                         <Text style={styles.textADD}>Set Current Location</Text>
                     </TouchableOpacity>
@@ -89,8 +141,9 @@ function Setwaypoint() {
     );
 }
 
-export default Setwaypoint;
 
+
+export default Setwaypoint;
 
 const { height } = Dimensions.get("screen");
 
@@ -157,3 +210,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 });
+
+
+
+

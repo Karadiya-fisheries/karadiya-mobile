@@ -18,6 +18,7 @@ import {
   Card,
   Modal,
   Surface,
+  Image
 } from 'react-native-paper';
 import { Subheader } from 'react-native-paper/lib/typescript/components/List/List';
 
@@ -46,6 +47,10 @@ function ProfileScreen({ navigation }) {
     {
       title: 'userToken',
       data: [user.accessToken],
+    },
+    {
+      title: 'profileUrl',
+      data: [user.profileURL],
     },
   ];
 
@@ -76,7 +81,7 @@ function ProfileScreen({ navigation }) {
       </Portal.Host>
       <Avatar.Image
         size={120}
-        source={require('../assets/avatar.jpg')}
+        source={user.profileUrl}
         style={styles.avatar}
       />
       <View style={styles.surface}>

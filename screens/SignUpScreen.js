@@ -8,9 +8,9 @@ import {
   StatusBar,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import {AuthContext} from '../components/context';
+import { AuthContext } from '../components/context';
 
-function SignUpScreen({navigation}) {
+function SignUpScreen({ navigation }) {
   const [data, setData] = React.useState({
     fullname: '',
     email: '',
@@ -21,7 +21,7 @@ function SignUpScreen({navigation}) {
     check_textInputChange: false,
   });
 
-  const {signUp} = React.useContext(AuthContext);
+  const { signUp } = React.useContext(AuthContext);
 
   const onFullnameChange = val => {
     if (val.length != 0) {
@@ -253,16 +253,22 @@ const styles = StyleSheet.create({
   },
   action: {
     flexDirection: 'row',
-    marginTop: 10,
+    marginTop: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#f2f2f2',
     paddingBottom: 5,
+    alignContent: 'center'
   },
   textInput: {
     //flex: 1,
     marginTop: Platform.OS === 'ios' ? 0 : -12,
     paddingLeft: 10,
-    color: '#05375a',
+    color: '#333C8D',
+    borderWidth: 1,
+    borderRadius: 20,
+    width: '90%',
+    height: 40,
+
   },
   text_header: {
     color: '#fff',

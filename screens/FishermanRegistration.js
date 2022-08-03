@@ -48,7 +48,7 @@ const fishermanregValidationSchema = yup.object().shape({
   nbsb: yup.boolean(),
 });
 
-function FishermanRegistration() {
+function FishermanRegistration({ navigation }) {
   const progressStepsStyle = {
     activeStepIconBorderColor: '#333C8D',
     activeLabelColor: '#333C8D',
@@ -211,8 +211,7 @@ function FishermanRegistration() {
         insuarance: '',
         membershipStatus: 'no',
         membershipno: 'no',
-        childrenname: '',
-        dependentname: '',
+
       }}
       onSubmit={values => {
         const boatCat = [
@@ -262,6 +261,10 @@ function FishermanRegistration() {
           })
           .then(res => {
             console.log(res);
+            resetForm();
+            setchildData(null);
+            setdependentData(null);
+            navigation.navigate('Home');
           })
           .catch(err => {
             console.log(err.response);

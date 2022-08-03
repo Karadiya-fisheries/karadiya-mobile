@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TextInput, Modal, View, Text, Button, StyleSheet, Dimensions, PermissionsAndroid } from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import Geolocation from 'react-native-geolocation-service';
+
 import { FloatingAction } from "react-native-floating-action";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useRoute } from '@react-navigation/native';
@@ -13,53 +13,13 @@ MapboxGL.setAccessToken("pk.eyJ1IjoibGFzaXRoYTk3IiwiYSI6ImNsNWd3a2g2cjAzcTgzanVy
 
 const WayPonit = ({ route, navigation }) => {
 
-    const [lat, setLat] = useState(0);
-    const [lon, setLon] = useState(0);
-    //const { lat1, lon1 } = route.params;
+    // const [lat, setLat] = useState(0);
+    // const [lon, setLon] = useState(0);
+    //const { location } = route.params;
+    console.log(route.params.location[0]);
+    console.log(route.params.location[2]);
+    console.log(route.params.location[1]);
 
-
-
-    //const [location, setLocation] = useState(route.params.location);
-    // console.log("location1");
-    // console.log(lat1);
-    // console.log(lon1);
-    // console.log("location2");
-
-
-
-
-
-
-    useEffect(() => {
-        MapboxGL.setTelemetryEnabled(false);
-        getLoaction();
-    });
-
-    const getLoaction = async () => {
-
-        const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        );
-        if (granted == PermissionsAndroid.RESULTS.GRANTED) {
-            Geolocation.getCurrentPosition(
-                (position) => {
-                    //console.log(position);
-
-                    setLat(position.coords.latitude);
-                    setLon(position.coords.longitude);
-
-                    //console.log(position);
-
-
-                },
-                (error) => {
-                    console.log(error.code, error.message);
-                },
-                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 },
-            );
-        }
-
-    };
 
 
     const renderAnnotations = () => {
@@ -158,15 +118,26 @@ const WayPonit = ({ route, navigation }) => {
         <View style={styles.page}>
             <View style={styles.container}>
                 <MapboxGL.MapView
-                    //onDidFailLoadingMap={() => { console.log("Map is Not Loaded"); }}
+
                     style={styles.map}>
                     <MapboxGL.Camera
                         zoomLevel={6}
-                        centerCoordinate={[lon, lat]}
+                        centerCoordinate={[81, 8]}
                     />
+                    {/* <MapboxGL.PointAnnotation
+                        title="Current Location"
+                        coordinate={[location[0].lat, location[0].lon]} />
                     <MapboxGL.PointAnnotation
                         title="Current Location"
-                        coordinate={[lon, lat]} />
+                        coordinate={[location[1].lat, location[1].lon]} />
+
+                    <MapboxGL.PointAnnotation
+                        title="Current Location"
+                        coordinate={[location[2].lat, location[2].lon]} />*/}
+
+                    {/* <MapboxGL.PointAnnotation
+                        title="Current Location"
+                        coordinate={[lon, lat]} /> */}
 
                     <MapboxGL.ShapeSource id="source" shape={polygon}>
                         <MapboxGL.FillLayer id="fill" style={{ fillColor: "blue" }} />
@@ -175,6 +146,19 @@ const WayPonit = ({ route, navigation }) => {
                             style={{ lineColor: "red", lineWidth: 2 }}
                         />
                     </MapboxGL.ShapeSource>
+
+                    {/* {
+                        location.map((location, index) => {
+                            return (
+
+
+                                <MapboxGL.PointAnnotation
+                                    title="Current Location"
+                                    coordinate={[location[1].lat, location[1].lon]} />
+
+                            )
+                        })
+                    } */}
 
 
                 </MapboxGL.MapView>

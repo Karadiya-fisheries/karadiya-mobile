@@ -17,7 +17,7 @@ function NavigationScreen(props) {
         <ScrollView>
           <View style={styles.rowContainer}>
             <TouchableOpacity
-              onPress={() => props.navigation.navigate('WayPoint')}
+              onPress={() => props.navigation.navigate('SetWayPoint')}
               style={styles.button}>
               <Text style={styles.btnText}>Way Point</Text>
 

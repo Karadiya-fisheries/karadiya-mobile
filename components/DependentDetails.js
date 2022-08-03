@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row-reverse',
         fontSize: 18,
         height: 40,
-
+        color: '#333C8D'
     },
 
     rowContainer: {
