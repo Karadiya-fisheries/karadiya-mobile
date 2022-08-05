@@ -71,7 +71,7 @@ const SignInScreen = ({ navigation }) => {
       </View>
       <Animatable.View animation="fadeInUpBig" style={styles.footer}>
         <View style={styles.editText}>
-          <Text style={styles.text_footer}>User Name</Text>
+          <Text style={styles.text_footer}>E mail</Text>
           <View style={styles.action}>
             <FontAwesome name="user-o" color="#05375a" size={20} />
             <TextInput

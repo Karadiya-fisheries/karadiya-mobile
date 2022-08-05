@@ -156,12 +156,22 @@ const styles = StyleSheet.create({
     height: 100,
     fontWeight: 'bold',
     fontSize: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.12,
+    shadowRadius: 60,
   },
-  imageContainer: {
-    width: height_logo,
-    height: height_logo,
-    marginTop: 12,
+  btnText: {
+    fontSize: RFPercentage(2),
+    fontWeight: 'bold',
+    color: '#333C8D',
+    textAlign: 'center'
+
   },
+
   icon: {
     height: 50,
     marginBottom: 5,

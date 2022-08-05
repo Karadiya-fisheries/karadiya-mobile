@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, Dimensi
 
 
 
-function NavigationScreen({ navigation }) {
+function NavigationScreen(props) {
   return (
     <View style={styles.container}>
       <StatusBar translucent backgroundColor="transparent" />
@@ -17,7 +17,7 @@ function NavigationScreen({ navigation }) {
         <ScrollView>
           <View style={styles.rowContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('WayPoint')}
+              onPress={() => props.navigation.navigate('SetWayPoint')}
               style={styles.button}>
               <Text style={styles.btnText}>Way Point</Text>
 
@@ -26,7 +26,7 @@ function NavigationScreen({ navigation }) {
 
           <View style={styles.rowContainer}>
             <TouchableOpacity
-              onPress={navigation.navigate('ManOverBoard')}
+              onPress={() => props.navigation.navigate('ManOverBoard')}
               style={styles.button}>
               <Text style={styles.btnText}>Man Over Board</Text>
             </TouchableOpacity>
@@ -34,7 +34,7 @@ function NavigationScreen({ navigation }) {
 
           <View style={styles.rowContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Compass')}
+              onPress={() => props.navigation.navigate('Compass')}
               style={styles.button}>
               <Text style={styles.btnText}>Compass</Text>
             </TouchableOpacity>
@@ -42,7 +42,7 @@ function NavigationScreen({ navigation }) {
 
           <View style={styles.rowContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Forcasting')}
+              onPress={() => props.navigation.navigate('Forcasting')}
               style={styles.button}>
               <Text style={styles.btnText}>Forcasting</Text>
             </TouchableOpacity>

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
-import {View, Text, StyleSheet,TouchableOpacity} from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, StatusBar, TextInput } from 'react-native';
 import {
   Button,
   Divider,
@@ -18,10 +18,11 @@ import {
   Card,
   Modal,
   Surface,
+  Image
 } from 'react-native-paper';
-import {Subheader} from 'react-native-paper/lib/typescript/components/List/List';
+import { Subheader } from 'react-native-paper/lib/typescript/components/List/List';
 
-function ProfileScreen({navigation}) {
+function ProfileScreen({ navigation }) {
   const [user, setUser] = useState({});
   const [visible, setVisible] = React.useState(false);
   useEffect(() => {
@@ -29,7 +30,7 @@ function ProfileScreen({navigation}) {
       setUser(JSON.parse(res));
     });
   }, []);
-  console.log(user.fullname);
+  console.log(user);
   const DATA = [
     {
       title: 'Full Name',
@@ -47,6 +48,10 @@ function ProfileScreen({navigation}) {
       title: 'userToken',
       data: [user.accessToken],
     },
+    {
+      title: 'profileUrl',
+      data: [user.profileURL],
+    },
   ];
 
   const _handleMore = function () {
@@ -59,15 +64,9 @@ function ProfileScreen({navigation}) {
 
   return (
     <View style={styles.container}>
-      <Appbar.Header>
-        <Appbar.BackAction
-          onPress={() => {
-            navigation.navigate('HomeScreen');
-          }}
-        />
-        <Appbar.Content title="Profile" />
-        <Appbar.Action icon="dots-vertical" onPress={_handleMore} />
-      </Appbar.Header>
+
+
+
       <Portal.Host>
         <Modal
           visible={visible}
@@ -76,40 +75,94 @@ function ProfileScreen({navigation}) {
           <Card>
             <TouchableOpacity
               onPress={() => navigation.navigate('Settings')}>
-            <List.Item title="Settings" />
+              <List.Item title="Settings" />
             </TouchableOpacity>
             <List.Item title="Share" />
             <TouchableOpacity
               onPress={() => navigation.navigate('EditProfile')}>
-            <List.Item title="Edit Profile" />
+              <List.Item title="Edit Profile" />
             </TouchableOpacity>
           </Card>
         </Modal>
       </Portal.Host>
       <Avatar.Image
-        size={120}
-        source={require('../assets/avatar.jpg')}
+        size={170}
+        source={user.profileUrl}
         style={styles.avatar}
       />
       <View style={styles.surface}>
-        <View style={{top: '23%'}}>
-          <View style={{alignItems: 'center'}}>
-            <Headline style={styles.name}>{user.fullname}</Headline>
-            <Subheading>{user.email}</Subheading>
+        <View style={{ top: '10%', flex: 1 }}>
+          <View style={{ flexDirection: 'column', marginTop: 10, flex: 1 }}>
+
+            <Text style={styles.txt}>Name</Text>
+            <View style={{ alignItems: 'center' }}>
+              <TextInput style={styles.textInput}
+                //onChangeText={handleChange('imul')}
+                //onBlur={handleBlur('imul')}
+                value={user.fullname}
+              />
+
+            </View>
+
           </View>
-          <Divider />
-          <View style={styles.detail}>
-            <Paragraph style={styles.detail}>
-              Phone Number: {user.phone}
-            </Paragraph>
-            <Divider />
-            <Paragraph style={styles.detail}>NIC : {user.nic}</Paragraph>
-            <Divider />
-            <Paragraph style={styles.detail}>Boat License : {}</Paragraph>
-            <Divider />
-            <Paragraph style={styles.detail}>Gear type : {}</Paragraph>
-            <Divider />
+          <View style={{ flexDirection: 'column', marginTop: 10, flex: 1 }}>
+
+            <Text style={styles.txt}>Email</Text>
+            <View style={{ alignItems: 'center' }}>
+              <TextInput style={styles.textInput}
+                //onChangeText={handleChange('imul')}
+                //onBlur={handleBlur('imul')}
+                value={user.email}
+              />
+
+            </View>
+
+
           </View>
+          <View style={{ flexDirection: 'column', marginTop: 10, flex: 1 }}>
+
+            <Text style={styles.txt}>Phone Number</Text>
+            <View style={{ alignItems: 'center' }}>
+              <TextInput style={styles.textInput}
+                //onChangeText={handleChange('imul')}
+                //onBlur={handleBlur('imul')}
+                value={user.phone}
+              />
+
+            </View>
+
+
+          </View>
+          <View style={{ flexDirection: 'column', marginTop: 10, flex: 1 }}>
+
+            <Text style={styles.txt}>NIC</Text>
+            <View style={{ alignItems: 'center' }}>
+              <TextInput style={styles.textInput}
+                //onChangeText={handleChange('imul')}
+                //onBlur={handleBlur('imul')}
+                value={user.nic}
+              />
+
+            </View>
+
+
+          </View>
+          <View style={{ flexDirection: 'column', marginTop: 10, flex: 1 }}>
+
+            <Text style={styles.txt}>Role</Text>
+            <View style={{ alignItems: 'center' }}>
+              <TextInput style={styles.textInput}
+                //onChangeText={handleChange('imul')}
+                //onBlur={handleBlur('imul')}
+                value={user.roles}
+              />
+
+            </View>
+
+
+          </View>
+
+
         </View>
       </View>
     </View>
@@ -122,7 +175,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#2B6ED3',
+    backgroundColor: '#333C8D',
     position: 'relative',
   },
   text_header: {
@@ -144,16 +197,17 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   surface: {
+    flex: 1,
     position: 'absolute',
     bottom: 0,
     height: '70%',
     width: '100%',
-    alignItems: 'center',
     backgroundColor: '#d3d9f0',
+    paddingBottom: 50,
     borderTopEndRadius: 30,
     borderTopLeftRadius: 30,
     borderBottomRightRadius: 120,
-    zIndex: 0,
+
   },
   avatar: {
     position: 'absolute',
@@ -179,5 +233,31 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 21,
     textDecorationColor: '#2B6ED3',
+  },
+  textInput: {
+
+    marginTop: Platform.OS === 'ios' ? 0 : -12,
+    color: '#333C8D',
+    fontSize: 16,
+    height: 50,
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    width: "90%",
+    backgroundColor: "white",
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 50,
+    shadowRadius: 5,
+
+  },
+  txt: {
+    fontSize: 18,
+    paddingTop: 0,
+    paddingLeft: 5,
+    color: '#333C8D',
+    marginBottom: 15,
+    textAlign: 'justify',
+    marginLeft: 15
   },
 });

@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
         fontStyle: 'italic',
         marginTop: 0,
         color: '#fff',
-        fontSize: RFPercentage(6.5),
+        fontSize: RFPercentage(4),
         justifyContent: 'center',
         textAlign: 'center',
         fontFamily: 'sans-serif',
