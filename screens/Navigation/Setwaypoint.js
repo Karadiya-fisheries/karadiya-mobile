@@ -3,13 +3,14 @@ import * as React from 'react';
 import { View, Text, StyleSheet, Dimensions, TextInput, TouchableOpacity, PermissionsAndroid } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Geolocation from 'react-native-geolocation-service';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 function Setwaypoint({ navigation }) {
     const [geolat, setgeolat] = React.useState();
     const [geolon, setgeolon] = React.useState();
-    const [lat, setlat] = React.useState('');
-    const [lon, setlon] = React.useState('');
+    const [lat, setlat] = React.useState();
+    const [lon, setlon] = React.useState();
     const [location, setLocation] = useState([]);
 
 
@@ -17,6 +18,8 @@ function Setwaypoint({ navigation }) {
     useEffect(() => {
 
         getLoaction();
+        setlat(lat);
+        setlon(lon);
 
     });
 
@@ -28,12 +31,10 @@ function Setwaypoint({ navigation }) {
         if (granted == PermissionsAndroid.RESULTS.GRANTED) {
             Geolocation.getCurrentPosition(
                 (position) => {
-                    //console.log(position);
+
 
                     setgeolat(position.coords.latitude);
                     setgeolon(position.coords.longitude);
-
-                    //console.log(position);
 
 
                 },
@@ -46,37 +47,43 @@ function Setwaypoint({ navigation }) {
 
     };
 
+    const storeData = async (location) => {
+        try {
+            const jsonValue = JSON.stringify(location)
+            await AsyncStorage.setItem('@storage_Key', jsonValue)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+
+
 
     const handleAddLocation = () => {
-        setlat(lat);
-        setlon(lon);
+
         setLocation([...location, {
 
             lat: lat,
             lon: lon,
-        }])
+        }]);
 
+        console.log("set" + lon);
 
-
+        storeData(location);
 
         navigation.navigate('Navigation', {
 
             screen: 'WayPoint',
             params: {
                 location: location
-                // lat: geolat,
-                // lon: geolon
-
             }
         });
     }
 
     const handleCurrentLocation = () => {
 
-
         setlat(geolat.toString());
         setlon(geolon.toString());
-
 
     }
 

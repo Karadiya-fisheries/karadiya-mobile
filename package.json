@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@fortawesome/react-native-fontawesome": "^0.2.7",
-    "@react-native-async-storage/async-storage": "^1.15.9",
+    "@react-native-async-storage/async-storage": "^1.17.7",
     "@react-native-community/datetimepicker": "^3.5.2",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-mapbox-gl/maps": "^8.6.0-beta.0",

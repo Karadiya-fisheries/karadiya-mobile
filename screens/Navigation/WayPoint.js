@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { TextInput, Modal, View, Text, Button, StyleSheet, Dimensions, PermissionsAndroid } from 'react-native';
+import { View, Text, Button, StyleSheet, Dimensions, Image } from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 
 import { FloatingAction } from "react-native-floating-action";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useRoute } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 
 MapboxGL.setAccessToken("pk.eyJ1IjoibGFzaXRoYTk3IiwiYSI6ImNsNWd3a2g2cjAzcTgzanVyemE5Y3hnMGgifQ.Q00itaRuT0oH6oUN6lYFlQ");
@@ -15,31 +17,35 @@ const WayPonit = ({ route, navigation }) => {
 
     // const [lat, setLat] = useState(0);
     // const [lon, setLon] = useState(0);
-    //const { location } = route.params;
-    console.log(route.params.location[0]);
-    console.log(route.params.location[2]);
-    console.log(route.params.location[1]);
+    // const { location } = route.params;
+    // console.log(location);
 
+    const getData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('@storage_Key')
+            console.log("get:" + jsonValue + "end");
+            return jsonValue != null ? JSON.parse(jsonValue) : null;
 
+        } catch (e) {
+            console.log(e);
+        }
+    };
 
-    const renderAnnotations = () => {
+    useEffect(() => {
+        getData();
+
+    });
+
+    const Marker = ({ coordinate, image, id }) => {
         return (
-            <MapboxGL.PointAnnotation
-                key="pointAnnotation"
-                id="pointAnnotation"
-                coordinate={[74, 27]}
-            >
-                <View
-                    style={{
-                        height: 30,
-                        width: 30,
-                        backgroundColor: "red",
-                        borderRadius: 50,
-                        borderColor: "#fff",
-                        borderWidth: 3,
-                    }}
+            <MapboxGL.MarkerView coordinate={coordinate} id={id}>
+          // Add any image or icon or view for marker
+                <Image
+                    source={{ uri: image }}
+                    style={{ width: '100%', height: '100%' }}
+                    resizeMode="contain"
                 />
-            </MapboxGL.PointAnnotation>
+            </MapboxGL.MarkerView>
         );
     };
 
@@ -124,20 +130,6 @@ const WayPonit = ({ route, navigation }) => {
                         zoomLevel={6}
                         centerCoordinate={[81, 8]}
                     />
-                    {/* <MapboxGL.PointAnnotation
-                        title="Current Location"
-                        coordinate={[location[0].lat, location[0].lon]} />
-                    <MapboxGL.PointAnnotation
-                        title="Current Location"
-                        coordinate={[location[1].lat, location[1].lon]} />
-
-                    <MapboxGL.PointAnnotation
-                        title="Current Location"
-                        coordinate={[location[2].lat, location[2].lon]} />*/}
-
-                    {/* <MapboxGL.PointAnnotation
-                        title="Current Location"
-                        coordinate={[lon, lat]} /> */}
 
                     <MapboxGL.ShapeSource id="source" shape={polygon}>
                         <MapboxGL.FillLayer id="fill" style={{ fillColor: "blue" }} />
@@ -147,17 +139,16 @@ const WayPonit = ({ route, navigation }) => {
                         />
                     </MapboxGL.ShapeSource>
 
-                    {/* {
-                        location.map((location, index) => {
-                            return (
-
-
-                                <MapboxGL.PointAnnotation
-                                    title="Current Location"
-                                    coordinate={[location[1].lat, location[1].lon]} />
-
-                            )
-                        })
+                    {/* {location &&
+                        location?.length > 0 &&
+                        location.map((marker, index) => (
+                            <Marker
+                                coordinate={[location.lon, location.lat]}
+                                // id must be a string
+                                id={`index + 1`}
+                            //image={require('../../assets/waypoint.png')}
+                            />
+                        ))
                     } */}
 
 
