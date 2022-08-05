@@ -2,46 +2,12 @@ import React from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, Dimensions, Image, } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-//import AuthService from  "../services/auth.service";
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as yup from 'yup';
 
-const fishermanregValidationSchema = yup.object().shape({
-    email: yup
-    .string()
-    .email("Please enter a valid email")
-    .required('*This is a required field'),
-  
-  });
-  
-  
+
+
 
 function ForgotPwdScreen({ navigation }) {
-
-    const ResetPwdHandle = (email) => {
-        signIn(username, password);
-      };
-
-
-
-
-
     return (
-
-        <Formik
-      validationSchema={fishermanregValidationSchema}
-
-      initialValues={{
-       email: '',
-       
-
-      }}
-
-      onSubmit={values => console.log(values)}
-
-    >
-
-      {({ handleChange, handleBlur, handleSubmit, values, errors, isValid, touched, }) => (
         <View style={styles.container}>
             <StatusBar translucent backgroundColor="transparent" />
             <View style={styles.header}>
@@ -65,18 +31,11 @@ function ForgotPwdScreen({ navigation }) {
                         name="user-o"
                         color="#05375a"
                         size={20} />
-                     <TextInput style={styles.textInput}
-                      name="email"
-                      placeholder="Email Address"
-
-                      keyboardType='email-address'
-                      onChangeText={handleChange('email')}
-                      onBlur={handleBlur('email')}
-                      value={values.email}
+                    <TextInput
+                        placeholder="Enter Email"
+                        style={styles.textInput}
+                        autoCapitalize="none"
                     />
-                    {errors.email && touched.email ? (
-                      <Text style={styles.errorText}>{errors.email}</Text>
-                    ) : null}
 
                 </View>
 
@@ -84,9 +43,8 @@ function ForgotPwdScreen({ navigation }) {
                 <View style={styles.rowContainer}>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => navigation.navigate('ConfirmNewPassword')}
                     >
-                        <Text style={styles.textSign}>SEND RESET LINK</Text>
+                        <Text style={styles.textSign}>RESET PASSWORD</Text>
                     </TouchableOpacity>
 
                 </View>
@@ -103,11 +61,9 @@ function ForgotPwdScreen({ navigation }) {
             </Animatable.View>
 
         </View>
-  )
+    );
 }
-</Formik >
-)
-};
+
 export default ForgotPwdScreen;
 
 const { height } = Dimensions.get("screen");
