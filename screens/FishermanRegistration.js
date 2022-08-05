@@ -20,7 +20,8 @@ import { Checkbox, RadioButton, RadioButtonGroup } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from 'react-native-image-picker';
 import SignatureCapture from 'react-native-signature-capture';
-import { Formik, Field, Form, ErrorMessage, formik } from 'formik';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import * as yup from 'yup';
 import fishermenService from '../service/fishermen.service';
 import authService from '../service/auth.service';
@@ -39,9 +40,12 @@ const fishermanregValidationSchema = yup.object().shape({
   insuarance: yup.string().required('*This is a required field'),
   membershipno: yup.string().required('*This is a required field'),
 
-
-
-
+  imul: yup.boolean(),
+  ntrb: yup.boolean(),
+  mtrb: yup.boolean(),
+  iday: yup.boolean(),
+  ofrp: yup.boolean(),
+  nbsb: yup.boolean(),
 });
 
 function FishermanRegistration({ navigation }) {
@@ -479,7 +483,9 @@ function FishermanRegistration({ navigation }) {
                       <View style={styles.checkBox}>
                         <Checkbox
                           status={imul ? 'checked' : 'unchecked'}
-                          onPress={() => { setImul(!imul); }}
+                          onPress={() => {
+                            setImul(!imul);
+                          }}
                           color={'#333C8D'}
                         />
                         <Text style={styles.label}>IMUL</Text>
@@ -746,7 +752,6 @@ function FishermanRegistration({ navigation }) {
                       showNativeButtons={false}
                       showTitleLabel={false}
                       viewMode={'portrait'}
-
                     />
                   </View>
 

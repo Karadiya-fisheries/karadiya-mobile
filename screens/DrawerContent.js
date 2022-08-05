@@ -11,16 +11,26 @@ import {
     TouchableRipple,
     Switch
 } from 'react-native-paper';
+import { useEffect, useState } from 'react';
 import {
     DrawerContentScrollView,
     DrawerItem
 } from '@react-navigation/drawer';
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { AuthContext } from '../components/context';
+import authService from '../service/auth.service';
 
 export function DrawerContent(props) {
+    const [user, setUser] = useState({});
+    const [visible, setVisible] = React.useState(false);
+    useEffect(() => {
+        authService.getCurrentUser().then(res => {
+            setUser(JSON.parse(res));
+        });
+    }, []);
 
 
 

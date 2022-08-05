@@ -73,15 +73,9 @@ function ProfileScreen({ navigation }) {
           onDismiss={hideMore}
           contentContainerStyle={styles.more}>
           <Card>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Settings')}>
-              <List.Item title="Settings" />
-            </TouchableOpacity>
+            <List.Item title="Settings" />
             <List.Item title="Share" />
-            <TouchableOpacity
-              onPress={() => navigation.navigate('EditProfile')}>
-              <List.Item title="Edit Profile" />
-            </TouchableOpacity>
+            <List.Item title="Edit Profile" />
           </Card>
         </Modal>
       </Portal.Host>

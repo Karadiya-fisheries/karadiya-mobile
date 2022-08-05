@@ -6,11 +6,6 @@ import SplashScreen from './SplashScreen';
 import SignInScreen from './SignInScreen';
 import SignUpScreen from './SignUpScreen';
 import ForgotPwdScreen from './ForgotPwdScreen';
-import ConfirmNewPassword from './PasswordReset/ConfirmNewPassword';
-import PwdResetSuccessfully from './PasswordReset/PwdResetSuccessfully';
-import EditProfile from './EditProfile';
-
-
 
 const RootStack = createStackNavigator();
 
@@ -20,9 +15,6 @@ const RootStackScreen = ({ navigation }) => (
     <RootStack.Screen name="SignInScreen" component={SignInScreen} />
     <RootStack.Screen name="SignUpScreen" component={SignUpScreen} />
     <RootStack.Screen name="ForgotPwdScreen" component={ForgotPwdScreen} />
-    <RootStack.Screen name="ConfirmNewPassword" component={ConfirmNewPassword} />
-    <RootStack.Screen name="PwdResetSuccessfully" component={PwdResetSuccessfully} />
-    <RootStack.Screen name="EditProfile" component={EditProfile} />
   </RootStack.Navigator>
 );
 

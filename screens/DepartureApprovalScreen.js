@@ -7,8 +7,6 @@ import SelectDropdown from 'react-native-select-dropdown';
 import { Picker } from '@react-native-picker/picker';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as yup from 'yup';
-import BoatTravelerDetails from '../components/BoatTravelerDetails';
-
 
 const departureapprovalValidationSchema = yup.object().shape({
   imul: yup
@@ -22,8 +20,9 @@ const departureapprovalValidationSchema = yup.object().shape({
     .required('*This is a required field'),
   email: yup
     .string()
-    .email("Please enter a valid email")
+    .email("Please enter an valid email")
     .required('*This is a required field'),
+
   skippername: yup
     .string()
     .required('*This is a required field'),
@@ -51,6 +50,12 @@ const departureapprovalValidationSchema = yup.object().shape({
   neteye: yup
     .string()
     .required('*This is a required field'),
+  psname: yup
+    .string()
+    .required('*This is a required field'),
+  psnic: yup
+    .number()
+    .required('*This is a required field'),
   llicense: yup
     .string()
     .required('*This is a required field'),
@@ -59,7 +64,12 @@ const departureapprovalValidationSchema = yup.object().shape({
     .required('*This is a required field'),
 
 
+
+
 });
+
+
+
 
 function DepartureApprovalScreen() {
   const progressStepsStyle = {
@@ -72,14 +82,7 @@ function DepartureApprovalScreen() {
     marginBottom: 35,
 
   };
-  const zone = [
-    "Internal waters",
-    "Territorial Sea",
-    "Contiguous Zone",
-    "Economic Zone",
-    "Continental Shelf",
-    "High Seas and Deap Ocean"
-  ];
+  const zone = ["Internal waters", "Territorial Sea", "Contiguous Zone", "Economic Zone", "Continental Shelf", "High Seas and Deap Ocean"];
 
   const [checked, setChecked] = React.useState();
 
@@ -100,10 +103,10 @@ function DepartureApprovalScreen() {
   //--------------------------------------------------------------
   const [selectedStation, setSelectedStation] = useState();
   const [selectedCode, setSelectedCode] = useState();
-  const[selectedPort,setSelectedPort]=useState();
+
 
   //----------------------------------------------------------
-  const [agree, setAgree] = React.useState(false);
+  const [mtrb, setMtrb] = React.useState(false);
 
 
   return (
@@ -224,22 +227,20 @@ function DepartureApprovalScreen() {
                 <ProgressStep>
                   <View style={{ flexDirection: 'column', padding: 15 }}>
                     <Text style={styles.txt}>08. Port where the boat is expected to depart (select one from the list)</Text>
-                    <View style={{ borderRadius: 10, overflow: 'hidden',  height: 30, justifyContent: 'center', alignContent: 'center' }}>
-                    <Picker style={styles.picker}
-                          mode='dropdown'
-                          selectedValue={selectedPort}
-                          onValueChange={handleChange('selectedPort')}
-                          onBlur={handleBlur('selectedPort')
-                          }>
-                          <Picker.Item label="Galle" value="galle" />
-                          <Picker.Item label="Hambantota" value="hambantota" />
-                          <Picker.Item label="Kirinda" value="kirinda" />
-                          <Picker.Item label="Matara" value="matara" />
-                          <Picker.Item label="Colombo" value="colombo" />
-                          <Picker.Item label="Beruwala" value="beruwala" />
-                          <Picker.Item label="Kalutara" value="kalutara" />
-                        </Picker>
-                        </View>
+
+                    <SelectDropdown
+
+                      data={zone}
+                      onSelect={(selectedItem, index) => {
+                        console.log(selectedItem, index)
+                      }}
+                      buttonTextAfterSelection={(selectedItem, index) => {
+                        return selectedItem
+                      }}
+                      rowTextForSelection={(item, index) => {
+                        return item
+                      }}
+                    />
 
                     <View style={{ flexDirection: 'column', marginTop: 20 }}>
                       <Text style={styles.txt}>09. Fishing area during fishing operations</Text>
@@ -362,8 +363,69 @@ function DepartureApprovalScreen() {
                 </ProgressStep>
 
                 <ProgressStep>
-                  <BoatTravelerDetails />
-                  
+                  <View style={{ padding: 15, }}>
+                    <Text style={styles.txt}>11. Boat Traveler Details (Fill in the number of travelers only)</Text>
+                    <View>
+                      {inputs.map((input, key) => (
+
+                        <View>
+                          <View style={{ flexDirection: 'column' }}>
+                            <Text style={{
+                              fontSize: 16,
+                              padding: 15,
+                              paddingLeft: 5,
+                              color: '#333C8D',
+                            }}>Name of first passenger</Text>
+                            <TextInput style={styles.textInput}
+                              onChangeText={handleChange('psname')}
+                              onBlur={handleBlur('psname')}
+                              value={values.psname}
+                            />
+                            {errors.psname && touched.psname ? (
+                              <Text style={styles.errorText}>{errors.psname}</Text>
+                            ) : null}
+
+
+                            <Text style={{
+                              fontSize: 16,
+                              padding: 15,
+                              paddingLeft: 5,
+                              color: '#333C8D',
+                            }}>NIC Number</Text>
+                            <TextInput style={styles.textInput}
+                              onChangeText={handleChange('psnic')}
+                              onBlur={handleBlur('psnic')}
+                              value={values.psnic}
+                            />
+                            {errors.psnic && touched.psnic ? (
+                              <Text style={styles.errorText}>{errors.psnic}</Text>
+                            ) : null}
+
+
+                            <View style={{ flexDirection: 'row-reverse' }}>
+                              < TouchableOpacity onPress={() => deleteHandler(key)}>
+                                <Text style={{ color: "#333C8D", fontSize: 15 }}>Remove</Text>
+                              </TouchableOpacity>
+                            </View>
+
+
+                          </View>
+
+                        </View>
+                      ))}
+
+
+                      <View style={{ flexDirection: 'row-reverse' }}>
+                        <TouchableOpacity
+                          style={styles.button}
+                          onPress={addHandler}
+                        >
+                          <Text style={styles.buttonText}>ADD MEMBER</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+
+                  </View>
                   <View style={{ padding: 15, marginTop: 10 }}>
 
                     <Text style={styles.txt}>12. Local Operating License Number of the Vessel</Text>
@@ -391,9 +453,8 @@ function DepartureApprovalScreen() {
                         <Picker style={styles.picker}
                           mode='dropdown'
                           selectedValue={selectedStation}
-                         
-                          onValueChange={handleChange('selectedStation')}
-                          onBlur={handleBlur('selectedStation')
+                          onValueChange={(itemValue, itemIndex) =>
+                            setSelectedStation(itemValue)
                           }>
                           <Picker.Item label="Galle" value="galle" />
                           <Picker.Item label="Hambantota" value="hambantota" />
@@ -409,8 +470,8 @@ function DepartureApprovalScreen() {
                         <Picker style={styles.picker}
                           mode='dropdown'
                           selectedValue={selectedCode}
-                          onValueChange={handleChange('selectedCode')}
-                          onBlur={handleBlur('selectedCode')
+                          onValueChange={(itemValue, itemIndex) =>
+                            setSelectedCode(itemValue)
                           }>
                           <Picker.Item label="4096.0Hz" value="4096hz" />
                           <Picker.Item label="1024.0Hz" value="1024hz" />
@@ -440,7 +501,7 @@ function DepartureApprovalScreen() {
                         <RadioButton
                           color='#333C8D'
                           value="no"
-                          status={checked === 'no' ? 'checked' : 'checked'}
+                          status={checked === 'no' ? 'checked' : 'unchecked'}
                           onPress={() => setChecked('no')}
                         />
                         <Text style={styles.label}>No</Text>
@@ -460,9 +521,9 @@ function DepartureApprovalScreen() {
                     <View style={styles.checkBox}>
                       <Checkbox
 
-                        status={agree ? 'checked' : 'unchecked'}
+                        status={mtrb ? 'checked' : 'unchecked'}
                         onPress={() => {
-                          setAgree(!agree);
+                          setMtrb(!mtrb);
                         }}
                         color={'#333C8D'}
 
@@ -505,16 +566,14 @@ const styles = StyleSheet.create({
     flex: 5,
     backgroundColor: '#fff',
     borderBottomRightRadius: 100,
-    paddingHorizontal: 15,
+    paddingHorizontal: 20,
 
   },
   picker: {
     backgroundColor: '#333C8D',
     margin: 5,
-    justifyContent: 'center',
-    borderBottomEndRadius:40
-
-    
+    height: 50,
+    justifyContent: 'center'
 
   },
 
