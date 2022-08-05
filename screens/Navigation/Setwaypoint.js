@@ -1,25 +1,24 @@
 import { useState, useEffect } from 'react';
 import * as React from 'react';
 import { View, Text, StyleSheet, Dimensions, TextInput, TouchableOpacity, PermissionsAndroid } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import Geolocation from 'react-native-geolocation-service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 function Setwaypoint({ navigation }) {
-    const [geolat, setgeolat] = React.useState();
-    const [geolon, setgeolon] = React.useState();
-    const [lat, setlat] = React.useState();
-    const [lon, setlon] = React.useState();
-    const [location, setLocation] = useState([]);
+    const [geolat, setgeolat] = useState();
+    const [geolon, setgeolon] = useState();
+    const [lat, setlat] = useState();
+    const [lon, setlon] = useState();
+    //const [location, setLocation] = useState([]);
+    const [item, setItem] = useState([]);
 
 
 
     useEffect(() => {
 
         getLoaction();
-        setlat(lat);
-        setlon(lon);
+
 
     });
 
@@ -50,6 +49,7 @@ function Setwaypoint({ navigation }) {
     const storeData = async (location) => {
         try {
             const jsonValue = JSON.stringify(location)
+            console.log("after:" + jsonValue);
             await AsyncStorage.setItem('@storage_Key', jsonValue)
         } catch (e) {
             console.log(e);
@@ -61,23 +61,22 @@ function Setwaypoint({ navigation }) {
 
     const handleAddLocation = () => {
 
-        setLocation([...location, {
-
+        setItem([...item, {
             lat: lat,
             lon: lon,
         }]);
 
-        console.log("set" + lon);
+        console.log("before:" + item);
 
-        storeData(location);
+        storeData(item);
 
-        navigation.navigate('Navigation', {
+        // navigation.navigate('Navigation', {
 
-            screen: 'WayPoint',
-            params: {
-                location: location
-            }
-        });
+        //     screen: 'WayPoint',
+        //     params: {
+        //         location: location
+        //     }
+        // });
     }
 
     const handleCurrentLocation = () => {
