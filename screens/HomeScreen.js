@@ -15,6 +15,7 @@ import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { Button } from 'react-native-paper';
 import { AuthContext } from '../components/context';
 import WelcomeScreen from '../components/WelcomeScreen';
+import Warning from '../components/warning';
 
 function HomeScreen({ navigation }) {
   const { signOut } = React.useContext(AuthContext);
@@ -28,8 +29,13 @@ function HomeScreen({ navigation }) {
         </View>
       </View>
       <View style={styles.footer}>
+
         <ScrollView>
           <View style={styles.rowContainer}>
+            <Warning />
+          </View>
+          <View style={styles.rowContainer}>
+
             <TouchableOpacity
               onPress={() => navigation.navigate('Fisherman-Registration')}
               style={styles.button}>
@@ -83,12 +89,12 @@ function HomeScreen({ navigation }) {
 
           <View style={styles.rowContainer}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('Boat-Registration')}
+              onPress={() => navigation.navigate('NoticesScreen')}
               style={styles.button}>
-              <Text style={styles.btnText}>Boat Registration</Text>
+              <Text style={styles.btnText}>Notice</Text>
               <Image
                 style={styles.icon}
-                source={require('../assets/BoatReg.png')}
+                source={require('../assets/notice.png')}
                 resizeMode="stretch"
               />
             </TouchableOpacity>
@@ -136,8 +142,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    paddingVertical: 50,
-    paddingHorizontal: 30,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
     borderColor: '#333C8D',
     borderWidth: 5,
   },
@@ -178,7 +184,7 @@ const styles = StyleSheet.create({
   icon: {
     height: height_logo * 0.175,
     marginBottom: 5,
-    marginTop: 10,
+    marginTop: 5,
     alignContent: 'center',
     alignItems: 'center',
   },

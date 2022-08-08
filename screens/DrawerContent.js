@@ -145,8 +145,8 @@ export function DrawerContent(props) {
                                     size={size}
                                 />
                             )}
-                            label="Boat Registration"
-                            onPress={() => { props.navigation.navigate('Boat-Registration') }}
+                            label="Notice"
+                            onPress={() => { props.navigation.navigate('NoticesScreen') }}
                         />
                         <DrawerItem
                             icon={({ color, size }) => (
