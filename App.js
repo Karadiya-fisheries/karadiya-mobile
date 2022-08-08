@@ -41,7 +41,7 @@ import FishermanRegistration from './screens/FishermanRegistration';
 import ElogBookScreen from './screens/ElogBookScreen';
 import NavigationScreen from './screens/Navigation/NavigationScreen';
 import PredictionScreen from './screens/PredictonScreen';
-import BoatRegistrtionScreen from './screens/BoatRegistrationScreen';
+import NoticesScreen from './screens/Notices/NoticesScreen'
 import DepartureApprovalScreen from './screens/DepartureApprovalScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import ManOverBoard from './screens/Navigation/ManOverBoard';
@@ -49,6 +49,7 @@ import Forcasting from './screens/Navigation/Forecast';
 import Compass from './screens/Navigation/Compass';
 import WayPoint from './screens/Navigation/WayPoint';
 import Setwaypoint from './screens/Navigation/Setwaypoint.js';
+import Notice from './screens/Notices/Notice';
 
 const Drawer = createDrawerNavigator();
 const NaviDrawer = createDrawerNavigator();
@@ -192,6 +193,15 @@ const App = () => {
     );
   }
 
+  function NoticeStackScreen() {
+    return (
+      <NaviDrawer.Navigator>
+        <NaviDrawer.Screen name="NoticeScreen" component={NoticesScreen} />
+        <NaviDrawer.Screen name="Notice" component={Notice} />
+      </NaviDrawer.Navigator>
+    );
+  }
+
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
@@ -208,8 +218,8 @@ const App = () => {
             />
             <Drawer.Screen name="Prediction" component={PredictionScreen} />
             <Drawer.Screen
-              name="Boat-Registration"
-              component={BoatRegistrtionScreen}
+              name="NoticesScreen"
+              component={NoticeStackScreen}
             />
             <Drawer.Screen
               name="Departure-Approval"

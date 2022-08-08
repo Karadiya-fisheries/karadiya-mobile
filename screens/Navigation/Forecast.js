@@ -32,6 +32,7 @@ export class Forcasting extends Component {
     };
 
 
+
     componentDidMount() {
         this.getLoaction();
         this.getWeather();
@@ -133,12 +134,7 @@ export class Forcasting extends Component {
 
 
                             </ScrollView>
-                            {/* <Text>Date: {data.daily[0].dt}</Text>
-                            <Text>TEMP: {this.round(data.current.temp - 272.15)} C</Text>
-                            <Text>Preasure: {data.current.pressure}</Text>
-                            <Text>Humidity: {data.current.humidity}</Text>
-                            <Text>Wind Speed: {data.current.wind_speed} km/h</Text>
-                            <Text>Wind Degree: {data.current.wind_deg} from north</Text> */}
+
 
                         </View>
 
