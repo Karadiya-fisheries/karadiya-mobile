@@ -10,14 +10,14 @@ const Warning = () => {
     useEffect(() => {
 
         getLoaction();
-        //getWeather();
+        getWeather();
 
 
-    });
+    }, []);
 
     const [key, setKey] = useState('9313cc1f737fc41719b8cab7a7a73e97');
-    const [geolat, setgeolat] = useState();
-    const [geolon, setgeolon] = useState();
+    const [geolat, setgeolat] = useState(13.0827);
+    const [geolon, setgeolon] = useState(80.2707);
     const [data, setData] = useState([]);
     const getLoaction = async () => {
 
@@ -55,9 +55,16 @@ const Warning = () => {
                 `https://api.openweathermap.org/data/2.5/onecall?lat=${geolat}&lon=${geolon}&exclude=current,minutely,hourly,daily&appid=${key}`
             );
 
-            const Alartdata = await response.json();
-            setData(Alartdata);
-            console.log(data);
+
+            try {
+
+                const Alartdata = await response.json();
+                setData(Alartdata);
+                console.log(Alartdata.timezone);
+
+            } catch {
+                console.log("undefined");
+            }
 
         }
 
@@ -69,20 +76,38 @@ const Warning = () => {
 
 
 
-    return (
-        <View style={styles.Main}>
 
-            <Text style={styles.MainText3}>No Weather Warnings</Text>
 
-        </View>
-    )
+    if (data.length == 0) {
+        return (
+            <View style={styles.Main1}>
+
+                <Text style={styles.MainText3}>No Weather Warnings</Text>
+
+            </View>
+        );
+
+    } else {
+
+        return (
+            <View style={styles.Main2}>
+                <Text style={styles.MainText3}>Time Zone:{data.timezone}</Text>
+
+                <Text style={styles.MainText3}>Event:{data.alerts[0].event}</Text>
+
+            </View>
+        );
+
+    }
+
+
 
 
 }
 
 const styles = StyleSheet.create({
 
-    Main: {
+    Main1: {
 
         height: '100%',
         width: '90%',
@@ -91,11 +116,20 @@ const styles = StyleSheet.create({
         backgroundColor: 'green',
 
     },
+    Main2: {
+
+        height: '100%',
+        width: '90%',
+        padding: 15,
+        borderRadius: 20,
+        backgroundColor: 'red',
+
+    },
     MainText3: {
         fontWeight: 'bold',
         marginTop: 0,
         color: '#fff',
-        fontSize: RFPercentage(3),
+        fontSize: RFPercentage(2.5),
         justifyContent: 'center',
         textAlign: 'center',
         fontFamily: 'sans-serif',
