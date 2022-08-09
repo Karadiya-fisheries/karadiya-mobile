@@ -182,9 +182,10 @@ const styles = StyleSheet.create({
   },
 
   icon: {
-    height: height_logo * 0.175,
+    height: height_logo * 0.3,
+    width: height_logo * 0.3,
     marginBottom: 5,
-    marginTop: 5,
+    marginTop: 10,
     alignContent: 'center',
     alignItems: 'center',
   },
