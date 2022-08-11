@@ -75,12 +75,14 @@ function NoticesScreen({ navigation }) {
                     onPress={() =>
                       navigation.navigate('Notice', {
                         post: post,
+                        index: index
 
                       })
                     }
                     style={styles.button}>
                     <Text style={styles.btnText}>{post.title}</Text>
                   </TouchableOpacity>
+
 
                 </View>
 

@@ -102,6 +102,7 @@ function HomeScreen({ navigation }) {
             <TouchableOpacity
               onPress={() => navigation.navigate('Departure-Approval')}
               style={styles.button}>
+
               <Text style={styles.btnText}>Departure Approval</Text>
 
               <Image
@@ -109,6 +110,7 @@ function HomeScreen({ navigation }) {
                 source={require('../assets/departure.png')}
                 resizeMode="stretch"
               />
+
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    paddingVertical: 20,
+    paddingVertical: 10,
     paddingHorizontal: 10,
     borderColor: '#333C8D',
     borderWidth: 5,
@@ -152,11 +154,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     marginBottom: 20,
-    marginTop: 30,
+    marginTop: 20,
   },
 
   button: {
-    flex: 1,
+    //flex: 1,
     borderColor: '#333C8D',
     borderWidth: 5,
     borderRadius: 10,
@@ -174,7 +176,10 @@ const styles = StyleSheet.create({
     shadowRadius: 60,
   },
   btnText: {
-    fontSize: RFPercentage(2),
+    flex: 2,
+    marginTop: 10,
+    marginBottom: 0,
+    fontSize: RFPercentage(1.8),
     fontWeight: 'bold',
     color: '#333C8D',
     textAlign: 'center'
@@ -182,11 +187,13 @@ const styles = StyleSheet.create({
   },
 
   icon: {
-    height: height_logo * 0.3,
-    width: height_logo * 0.3,
-    marginBottom: 5,
-    marginTop: 10,
+    flex: 3,
+    height: height_logo * 0.2,
+    //width: height_logo * 0.4,
+    marginBottom: 15,
+    //marginTop: 10,
     alignContent: 'center',
     alignItems: 'center',
+    resizeMode: 'stretch',
   },
 });
