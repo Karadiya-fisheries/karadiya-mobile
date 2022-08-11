@@ -1,12 +1,49 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, Dimensions, Image, } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import PassService from './../service/auth.forgetpassword';
+import { useToast } from "react-native-toast-notifications";
 
 
 
 function ForgotPwdScreen({ navigation }) {
+
+    const toast = useToast();
+    const [email, setEmail] = useState();
+
+
+    const onSubmit = () => {
+
+        console.log(email);
+        PassService.forgot_password(email).then(res => {
+            console.log(res);
+        }).catch(err => {
+            console.log(err.response);
+            console.log(err.request);
+            console.log(err.message);
+            toast.show(err.message, {
+                type: "warning",
+                placement: "bottom",
+                duration: 4000,
+                offset: 30,
+                animationType: "slide-in",
+            });
+        });
+
+        toast.show("Check Your Email!", {
+            type: "success",
+            placement: "bottom",
+            duration: 4000,
+            offset: 30,
+            animationType: "slide-in",
+        });
+
+        setEmail(null);
+        navigation.navigate('SignInScreen');
+
+    };
     return (
         <View style={styles.container}>
             <StatusBar translucent backgroundColor="transparent" />
@@ -35,7 +72,10 @@ function ForgotPwdScreen({ navigation }) {
                         placeholder="Enter Email"
                         style={styles.textInput}
                         autoCapitalize="none"
+                        onChangeText={setEmail}
+                        value={email}
                     />
+
 
                 </View>
 
@@ -43,6 +83,7 @@ function ForgotPwdScreen({ navigation }) {
                 <View style={styles.rowContainer}>
                     <TouchableOpacity
                         style={styles.button}
+                        onPress={() => onSubmit()}
                     >
                         <Text style={styles.textSign}>RESET PASSWORD</Text>
                     </TouchableOpacity>

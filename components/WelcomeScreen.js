@@ -1,7 +1,7 @@
 import React from "react";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 
 import authService from '../service/auth.service';
 
@@ -22,43 +22,60 @@ const Task = () => {
 
     return (
         <View style={styles.Main}>
-            <Text style={styles.MainText1}>Hi {user.fullname}!!!</Text>
-            <Text style={styles.MainText2}>Welcome to</Text>
-            <Text style={styles.MainText3}>KARADIYA MOBILE</Text>
+            <Text style={styles.MainText1}>Hi {user.fullname}!</Text>
 
-        </View>
+            <View style={styles.Main2} >
+
+                <Text style={styles.MainText2}>KARADIYA MOBILE</Text>
+
+            </View>
+
+
+
+        </View >
     )
 
 
 }
 
+const { height } = Dimensions.get('screen');
+
 const styles = StyleSheet.create({
 
     Main: {
-
+        flex: 1,
         height: '100%',
-        width: 400,
+        width: height * 0.45,
         padding: 15,
         borderRadius: 30,
         shadowColor: 'black',
+        backgroundColor: '#b5b9e3',
+        marginTop: 40,
+        marginBottom: 20,
 
+    },
+    Main2: {
 
-
-
-
+        marginTop: 5,
+        //width: '100%',
+        borderRadius: 30,
+        backgroundColor: '#fff',
     },
     MainText1: {
         marginTop: 10,
-        color: '#fff',
-        fontSize: RFPercentage(4),
+        color: '#333C8D',
+        fontSize: RFPercentage(2.5),
         fontFamily: 'sans-serif',
+        fontWeight: 'bold'
     },
 
     MainText2: {
-        marginTop: 0,
-        color: '#fff',
-        fontSize: RFPercentage(3),
+        color: '#333C8D',
+        fontSize: RFPercentage(4),
         fontFamily: 'sans-serif',
+        fontWeight: 'bold',
+        alignItems: 'center',
+        textAlign: 'center'
     },
     MainText3: {
         fontWeight: 'bold',
