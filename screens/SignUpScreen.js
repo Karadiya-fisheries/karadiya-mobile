@@ -6,7 +6,10 @@ import {
   TextInput,
   TouchableOpacity,
   StatusBar,
+  ScrollView
 } from 'react-native';
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import { useToast } from "react-native-toast-notifications";
 import * as Animatable from 'react-native-animatable';
 import { AuthContext } from '../components/context';
 
@@ -22,6 +25,8 @@ function SignUpScreen({ navigation }) {
   });
 
   const { signUp } = React.useContext(AuthContext);
+  const toast = useToast();
+
 
   const onFullnameChange = val => {
     if (val.length != 0) {
@@ -122,10 +127,13 @@ function SignUpScreen({ navigation }) {
   const onEndEditingConfirm = () => {
     if (data.password == '' || data.passwordConfirm == '') {
       console.log('please enter password first');
+      toast.show("please enter password first");
     } else if (data.password != data.passwordConfirm) {
       console.log("passwords don't match");
+      toast.show("passwords don't match");
     } else if (data.passwordConfirm == data.password) {
       console.log('passwords match');
+
     }
   };
   //password validation need to fix
@@ -139,6 +147,7 @@ function SignUpScreen({ navigation }) {
       password: data.passwordConfirm,
     };
     signUp(user);
+    toast.show("Form Submitted.Please Check your E-mail");
     navigation.navigate('SignInScreen');
   };
   return (
@@ -150,68 +159,72 @@ function SignUpScreen({ navigation }) {
       </View>
       <Animatable.View animation="fadeInUpBig" style={styles.footer}>
         <View style={styles.editText}>
-          <Text style={styles.text_footer}>Full Name</Text>
-          <View style={styles.action}>
-            <TextInput
-              placeholder="Your Full Name"
-              style={styles.textInput}
-              autoCapitalize="none"
-              onChangeText={val => onFullnameChange(val)}
-            />
-          </View>
+          <ScrollView>
 
-          <Text style={styles.text_footer}>Email Address</Text>
-          <View style={styles.action}>
-            <TextInput
-              placeholder="Your E-mail"
-              style={styles.textInput}
-              autoCapitalize="none"
-              onChangeText={val => onEmailChange(val)}
-            />
-          </View>
+            <Text style={styles.text_footer}>Full Name</Text>
+            <View style={styles.action}>
+              <TextInput
+                placeholder="Your Full Name"
+                style={styles.textInput}
+                autoCapitalize="none"
+                onChangeText={val => onFullnameChange(val)}
+              />
+            </View>
 
-          <Text style={styles.text_footer}>Phone Number</Text>
-          <View style={styles.action}>
-            <TextInput
-              placeholder="Your Phone Number"
-              style={styles.textInput}
-              autoCapitalize="none"
-              onChangeText={val => onPhoneChange(val)}
-            />
-          </View>
 
-          <Text style={styles.text_footer}>NIC</Text>
-          <View style={styles.action}>
-            <TextInput
-              placeholder="Your NIC Number"
-              style={styles.textInput}
-              autoCapitalize="none"
-              onChangeText={val => onNicChange(val)}
-            />
-          </View>
+            <Text style={styles.text_footer}>Email Address</Text>
+            <View style={styles.action}>
+              <TextInput
+                placeholder="Your E-mail"
+                style={styles.textInput}
+                autoCapitalize="none"
+                onChangeText={val => onEmailChange(val)}
+              />
+            </View>
 
-          <Text style={styles.text_footer}>Create Password</Text>
-          <View style={styles.action}>
-            <TextInput
-              placeholder="Enter Your Password"
-              style={styles.textInput}
-              secureTextEntry={true}
-              autoCapitalize="none"
-              onChangeText={val => onPasswordChange(val)}
-            />
-          </View>
+            <Text style={styles.text_footer}>Phone Number</Text>
+            <View style={styles.action}>
+              <TextInput
+                placeholder="Your Phone Number"
+                style={styles.textInput}
+                autoCapitalize="none"
+                onChangeText={val => onPhoneChange(val)}
+              />
+            </View>
 
-          <Text style={styles.text_footer}>Conform Password</Text>
-          <View style={styles.action}>
-            <TextInput
-              placeholder="Reenter Your Password"
-              style={styles.textInput}
-              secureTextEntry={true}
-              autoCapitalize="none"
-              onChangeText={val => onConfirmPasswordChange(val)}
-              onEndEditing={() => onEndEditingConfirm()}
-            />
-          </View>
+            <Text style={styles.text_footer}>NIC</Text>
+            <View style={styles.action}>
+              <TextInput
+                placeholder="Your NIC Number"
+                style={styles.textInput}
+                autoCapitalize="none"
+                onChangeText={val => onNicChange(val)}
+              />
+            </View>
+
+            <Text style={styles.text_footer}>Create Password</Text>
+            <View style={styles.action}>
+              <TextInput
+                placeholder="Enter Your Password"
+                style={styles.textInput}
+                secureTextEntry={true}
+                autoCapitalize="none"
+                onChangeText={val => onPasswordChange(val)}
+              />
+            </View>
+
+            <Text style={styles.text_footer}>Conform Password</Text>
+            <View style={styles.action}>
+              <TextInput
+                placeholder="Reenter Your Password"
+                style={styles.textInput}
+                secureTextEntry={true}
+                autoCapitalize="none"
+                onChangeText={val => onConfirmPasswordChange(val)}
+                onEndEditing={() => onEndEditingConfirm()}
+              />
+            </View>
+          </ScrollView>
         </View>
 
         <View style={styles.rowContainer}>
@@ -252,12 +265,12 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
   },
   action: {
-    flexDirection: 'row',
+
     marginTop: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#f2f2f2',
     paddingBottom: 5,
-    alignContent: 'center'
+    alignItems: 'center'
   },
   textInput: {
     //flex: 1,
@@ -267,7 +280,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 20,
     width: '90%',
-    height: 40,
+    height: 50,
+
 
   },
   text_header: {
@@ -277,18 +291,19 @@ const styles = StyleSheet.create({
   },
   text_footer: {
     color: '#333C8D',
-    fontSize: 18,
+    fontSize: RFPercentage(2),
+    fontWeight: 'bold'
   },
   headTitle1: {
     color: '#fff',
-    fontSize: 30,
+    fontSize: RFPercentage(3.75),
     fontWeight: 'bold',
     textAlign: 'center',
   },
 
   headTitle2: {
     color: '#fff',
-    fontSize: 20,
+    fontSize: RFPercentage(2.5),
     fontWeight: 'bold',
     textAlign: 'center',
   },

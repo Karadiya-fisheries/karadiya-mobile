@@ -10,7 +10,7 @@ const Warning = () => {
     useEffect(() => {
 
         getLoaction();
-        getWeather();
+
 
 
     }, []);
@@ -32,7 +32,7 @@ const Warning = () => {
                     setgeolat(position.coords.latitude);
                     setgeolon(position.coords.longitude);
 
-
+                    getWeather();
                 },
                 (error) => {
                     console.log(error.code, error.message);
@@ -78,11 +78,13 @@ const Warning = () => {
 
 
 
-    if (data.length == 0) {
+    if (data.alerts !== undefined) {
         return (
-            <View style={styles.Main1}>
 
-                <Text style={styles.MainText3}>No Weather Warnings</Text>
+            <View style={styles.Main2}>
+                <Text style={styles.MainText3}>Time Zone:{data.timezone}</Text>
+
+                <Text style={styles.MainText3}>Event:{data.alerts[0].event}</Text>
 
             </View>
         );
@@ -90,12 +92,12 @@ const Warning = () => {
     } else {
 
         return (
-            <View style={styles.Main2}>
-                <Text style={styles.MainText3}>Time Zone:{data.timezone}</Text>
+            <View style={styles.Main1}>
 
-                <Text style={styles.MainText3}>Event:{data.alerts[0].event}</Text>
+                <Text style={styles.MainText3}>No Weather Warnings</Text>
 
             </View>
+
         );
 
     }

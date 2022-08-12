@@ -16,6 +16,8 @@ import { useEffect } from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { ToastProvider } from 'react-native-toast-notifications'
+
 LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 
 import {
@@ -203,47 +205,49 @@ const App = () => {
   }
 
   return (
-    <AuthContext.Provider value={authContext}>
-      <NavigationContainer>
-        {loginState.userToken != null ? (
-          <Drawer.Navigator
-            drawerContent={props => <DrawerContent {...props} />}>
-            <Drawer.Screen name="Home" component={HomeStackScreen} />
-            <Drawer.Screen name="E-logBook" component={ElogBookScreen} />
-            <Drawer.Screen name="Navigation" component={NaviStackScreen} />
+    <ToastProvider>
+      <AuthContext.Provider value={authContext}>
+        <NavigationContainer>
+          {loginState.userToken != null ? (
+            <Drawer.Navigator
+              drawerContent={props => <DrawerContent {...props} />}>
+              <Drawer.Screen name="Home" component={HomeStackScreen} />
+              <Drawer.Screen name="E-logBook" component={ElogBookScreen} />
+              <Drawer.Screen name="Navigation" component={NaviStackScreen} />
 
-            <Drawer.Screen
-              name="Fisherman-Registration"
-              component={FishermanRegistration}
-            />
-            <Drawer.Screen name="Prediction" component={PredictionScreen} />
-            <Drawer.Screen
-              name="NoticesScreen"
-              component={NoticeStackScreen}
-            />
-            <Drawer.Screen
-              name="Departure-Approval"
-              component={DepartureApprovalScreen}
-            />
+              <Drawer.Screen
+                name="Fisherman-Registration"
+                component={FishermanRegistration}
+              />
+              <Drawer.Screen name="Prediction" component={PredictionScreen} />
+              <Drawer.Screen
+                name="NoticesScreen"
+                component={NoticeStackScreen}
+              />
+              <Drawer.Screen
+                name="Departure-Approval"
+                component={DepartureApprovalScreen}
+              />
 
-            <Drawer.Screen
-              name="Profile"
-              component={ProfileScreen}
-            />
+              <Drawer.Screen
+                name="Profile"
+                component={ProfileScreen}
+              />
 
-            <Drawer.Screen
-              name="SetWayPoint"
-              component={Setwaypoint}
-            />
+              <Drawer.Screen
+                name="SetWayPoint"
+                component={Setwaypoint}
+              />
 
 
 
-          </Drawer.Navigator>
-        ) : (
-          <RootStackScreen />
-        )}
-      </NavigationContainer>
-    </AuthContext.Provider>
+            </Drawer.Navigator>
+          ) : (
+            <RootStackScreen />
+          )}
+        </NavigationContainer>
+      </AuthContext.Provider>
+    </ToastProvider>
   );
 };
 
