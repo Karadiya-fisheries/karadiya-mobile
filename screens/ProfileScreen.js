@@ -31,6 +31,7 @@ function ProfileScreen({ navigation }) {
     });
   }, []);
   console.log(user);
+  console.log("url :" + user.profileUrl);
   const DATA = [
     {
       title: 'Full Name',
@@ -64,24 +65,9 @@ function ProfileScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-
-
-
-      <Portal.Host>
-        <Modal
-          visible={visible}
-          onDismiss={hideMore}
-          contentContainerStyle={styles.more}>
-          <Card>
-            <List.Item title="Settings" />
-            <List.Item title="Share" />
-            <List.Item title="Edit Profile" />
-          </Card>
-        </Modal>
-      </Portal.Host>
       <Avatar.Image
         size={170}
-        source={user.profileUrl}
+        source={{ uri: user.profileUrl }}
         style={styles.avatar}
       />
       <View style={styles.surface}>
