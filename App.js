@@ -42,7 +42,7 @@ import HomeScreen from './screens/HomeScreen';
 import FishermanRegistration from './screens/FishermanRegistration';
 import ElogBookScreen from './screens/ElogBookScreen';
 import NavigationScreen from './screens/Navigation/NavigationScreen';
-import PredictionScreen from './screens/PredictonScreen';
+import PredictionScreen from './screens/Prediction/PredictonScreen'
 import NoticesScreen from './screens/Notices/NoticesScreen'
 import DepartureApprovalScreen from './screens/DepartureApprovalScreen';
 import ProfileScreen from './screens/ProfileScreen';

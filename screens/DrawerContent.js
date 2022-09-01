@@ -53,7 +53,7 @@ export function DrawerContent(props) {
                                 style={styles.row}>
 
                                 <Avatar.Image
-                                    source={require('../assets/avatar.jpg')}
+                                    source={{ uri: user.profileUrl }}
                                     size={50}
 
 
