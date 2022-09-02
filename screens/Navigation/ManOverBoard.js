@@ -85,7 +85,11 @@ const ManOverBoard = () => {
 
                     {moblat !== undefined ?
 
-                        <MapboxGL.PointAnnotation coordinate={[moblon, moblat]} />
+                        <MapboxGL.PointAnnotation
+                            id={'MOB'}
+                            coordinate={[moblon, moblat]}
+
+                        />
                         :
                         null}
 

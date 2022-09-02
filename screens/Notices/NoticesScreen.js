@@ -68,23 +68,23 @@ function NoticesScreen({ navigation }) {
           {
             post.map((post, index) => {
               return (
-                <View style={styles.rowContainer}>
-
-                  <TouchableOpacity
-                    key={index}
-                    onPress={() =>
-                      navigation.navigate('Notice', {
-                        post: post,
-                        index: index
-
-                      })
-                    }
-                    style={styles.button}>
-                    <Text style={styles.btnText}>{post.title}</Text>
-                  </TouchableOpacity>
 
 
-                </View>
+                <TouchableOpacity
+                  key={index}
+                  onPress={() =>
+                    navigation.navigate('Notice', {
+                      post: post,
+                      index: index
+
+                    })
+                  }
+                  style={styles.button}>
+                  <Text style={styles.btnText}>{post.title}</Text>
+                </TouchableOpacity>
+
+
+
 
               )
             })
@@ -158,6 +158,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 10,
     backgroundColor: '#333C8D',
+    marginTop: 20,
   },
 
   btnText: {
