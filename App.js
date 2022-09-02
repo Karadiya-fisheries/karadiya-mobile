@@ -52,6 +52,7 @@ import Compass from './screens/Navigation/Compass';
 import WayPoint from './screens/Navigation/WayPoint';
 import Setwaypoint from './screens/Navigation/Setwaypoint.js';
 import Notice from './screens/Notices/Notice';
+import notsubmit from './screens/Elog/notsubmit';
 
 const Drawer = createDrawerNavigator();
 const NaviDrawer = createDrawerNavigator();
@@ -195,6 +196,18 @@ const App = () => {
     );
   }
 
+
+  function ElogStackScreen() {
+    return (
+      <NaviDrawer.Navigator>
+        <NaviDrawer.Screen name="E-logBook" component={ElogBookScreen} />
+        <NaviDrawer.Screen name="notsubmit" component={notsubmit} />
+
+      </NaviDrawer.Navigator>
+    );
+  }
+
+
   function NoticeStackScreen() {
     return (
       <NaviDrawer.Navigator>
@@ -212,7 +225,7 @@ const App = () => {
             <Drawer.Navigator
               drawerContent={props => <DrawerContent {...props} />}>
               <Drawer.Screen name="Home" component={HomeStackScreen} />
-              <Drawer.Screen name="E-logBook" component={ElogBookScreen} />
+              <Drawer.Screen name="E-logBook" component={ElogStackScreen} />
               <Drawer.Screen name="Navigation" component={NaviStackScreen} />
 
               <Drawer.Screen

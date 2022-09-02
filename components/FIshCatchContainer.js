@@ -98,6 +98,7 @@ const FishCatchContainer = ({ childToParent }) => {
             onChangeText={setQTY}
             placeholder={'QTY'}
             value={QTY}
+            keyboardType={'numeric'}
 
           />
 
@@ -107,6 +108,7 @@ const FishCatchContainer = ({ childToParent }) => {
             onChangeText={setWeight}
             placeholder={'Weight'}
             value={Weight}
+            keyboardType={'numeric'}
 
           />
 

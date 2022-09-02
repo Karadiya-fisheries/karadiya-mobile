@@ -18,7 +18,7 @@ import {
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import { Checkbox, RadioButton, RadioButtonGroup } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
-import * as ImagePicker from 'react-native-image-picker';
+//import * as ImagePicker from 'react-native-image-picker';
 import SignatureCapture from 'react-native-signature-capture';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -27,6 +27,8 @@ import fishermenService from '../service/fishermen.service';
 import authService from '../service/auth.service';
 import ChildDetails from '../components/ChildDetails';
 import DependentDetails from '../components/DependentDetails';
+import { launchImageLibrary } from 'react-native-image-picker';
+
 
 const fishermanregValidationSchema = yup.object().shape({
   fidivision: yup.string().required('*This is a required field'),
@@ -83,17 +85,21 @@ function FishermanRegistration({ navigation }) {
   //----------------------------------------------
   //image picker
 
-  const options = {
-    storageOptions: {
-      skipBackup: true,
-      path: 'images',
-    },
+  const [pickerResponse, setPickerResponse] = useState(null);
+
+  const openGallery = () => {
+    const options = {
+      selectionLimit: 1,
+      mediaType: 'photo',
+      includeBase64: false,
+    };
+    launchImageLibrary(options, setPickerResponse);
   };
-  const openPicker = () => {
-    ImagePicker.launchImageLibrary(options, response => {
-      console.log('Response = ', response);
-    });
-  };
+
+  const uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
+
+
+
   //--------------------------------------------
   //Checkboxes
 
@@ -717,17 +723,22 @@ function FishermanRegistration({ navigation }) {
                   <Text style={styles.text_footer}>Photo of Applicant</Text>
 
                   <View style={{ alignItems: 'center', paddingBottom: 10 }}>
-                    <Image
-                      source={require('../assets/fish.png')}
-                      style={styles.logo}
-                      resizeMode="stretch"
-                    />
+
+                    {
+                      uri && (
+                        <Image
+                          source={{ uri }}
+                          style={styles.logo}
+                          resizeMode="stretch">
+                        </Image>
+                      )
+                    }
                   </View>
 
                   <View style={{ alignItems: 'center', paddingBottom: 10 }}>
                     <TouchableOpacity
                       style={styles.button}
-                      onPress={openPicker}>
+                      onPress={openGallery}>
                       <Text style={styles.buttonText}>Choose File</Text>
                     </TouchableOpacity>
                   </View>
@@ -738,39 +749,9 @@ function FishermanRegistration({ navigation }) {
                     I declare that the above said information are true and
                     accurate
                   </Text>
-                  <View
-                    style={{
-                      borderWidth: 1,
-                      padding: 10,
-                      borderColor: '#333C8D',
-                    }}>
-                    <SignatureCapture
-                      style={styles.signature}
-                      ref={sign}
-                      onSaveEvent={_onSaveEvent}
-                      onDragEvent={_onDragEvent}
-                      showNativeButtons={false}
-                      showTitleLabel={false}
-                      viewMode={'portrait'}
-                    />
-                  </View>
 
-                  <View style={{ flexDirection: 'row-reverse' }}>
-                    <TouchableHighlight
-                      style={styles.button}
-                      onPress={() => {
-                        saveSign();
-                      }}>
-                      <Text style={styles.buttonText}>Save</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight
-                      style={styles.button}
-                      onPress={() => {
-                        resetSign();
-                      }}>
-                      <Text style={styles.buttonText}>Reset</Text>
-                    </TouchableHighlight>
-                  </View>
+
+
                 </ProgressStep>
               </ProgressSteps>
             </View>
@@ -783,7 +764,7 @@ function FishermanRegistration({ navigation }) {
 export default FishermanRegistration;
 
 const { height } = Dimensions.get('screen');
-const height_logo = height * 0.15;
+const height_logo = height * 0.2;
 
 const styles = StyleSheet.create({
   container: {
@@ -910,7 +891,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: height_logo,
-    height: height_logo,
+    height: height_logo * 1.2,
     borderColor: '#333C8D',
     borderWidth: 1,
   },
