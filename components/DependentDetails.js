@@ -114,7 +114,7 @@ const DependentDetails = ({ childToParent }) => {
                         />
                     )}
 
-                    <Text style={{ fontSize: 18, margin: 20, color: '#333C8D' }}>{date.toDateString()}</Text>
+                    <Text style={{ fontSize: 18, margin: 20, color: '#333C8D' }}>{date.toLocaleDateString()}</Text>
 
 
 

@@ -70,14 +70,16 @@ const ManOverBoard = () => {
                         centerCoordinate={[geolon, geolat]}
                     />
 
+                    <MapboxGL.UserLocation />
 
 
-                    <MapboxGL.PointAnnotation
+
+                    {/* <MapboxGL.PointAnnotation
 
                         title={"Current"}
                         coordinate={[geolon, geolat]} >
 
-                    </MapboxGL.PointAnnotation>
+                    </MapboxGL.PointAnnotation> */}
 
 
 
