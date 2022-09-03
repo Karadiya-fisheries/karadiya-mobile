@@ -20,7 +20,7 @@ import { Checkbox, RadioButton, RadioButtonGroup } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import * as ImagePicker from 'react-native-image-picker';
 import SignatureCapture from 'react-native-signature-capture';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik, Field, Form, ErrorMessage,resetForm } from 'formik';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as yup from 'yup';
 import fishermenService from '../service/fishermen.service';
