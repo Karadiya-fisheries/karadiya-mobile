@@ -9,34 +9,76 @@ function notsubmit({ navigation }) {
     const [log, setlog] = useState([]);
 
     useEffect(() => {
-        getData();
+        // getData().then((value) => {
+        //     console.log("val: " + value);
+        //     setlog(value);
+        // });
+
+        async function tempFunction() {
+            await getItemList();
+        }
+
+        tempFunction();
+
+        return () => { };
     }, []);
 
-    const getData = async () => {
-        try {
-            const jsonValue = await AsyncStorage.getItem('Elog')
-            console.log("get not submit:" + jsonValue);
-            setlog(JSON.parse(jsonValue));
+    // const getData = async () => {
+    //     try {
+    //         const jsonValue = await AsyncStorage.getItem('@Elog')
+    //         //console.log("get not submit:" + jsonValue);
+    //         setlog(JSON.parse(jsonValue));
 
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // };
+
+    const claerData = async () => {
+        console.log("log:" + log);
+        //setlog([null]);
+
+        try {
+            await AsyncStorage.removeItem('@Elog')
         } catch (e) {
             console.log(e);
         }
-    };
-
-    const claerData = async () => {
-        setlog([null]);
-
-        try {
-            await AsyncStorage.removeItem('Elog')
-        } catch (e) {
-            // remove error
-        }
+        getData().then((value) => {
+            //console.log("val: " + value);
+        });
 
 
-
-        console.log("claer" + log);
+        console.log("claer");
 
     }
+
+    const addItemToList = async () => {
+        try {
+            storageDataList.push(inputBoxValue);
+
+            const output = JSON.stringify(storageDataList);
+
+            await AsyncStorage.setItem('Elog', output);
+            //setInputBoxValue('');
+
+            alert('Data Is Added');
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const getItemList = async () => {
+        try {
+            const data = await AsyncStorage.getItem('Elog');
+
+            const output = JSON.parse(data);
+
+            //setStorageDataList(output);
+            setlog(output);
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
 
 
@@ -53,6 +95,21 @@ function notsubmit({ navigation }) {
             </View>
             <View style={styles.footer}>
                 <ScrollView>
+                    <View style={styles.list}>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 30 }}>
+                            Array List
+                        </Text>
+
+
+
+                        {/* {log.map((item, index) => {
+                            return (
+                                <Text style={{ marginVertical: 10 }} key={index}>
+                                    {{ item }}
+                                </Text>
+                            );
+                        })} */}
+                    </View>
 
 
 
@@ -151,6 +208,11 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         fontWeight: 'bold',
         textAlign: 'center'
+    },
+    list: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 
 
