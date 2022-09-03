@@ -1,17 +1,22 @@
-import { useState, useEffect } from 'react';
-import * as React from 'react';
-import { View, Text, StyleSheet, Dimensions, TextInput, TouchableOpacity, PermissionsAndroid } from 'react-native';
+
+import React, { useEffect, useState } from 'react';
+import { View, Text, Button, StyleSheet, Dimensions, PermissionsAndroid, TouchableOpacity, TextInput } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
+import MapboxGL from '@react-native-mapbox-gl/maps';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import { set } from 'react-native-reanimated';
 
 
 function Setwaypoint({ navigation }) {
-    const [geolat, setgeolat] = useState();
-    const [geolon, setgeolon] = useState();
+
     const [lat, setlat] = useState();
     const [lon, setlon] = useState();
     //const [location, setLocation] = useState([]);
     const [item, setItem] = useState([]);
+
+    const [geolat, setgeolat] = useState(5);
+    const [geolon, setgeolon] = useState(80);
 
 
 
@@ -20,6 +25,24 @@ function Setwaypoint({ navigation }) {
         getLoaction();
 
 
+    });
+
+
+    const [route, setRoute] = useState({
+        type: "FeatureCollection",
+        features: [
+            {
+                type: "Feature",
+                properties: {},
+                geometry: {
+                    type: "LineString",
+                    coordinates: [
+                        [77.5946, 12.9716],
+                        [80.2707, 13.0827],
+                    ],
+                },
+            },
+        ],
     });
 
     const getLoaction = async () => {
@@ -32,8 +55,8 @@ function Setwaypoint({ navigation }) {
                 (position) => {
 
 
-                    setgeolat(position.coords.latitude);
-                    setgeolon(position.coords.longitude);
+                    setgeolat(parseFloat(position.coords.latitude));
+                    setgeolon(parseFloat(position.coords.longitude));
 
 
                 },
@@ -46,37 +69,26 @@ function Setwaypoint({ navigation }) {
 
     };
 
-    const storeData = async (location) => {
-        try {
-            const jsonValue = JSON.stringify(location)
-            console.log("after:" + jsonValue);
-            await AsyncStorage.setItem('@storage_Key', jsonValue)
-        } catch (e) {
-            console.log(e);
-        }
-    }
+
 
 
 
 
     const handleAddLocation = () => {
 
+        console.log(lat);
+        console.log(lon);
+
+
         setItem([...item, {
-            lat: lat,
-            lon: lon,
+            lat: parseFloat(lat),
+            lon: parseFloat(lon),
         }]);
 
-        console.log("before:" + item);
+        console.log("items: " + item);
 
-        storeData(item);
 
-        // navigation.navigate('Navigation', {
 
-        //     screen: 'WayPoint',
-        //     params: {
-        //         location: location
-        //     }
-        // });
     }
 
     const handleCurrentLocation = () => {
@@ -89,8 +101,96 @@ function Setwaypoint({ navigation }) {
 
 
     return (
-        <View style={styles.outterContainer}>
-            <View style={styles.innerContainer}>
+
+        <View style={styles.page}>
+            <View style={styles.container}>
+
+                <MapboxGL.MapView
+                    style={styles.map}>
+                    <MapboxGL.Camera
+                        zoomLevel={8}
+                        centerCoordinate={[geolon, geolat]}
+                    />
+
+                    <MapboxGL.UserLocation />
+
+                    <MapboxGL.ShapeSource id="line1" shape={route}>
+                        <MapboxGL.LineLayer
+                            id="linelayer1"
+                            style={{ lineColor: "red", lineWidth: 5 }}
+                        />
+                    </MapboxGL.ShapeSource>
+
+
+                    {item[0] !== undefined ?
+
+                        <MapboxGL.PointAnnotation
+                            id={'MOB'}
+                            coordinate={[item[0].lon, item[0].lat]}
+
+                        />
+                        :
+                        null}
+
+                    {item[1] !== undefined ?
+
+                        <MapboxGL.PointAnnotation
+                            id={'MOB'}
+                            coordinate={[item[1].lon, item[1].lat]}
+
+                        />
+                        :
+                        null}
+
+
+                    {item[2] !== undefined ?
+
+                        <MapboxGL.PointAnnotation
+                            id={'MOB'}
+                            coordinate={[item[2].lon, item[2].lat]}
+
+                        />
+                        :
+                        null}
+
+
+                    {item[3] !== undefined ?
+
+                        <MapboxGL.PointAnnotation
+                            id={'MOB'}
+                            coordinate={[item[3].lon, item[3].lat]}
+
+                        />
+                        :
+                        null}
+
+
+                    {item[4] !== undefined ?
+
+                        <MapboxGL.PointAnnotation
+                            id={'MOB'}
+                            coordinate={[item[4].lon, item[4].lat]}
+
+                        />
+                        :
+                        null}
+
+
+                    {item[5] !== undefined ?
+
+                        <MapboxGL.PointAnnotation
+                            id={'MOB'}
+                            coordinate={[item[5].lon, item[5].lat]}
+
+                        />
+                        :
+                        null}
+
+                </MapboxGL.MapView>
+
+            </View>
+            <View style={styles.Btncontainer}>
+
 
                 <View style={styles.rowContainer}>
 
@@ -103,7 +203,7 @@ function Setwaypoint({ navigation }) {
                         placeholder={'Latitude'}
                         value={lat}
                         keyboardType={'numeric'}
-                    //defaultValue={geolat}
+
                     />
 
                 </View>
@@ -118,32 +218,62 @@ function Setwaypoint({ navigation }) {
                         placeholder={'Longitude'}
                         value={lon}
                         keyboardType={'numeric'}
-                    //defaultValue={geolon.toString()}
+
                     />
 
                 </View>
-                <View style={{ alignItems: 'center' }}>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => handleCurrentLocation()}
-                    >
-                        <Text style={styles.textADD}>Set Current Location</Text>
-                    </TouchableOpacity>
+
+
+                {/* <View style={styles.rowContainer}>
+
+                    <View style={{ alignItems: 'center' }}>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={setItem(null)}
+                        >
+                            <Text style={styles.textADD}>Delete Location</Text>
+                        </TouchableOpacity>
+                    </View>
+
+
+                </View> */}
+
+                <View style={styles.rowContainer}>
+
+                    <View style={{ alignItems: 'center' }}>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => handleCurrentLocation()}
+                        >
+                            <Text style={styles.textADD}>Set Current Location</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ alignItems: 'center' }}>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => handleAddLocation()}
+                        >
+                            <Text style={styles.textADD}>Add Location</Text>
+                        </TouchableOpacity>
+                    </View>
+
+
+
                 </View>
-                <View style={{ alignItems: 'center' }}>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => handleAddLocation()}
-                    >
-                        <Text style={styles.textADD}>Add Location</Text>
-                    </TouchableOpacity>
-                </View>
+
+
+
 
 
 
 
             </View>
+
+
+
         </View>
+
+
     );
 }
 
@@ -153,7 +283,51 @@ export default Setwaypoint;
 
 const { height } = Dimensions.get("screen");
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
+
+
+    page: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "white"
+    },
+    container: {
+        flex: 4,
+        width: windowWidth,
+        backgroundColor: "#333C8D",
+        borderRadius: 20,
+
+    },
+    Btncontainer: {
+        flex: 2,
+        backgroundColor: "white",
+        borderRadius: 20,
+    },
+    map: {
+        flex: 0.95,
+        borderRadius: 20,
+    },
+    btnText: {
+        color: '#fff',
+        fontSize: RFPercentage(4),
+        margin: windowHeight * 0.03,
+        fontWeight: 'bold',
+        alignItems: 'center',
+
+    },
+    button: {
+        borderRadius: 20,
+        margin: windowHeight * 0.03,
+        width: "80%",
+        alignItems: 'center',
+        height: windowHeight * 0.12,
+        backgroundColor: 'red',
+        textAlign: 'center'
+    },
     outterContainer: {
         flex: 1,
         alignItems: 'center',
@@ -203,9 +377,9 @@ const styles = StyleSheet.create({
     button: {
         flexDirection: 'column',
         backgroundColor: '#333C8D',
-        padding: 20,
+        padding: 10,
         borderRadius: 20,
-        width: '60%',
+        width: '80%',
         margin: 10,
         textAlign: 'center',
 
@@ -215,6 +389,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
         textAlign: 'center',
     },
+
 });
 
 

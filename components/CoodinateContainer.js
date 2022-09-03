@@ -5,6 +5,7 @@ import Task from "./Task";
 import { Picker } from '@react-native-picker/picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Checkbox, RadioButton, RadioButtonGroup } from 'react-native-paper';
 
 
 
@@ -17,7 +18,7 @@ import TaskContainer from './TaskContainer';
 const CoodinateContainer = ({ childToParent }) => {
 
 
-
+    const [size, setsize] = useState(0);
     const [datePicker, setDatePicker] = useState(false);
 
     const [date, setDate] = useState(new Date());
@@ -70,6 +71,7 @@ const CoodinateContainer = ({ childToParent }) => {
 
     useEffect(() => {
         childToParent(item);
+        setsize(item.length);
     });
 
 
@@ -111,7 +113,7 @@ const CoodinateContainer = ({ childToParent }) => {
                         />
                     )}
 
-                    <Text style={{ fontSize: 18, margin: 20, color: '#333C8D' }}>{date.toDateString()}</Text>
+                    <Text style={{ fontSize: 18, margin: 20, color: '#333C8D' }}>{date.toLocaleDateString()}</Text>
 
 
 
@@ -171,7 +173,7 @@ const CoodinateContainer = ({ childToParent }) => {
 
 
                         <Text style={styles.label}>GPS Point</Text>
-                        <Picker
+                        {/* <Picker
                             mode='dropdown'
                             style={styles.pickerStyle}
                             selectedValue={GPS}
@@ -179,7 +181,20 @@ const CoodinateContainer = ({ childToParent }) => {
                         >
                             <Picker.Item label="Start GPS" value="StartGPS" />
                             <Picker.Item label="End GPS" value="EndGPS" />
-                        </Picker>
+                        </Picker> */}
+                        <RadioButton.Group
+                            onValueChange={setGPS}
+                            value={GPS}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <RadioButton color="#333C8D" value="StartGPS" />
+                                <Text style={styles.txt}>Start</Text>
+                            </View>
+
+                            <View style={{ flexDirection: 'row' }}>
+                                <RadioButton value="EndGPS" color="#333C8D" />
+                                <Text style={styles.txt}>End</Text>
+                            </View>
+                        </RadioButton.Group>
 
 
                     </View>
@@ -192,6 +207,7 @@ const CoodinateContainer = ({ childToParent }) => {
                             //placeholder={'Latitude'}
                             value={latitude}
                             onChangeText={setLatitude}
+                            keyboardType={'numeric'}
                         />
 
 
@@ -207,13 +223,16 @@ const CoodinateContainer = ({ childToParent }) => {
                             onChangeText={setLongitude}
                             //placeholder={'Longitude'}
                             value={longitude}
+                            keyboardType={'numeric'}
+
+
                         />
 
                     </View>
 
 
 
-                    {item.length <= 2 ?
+                    {size <= 1 ?
 
                         <TouchableOpacity
                             style={styles.button}

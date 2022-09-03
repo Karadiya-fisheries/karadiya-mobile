@@ -5,6 +5,7 @@ import Task from "./Task";
 import { Picker } from '@react-native-picker/picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Moment from 'moment';
 
 
 
@@ -47,7 +48,7 @@ const ChildDetails = ({ childToParent }) => {
 
         setItem([...item, {
             name: name,
-            birthday: date.toISOString(),
+            birthday: date.toString(),
 
         }])
 
@@ -115,7 +116,7 @@ const ChildDetails = ({ childToParent }) => {
                         />
                     )}
 
-                    <Text style={{ fontSize: 18, margin: 20, color: '#333C8D' }}>{date.toDateString()}</Text>
+                    <Text style={{ fontSize: 18, margin: 20, color: '#333C8D' }}>{date.toLocaleDateString()}</Text>
 
 
 

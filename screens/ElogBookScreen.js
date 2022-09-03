@@ -9,10 +9,13 @@ import { Formik, Field, Form, ErrorMessage, formik } from 'formik';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as yup from 'yup';
+import { useNetInfo } from "@react-native-community/netinfo";
 import CoodinateContainer from "../components/CoodinateContainer";
 import FishCatchContainer from "../components/FIshCatchContainer";
 
 import triplogService from "../service/triplog.service";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 
@@ -65,9 +68,34 @@ const fishermanregValidationSchema = yup.object().shape({
 
 
 
-function FishermanRegistration() {
+function FishermanRegistration({ navigation }) {
+
+    const netInfo = useNetInfo();
+    console.log(netInfo.isConnected);
 
 
+
+    const storeData = async (log) => {
+        try {
+            const jsonValue = JSON.stringify(log)
+            console.log("Set:" + jsonValue);
+            await AsyncStorage.setItem('Elog', jsonValue)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+
+    const getData = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('Elog')
+            console.log("get:" + jsonValue);
+            return jsonValue != null ? JSON.parse(jsonValue) : null;
+
+        } catch (e) {
+            console.log(e);
+        }
+    };
 
     const progressStepsStyle = {
         activeStepIconBorderColor: '#333C8D',
@@ -127,10 +155,12 @@ function FishermanRegistration() {
         LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
     }, [])
 
+    const [logRecord, setRecord] = useState([getData()]);
+
     return (
 
         <Formik
-            validationSchema={fishermanregValidationSchema}
+            //validationSchema={fishermanregValidationSchema}
 
             initialValues={{
                 wesselId: '',
@@ -154,14 +184,51 @@ function FishermanRegistration() {
 
             onSubmit={values => {
 
-                console.log(values);
-                console.log(coods);
-                console.log(fishList);
-                console.log("Submitted");
 
-                triplogService
-                    .createTripLog({
+                if (netInfo.isConnected) {
 
+                    console.log(values);
+                    console.log(coods);
+                    console.log(fishList);
+                    console.log("Submitted");
+
+
+
+                    triplogService
+                        .createTripLog({
+
+                            boatBoatId: 1,
+                            WesselID: values.wesselId,
+                            SkipperID: values.skipperId,
+                            Harbor: values.depharbor,
+                            DepartureDate: values.depDate,
+                            DepartureTime: values.depTime,
+                            GearType: values.gearType,
+                            MainLine: values.mainLine,
+                            BranchLine: values.branchLine,
+                            HookNo: values.hookNo,
+                            HookTypes: values.hookType,
+                            Depth: values.depth,
+                            Bait: values.bait,
+
+                        }).then(res => {
+                            console.log(res);
+                        })
+                        .catch(err => {
+                            console.log(err.response);
+                            console.log(err.request);
+                            console.log(err.message);
+                        });
+
+                } else {
+
+                    console.log("not connected");
+                    console.log(values);
+                    console.log(coods);
+                    console.log(fishList);
+                    console.log(" not Submitted");
+
+                    setRecord([...logRecord, {
                         boatBoatId: 1,
                         WesselID: values.wesselId,
                         SkipperID: values.skipperId,
@@ -175,15 +242,21 @@ function FishermanRegistration() {
                         HookTypes: values.hookType,
                         Depth: values.depth,
                         Bait: values.bait,
+                        coods: coods,
+                        fishList: fishList,
 
-                    }).then(res => {
-                        console.log(res);
-                    })
-                    .catch(err => {
-                        console.log(err.response);
-                        console.log(err.request);
-                        console.log(err.message);
-                    });
+                    }])
+
+                    storeData(logRecord);
+                    //console.log(logRecord[1]);
+                    navigation.navigate('notsubmit');
+
+
+
+                }
+
+
+
             }}
 
         >
@@ -192,7 +265,7 @@ function FishermanRegistration() {
 
                 <View style={styles.container}>
                     <View style={styles.header}>
-                        <Text style={styles.headTitle1}>Fisherman Registration</Text>
+                        <Text style={styles.headTitle1}>E log Book</Text>
 
 
                     </View>
@@ -301,7 +374,7 @@ function FishermanRegistration() {
                                                 />
                                             )}
 
-                                            <Text style={{ fontSize: 18, margin: 20, color: '#333C8D' }}>{date.toString()}</Text>
+                                            <Text style={{ fontSize: 18, margin: 20, color: '#333C8D' }}>{date.toLocaleDateString('en-US')}</Text>
 
 
                                         </View>
@@ -386,6 +459,7 @@ function FishermanRegistration() {
                                                 onChangeText={handleChange('mainLine')}
                                                 onBlur={handleBlur('mainLine')}
                                                 value={values.mainLine}
+                                                keyboardType={'numeric'}
                                             />
                                         </View>
                                         {errors.mainLine && touched.mainLine ? (
@@ -399,6 +473,7 @@ function FishermanRegistration() {
                                                 onChangeText={handleChange('branchLine')}
                                                 onBlur={handleBlur('branchLine')}
                                                 value={values.branchLine}
+                                                keyboardType={'numeric'}
                                             />
                                         </View>
                                         {errors.branchLine && touched.branchLine ? (
@@ -412,6 +487,7 @@ function FishermanRegistration() {
                                                 onChangeText={handleChange('hookNo')}
                                                 onBlur={handleBlur('hookNo')}
                                                 value={values.hookNo}
+                                                keyboardType={'numeric'}
                                             />
                                         </View>
                                         {errors.hookNo && touched.hookNo ? (
@@ -448,6 +524,7 @@ function FishermanRegistration() {
                                                 onChangeText={handleChange('depth')}
                                                 onBlur={handleBlur('depth')}
                                                 value={values.depth}
+                                                keyboardType={'numeric'}
                                             />
                                         </View>
                                         {errors.depth && touched.depth ? (
