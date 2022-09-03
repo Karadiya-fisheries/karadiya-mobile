@@ -10,6 +10,7 @@ import * as yup from 'yup';
 import TravelerDetails from '../components/TravelerDetails';
 import DepartureService from '../service/DepartureService';
 import { useNetInfo } from '@react-native-community/netinfo';
+import { useToast } from "react-native-toast-notifications";
 
 const departureapprovalValidationSchema = yup.object().shape({
   imul: yup
@@ -20,8 +21,8 @@ const departureapprovalValidationSchema = yup.object().shape({
     .required('*This is a required field'),
   phnum: yup
   .number()
-  .min(10, "Must be more than 10 characters")
-  .required("This field is requried"),
+  .min(10, "Must be 10 characters")
+  .required("*This is a required field"),
   email: yup
     .string()
     .email("Please enter an valid email")
@@ -39,16 +40,16 @@ const departureapprovalValidationSchema = yup.object().shape({
     .number()
     .required('*This is a required field'),
   throns: yup
-    .string()
+    .number()
     .required('*This is a required field'),
   cnet: yup
-    .string()
+    .number()
     .required('*This is a required field'),
   ceye: yup
     .number()
     .required('*This is a required field'),
   netting: yup
-    .string()
+    .number()
     .required('*This is a required field'),
   neteye: yup
     .number()
@@ -59,6 +60,7 @@ const departureapprovalValidationSchema = yup.object().shape({
   ilicense: yup
     .string()
     .required('*This is a required field'),
+ 
 
 
 });
@@ -66,7 +68,10 @@ const departureapprovalValidationSchema = yup.object().shape({
 
 
 
-function DepartureApprovalScreen() {
+function DepartureApprovalScreen({navigation}) {
+
+  const toast = useToast();
+
   const progressStepsStyle = {
     activeStepIconBorderColor: '#333C8D',
     activeLabelColor: '#333C8D',
@@ -79,8 +84,8 @@ function DepartureApprovalScreen() {
   };
   
 
-  const [checked, setChecked] = React.useState();
-
+  const [checked, setChecked] = React.useState(false);
+  const [toggleCheckBox, setToggleCheckBox] = useState(false)
   //--------------------------------------------------------------
   const [selectedStation, setSelectedStation] = useState();
   const [selectedCode, setSelectedCode] = useState();
@@ -111,7 +116,7 @@ function DepartureApprovalScreen() {
 
   return (
     <Formik
-      validationSchema={departureapprovalValidationSchema}
+      //validationSchema={departureapprovalValidationSchema}
       initialValues={{
         imul: '',
         ownername: '',
@@ -132,10 +137,12 @@ function DepartureApprovalScreen() {
         fishingArea:'indigenous sea',
         selectedCode:'4096hz',
         selectedPort:'galle',
-        selectedStation:'galle'
+        selectedStation:'galle',
+        agree:'unchecked'
 
       }}
       onSubmit={(values ,{resetForm})=> {
+        
         if(netInfo.isConnected){
       
         DepartureService
@@ -162,6 +169,7 @@ function DepartureApprovalScreen() {
             Frequency:values.selectedCode,
             Vms:values.vmsStatus,
            
+           
           })
           .then(res => {
             console.log(res);
@@ -173,20 +181,28 @@ function DepartureApprovalScreen() {
             console.log(err.response);
             console.log(err.request);
             console.log(err.message);
+            toast.show(err.message, {
+              type: "warning",
+              placement: "bottom",
+              duration: 4000,
+              offset: 30,
+              animationType: "slide-in",
+         
+      });
+
+      toast.show("Submitted Successfully!", {
+          type: "success",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+      });
+            
           });
      
       
-        }
-        
-          
-      }
-    
-    
-    
-    }
-      
-      
-      >
+        }}}>
+
       {({ handleChange, handleBlur, handleSubmit, values, errors, isValid, touched, }) => (
         
         <View style={styles.container}>
@@ -513,28 +529,28 @@ function DepartureApprovalScreen() {
                   <View style={{ padding: 15, marginTop: 10 }}>
 
                     <Text style={styles.txt}>16. I will not take on this boat any of my boat's registration book, operating license, valid insurance certificate, log book, fire extinguishers, radio with call sign, life jacket, life-saving equipment, or any other means of disembarkation. I hereby promise that I will not be taken on board and will not engage in any activity that is detrimental to national security or the health of the people of the country.</Text>
-                    <View style={styles.checkBox}>
-                      <Checkbox
-
-                        status={agree ? 'checked' : 'unchecked'}
-                        onPress={() => {
+                   
+                      <View style={styles.checkBox}>
+                        <Checkbox
+                        onValueChange={handleChange('checked')}
+                        value={values.agree}
+                          status={agree ? 'checked' : 'unchecked'}
+                          onPress={() => {
                           setAgree(!agree);
-                        }}
-                        color={'#333C8D'}
-
-
-                      />
+                         }}
+                        />
                       <Text style={styles.label}>I Agree</Text>
+                      
                     </View>
-                    <Text style={styles.txt}>17. Click the button below to request the transit (check if you get a message that says 'successfully forwarded' after pressing that button).</Text>
-                  </View>
+                    </View>
+                    
+                  
                  
 
 
                   <View style={{marginTop:180}}>
                 <Text style={styles.text1}>{networkConn}</Text>
-                <Text style={styles.text1}>{synched}</Text>
-                <Text style={styles.text1}>{data}</Text>
+              
                 
 
             </View>
@@ -563,10 +579,11 @@ const styles = StyleSheet.create({
   },
 
   text1: {
-    marginTop: 5,
+    marginTop: 85,
     textAlign: 'center',
     fontSize: 20,
     color: 'black',
+    backgroundColor:'green'
     
 },
   header: {
