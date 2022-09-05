@@ -7,6 +7,7 @@ import SelectDropdown from 'react-native-select-dropdown';
 import { Picker } from '@react-native-picker/picker';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as yup from 'yup';
+import DepartureService from "../service/DepartureService";
 
 const departureapprovalValidationSchema = yup.object().shape({
   imul: yup
@@ -133,7 +134,27 @@ function DepartureApprovalScreen() {
         ilicense: '',
 
       }}
-      onSubmit={values => console.log(values)}
+      onSubmit={values => {
+        const list = {
+          Imul: values.imul,
+          OwnerName: values.ownername,
+          TelNo: values.phnum,
+          Email: values.email,
+          SkipperName: values.skippername,
+          SkipperNic: values.nic,
+          DepartingPort: "Matara",
+          SkipperNo: values.skippernum,
+          FishingZone: values.zone,
+          MLength: values.mlength,
+          CNetLength: values.cnet,
+          NetEyeSize: values.ceye,
+          NoThorns: values.throns,
+        }
+
+        DepartureService.createDeparture(list).then((res) => {
+          console.log(res.data)
+        })
+      }}
     >
       {({ handleChange, handleBlur, handleSubmit, values, errors, isValid, touched, }) => (
         <View style={styles.container}>

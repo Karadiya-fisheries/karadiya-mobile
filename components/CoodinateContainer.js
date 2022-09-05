@@ -53,8 +53,8 @@ const CoodinateContainer = ({ childToParent }) => {
     const handleAddTask = () => {
 
         setItem([...item, {
-            fishDate: date,
-            fishTime: time,
+            fishDate: date.toLocaleDateString('en-US'),
+            fishTime: time.toLocaleTimeString('en-US'),
             gps: GPS,
             lat: latitude,
             lon: longitude,

@@ -66,12 +66,12 @@ function ProfileScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Avatar.Image
-        size={170}
+        size={200}
         source={{ uri: user.profileUrl }}
         style={styles.avatar}
       />
       <View style={styles.surface}>
-        <View style={{ top: '10%', flex: 1 }}>
+        <View style={{ top: '10%', flex: 1, paddingBottom: 100, paddingTop: 50 }}>
           <View style={{ flexDirection: 'column', marginTop: 10, flex: 1 }}>
 
             <Text style={styles.txt}>Name</Text>
@@ -113,20 +113,7 @@ function ProfileScreen({ navigation }) {
 
 
           </View>
-          <View style={{ flexDirection: 'column', marginTop: 10, flex: 1 }}>
 
-            <Text style={styles.txt}>NIC</Text>
-            <View style={{ alignItems: 'center' }}>
-              <TextInput style={styles.textInput}
-                //onChangeText={handleChange('imul')}
-                //onBlur={handleBlur('imul')}
-                value={user.nic}
-              />
-
-            </View>
-
-
-          </View>
           <View style={{ flexDirection: 'column', marginTop: 10, flex: 1 }}>
 
             <Text style={styles.txt}>Role</Text>
@@ -204,6 +191,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 24,
     lineHeight: 28,
+    fontweight: 'bold'
   },
   detail: {
     margin: 5,
@@ -222,7 +210,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 20,
     paddingHorizontal: 20,
-    width: "90%",
+    width: "80%",
     backgroundColor: "white",
     elevation: 5,
     shadowColor: '#000',
@@ -236,8 +224,10 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     paddingLeft: 5,
     color: '#333C8D',
-    marginBottom: 15,
+    marginBottom: 25,
     textAlign: 'justify',
-    marginLeft: 15
+    marginLeft: 40,
+    fontWeight: 'bold',
+
   },
 });
