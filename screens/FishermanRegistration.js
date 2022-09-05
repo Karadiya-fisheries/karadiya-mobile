@@ -20,7 +20,7 @@ import { Checkbox, RadioButton, RadioButtonGroup } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 //import * as ImagePicker from 'react-native-image-picker';
 import SignatureCapture from 'react-native-signature-capture';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { Formik, Field, Form, ErrorMessage,resetForm } from 'formik';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as yup from 'yup';
 import fishermenService from '../service/fishermen.service';
@@ -28,6 +28,9 @@ import authService from '../service/auth.service';
 import ChildDetails from '../components/ChildDetails';
 import DependentDetails from '../components/DependentDetails';
 import { launchImageLibrary } from 'react-native-image-picker';
+
+import { useToast } from "react-native-toast-notifications";
+
 //import { showImagePicker } from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
 import { utils } from '@react-native-firebase/app';
@@ -35,6 +38,7 @@ import { utils } from '@react-native-firebase/app';
 //import { getStorage, ref, uploadBytes } from 'firebase/storage'; //access the storage database
 //import storage from './firebase/firebaseConfig';
 //import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+
 
 
 const fishermanregValidationSchema = yup.object().shape({
@@ -58,6 +62,9 @@ const fishermanregValidationSchema = yup.object().shape({
 });
 
 function FishermanRegistration({ navigation }) {
+
+  const toast = useToast();
+
   const progressStepsStyle = {
     activeStepIconBorderColor: '#333C8D',
     activeLabelColor: '#333C8D',
@@ -153,6 +160,7 @@ function FishermanRegistration({ navigation }) {
     setImage(null);
   };
 
+
   //--------------------------------------------
   //Checkboxes
 
@@ -174,33 +182,7 @@ function FishermanRegistration({ navigation }) {
 
   //-----------------------------
   //Dynamiccaly Adding input fields
-  //children details
-
-  const [inputs, setInputs] = useState([{ key: '', value: '' }]);
-
-  const addHandler = () => {
-    const _inputs = [...inputs];
-    _inputs.push({ key: '', value: '' });
-    setInputs(_inputs);
-  };
-  const deleteHandler = key => {
-    const _inputs = inputs.filter((input, index) => index != key);
-    setInputs(_inputs);
-  };
-
-  //dependant details
-  const [inputs1, setInputs1] = useState([{ key1: '', value1: '' }]);
-
-  const addHandler1 = () => {
-    const _inputs1 = [...inputs1];
-    _inputs1.push({ key1: '', value1: '' });
-    setInputs1(_inputs1);
-  };
-
-  const deleteHandler1 = key1 => {
-    const _inputs1 = inputs1.filter((input1, index1) => index1 != key1);
-    setInputs1(_inputs1);
-  };
+ 
   //-----------------------------
   //date picker
   const [date, setDate] = useState(new Date());
@@ -252,7 +234,7 @@ function FishermanRegistration({ navigation }) {
 
   return (
     <Formik
-      validationSchema={fishermanregValidationSchema}
+     // validationSchema={fishermanregValidationSchema}
       initialValues={{
         fidivision: '',
         gndivision: '',
@@ -272,7 +254,7 @@ function FishermanRegistration({ navigation }) {
         membershipno: 'no',
 
       }}
-      onSubmit={values => {
+      onSubmit={(values ,{resetForm})=> {
         const boatCat = [
           { label: 'IMUL', value: imul },
           { label: 'IDAY', value: iday },
@@ -329,6 +311,24 @@ function FishermanRegistration({ navigation }) {
             console.log(err.response);
             console.log(err.request);
             console.log(err.message);
+            toast.show(err.message, {
+              type: "warning",
+              placement: "bottom",
+              duration: 4000,
+              offset: 30,
+              animationType: "slide-in",
+         
+      });
+
+      toast.show("Check Your Email!", {
+          type: "success",
+          placement: "bottom",
+          duration: 4000,
+          offset: 30,
+          animationType: "slide-in",
+      });
+
+
           });
       }}>
       {({
@@ -707,7 +707,7 @@ function FishermanRegistration({ navigation }) {
                       <Text style={styles.txt}>
                         Membership of {'\n'}Fisheries Society
                       </Text>
-
+                      
                       <RadioButton.Group
                         onValueChange={handleChange('membershipStatus')}
                         value={values.membershipStatus}>
@@ -777,10 +777,12 @@ function FishermanRegistration({ navigation }) {
 
                   <View style={{ alignItems: 'center', paddingBottom: 10 }}>
 
+
                     {
                       image && (
                         <Image
                           source={{ uri: image.uri }}
+
                           style={styles.logo}
                           resizeMode="stretch">
                         </Image>
@@ -792,7 +794,9 @@ function FishermanRegistration({ navigation }) {
                   <View style={{ alignItems: 'center', paddingBottom: 10 }}>
                     <TouchableOpacity
                       style={styles.button}
+
                       onPress={selectImage}>
+
                       <Text style={styles.buttonText}>Choose File</Text>
                     </TouchableOpacity>
                   </View>

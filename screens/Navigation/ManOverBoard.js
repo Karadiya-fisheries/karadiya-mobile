@@ -83,8 +83,6 @@ const ManOverBoard = () => {
 
 
 
-
-
                     {moblat !== undefined ?
 
                         <MapboxGL.PointAnnotation
