@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "97733120638",
+    "project_id": "karadiya-dashboard",
+    "storage_bucket": "karadiya-dashboard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:97733120638:android:ae23feeba9980943607e2f",
+        "android_client_info": {
+          "package_name": "com.karadiya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "97733120638-ut26o95gsv3ehup2eor0npdmioei87ia.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1ZlZ_NOSoFjDbc13P4H2_nq4hUx-ohBI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "97733120638-ut26o95gsv3ehup2eor0npdmioei87ia.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

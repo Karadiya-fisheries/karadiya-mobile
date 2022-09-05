@@ -28,7 +28,17 @@ import authService from '../service/auth.service';
 import ChildDetails from '../components/ChildDetails';
 import DependentDetails from '../components/DependentDetails';
 import { launchImageLibrary } from 'react-native-image-picker';
+
 import { useToast } from "react-native-toast-notifications";
+
+//import { showImagePicker } from 'react-native-image-picker';
+import storage from '@react-native-firebase/storage';
+import { utils } from '@react-native-firebase/app';
+//import { initializeApp } from 'firebase/app'; //validate yourself
+//import { getStorage, ref, uploadBytes } from 'firebase/storage'; //access the storage database
+//import storage from './firebase/firebaseConfig';
+//import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+
 
 
 const fishermanregValidationSchema = yup.object().shape({
@@ -88,20 +98,67 @@ function FishermanRegistration({ navigation }) {
 
   //----------------------------------------------
   //image picker
+  const [image, setImage] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [transferred, setTransferred] = useState(0);
 
-  const [pickerResponse, setPickerResponse] = useState(null);
-
-  const openGallery = () => {
+  const selectImage = () => {
     const options = {
-      selectionLimit: 1,
-      mediaType: 'photo',
-      includeBase64: false,
+      maxWidth: 2000,
+      maxHeight: 2000,
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
+      }
     };
-    launchImageLibrary(options, setPickerResponse);
+    launchImageLibrary(options, response => {
+      console.log(response);
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const source = { uri: response.assets[0].uri };
+        console.log(source);
+        setImage(source);
+      }
+    });
+
+    uploadImage();
+
   };
 
-  const uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
-
+  const uploadImage = async () => {
+    const { uri } = image;
+    const filename = uri.substring(uri.lastIndexOf('/') + 1);
+    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+    setUploading(true);
+    setTransferred(0);
+    const task = storage()
+      .ref(filename)
+      .putFile(uploadUri);
+    // set progress state
+    task.on('state_changed', snapshot => {
+      setTransferred(
+        Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 10000
+      );
+    });
+    try {
+      await task;
+      const url = await storage().ref(uploadUri).getDownloadURL();
+      console.log(url)
+    } catch (e) {
+      console.error(e);
+    }
+    setUploading(false);
+    Alert.alert(
+      'Photo uploaded!',
+      'Your photo has been uploaded to Firebase Cloud Storage!'
+    );
+    setImage(null);
+  };
 
 
   //--------------------------------------------
@@ -719,22 +776,27 @@ function FishermanRegistration({ navigation }) {
                   <Text style={styles.text_footer}>Photo of Applicant</Text>
 
                   <View style={{ alignItems: 'center', paddingBottom: 10 }}>
-                    
+
+
                     {
-                      uri && (
+                      image && (
                         <Image
-                          source={{ uri }}
+                          source={{ uri: image.uri }}
+
                           style={styles.logo}
                           resizeMode="stretch">
                         </Image>
                       )
                     }
+
                   </View>
 
                   <View style={{ alignItems: 'center', paddingBottom: 10 }}>
                     <TouchableOpacity
                       style={styles.button}
-                      onPress={openGallery}>
+
+                      onPress={selectImage}>
+
                       <Text style={styles.buttonText}>Choose File</Text>
                     </TouchableOpacity>
                   </View>

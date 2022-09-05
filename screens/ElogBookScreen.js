@@ -16,6 +16,10 @@ import FishCatchContainer from "../components/FIshCatchContainer";
 import triplogService from "../service/triplog.service";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import { useToast } from "react-native-toast-notifications";
+
+
+
 
 
 
@@ -73,28 +77,48 @@ function FishermanRegistration({ navigation }) {
     const netInfo = useNetInfo();
     console.log(netInfo.isConnected);
 
+    const toast = useToast();
+
 
 
     const storeData = async (log) => {
+        //console.log(log)
+        // try {
+        //     const jsonValue = await JSON.stringify(log)
+        //     //console.log("Set:" + jsonValue);
+        //     await AsyncStorage.setItem('Elog', jsonValue)
+        // } catch (e) {
+        //     console.log(e);
+        // }
+
         try {
-            const jsonValue = JSON.stringify(log)
-            console.log("Set:" + jsonValue);
-            await AsyncStorage.setItem('Elog', jsonValue)
-        } catch (e) {
+            await AsyncStorage.setItem('Elog', JSON.stringify(log));
+        } catch (error) {
             console.log(e);
         }
+
     }
 
 
     const getData = async () => {
         try {
             const jsonValue = await AsyncStorage.getItem('Elog')
-            console.log("get:" + jsonValue);
+            //console.log("get:" + jsonValue);
             return jsonValue != null ? JSON.parse(jsonValue) : null;
 
         } catch (e) {
             console.log(e);
         }
+
+        // try {
+        //     const myArray = await AsyncStorage.getItem('Elog');
+        //     if (myArray !== null) {
+        //         setRecord(JSON.parse(myArray));
+        //     }
+        // } catch (error) {
+        //     console.log(e);
+        // }
+
     };
 
     const progressStepsStyle = {
@@ -134,6 +158,9 @@ function FishermanRegistration({ navigation }) {
         setTimePicker(false);
     };
 
+
+
+
     const [coods, setCoods] = useState([]);
     const [fishList, setFish] = useState([]);
 
@@ -149,13 +176,18 @@ function FishermanRegistration({ navigation }) {
 
 
 
-
+    const [logRecord, setRecord] = useState([]);
 
     useEffect(() => {
         LogBox.ignoreLogs(['Animated: `useNativeDriver`']);
+        getData().then((value) => {
+            //console.log("elog val: " + value);
+            setRecord(value);
+        });
     }, [])
 
-    const [logRecord, setRecord] = useState([getData()]);
+
+
 
     return (
 
@@ -166,7 +198,7 @@ function FishermanRegistration({ navigation }) {
                 wesselId: '',
                 skipperId: '',
                 depharbor: 'Panadura',
-                depDate: date.toString(),
+                depDate: date.toLocaleDateString('en-US'),
                 depTime: time.toLocaleTimeString('en-US'),
                 gearType: 'Longline',
                 mainLine: '',
@@ -185,12 +217,14 @@ function FishermanRegistration({ navigation }) {
             onSubmit={values => {
 
 
+
                 if (netInfo.isConnected) {
 
                     console.log(values);
                     console.log(coods);
                     console.log(fishList);
                     console.log("Submitted");
+
 
 
 
@@ -212,12 +246,37 @@ function FishermanRegistration({ navigation }) {
                             Bait: values.bait,
 
                         }).then(res => {
-                            console.log(res);
-                        })
-                        .catch(err => {
+
+
+                            console.log(res.data.tripId);
+
+
+                            tripId = res.data.tripId,
+                                FishingDate = coods[0].fishDate,
+                                FishingTime = coods[0].fishTime,
+                                GPSPoint = {
+                                    start: {
+                                        long: coods[0].lon,
+                                        lat: coods[0].lat
+                                    },
+                                    end: {
+                                        long: coods[1].lon,
+                                        lat: coods[1].lat
+                                    }
+                                },
+                                Catch = caches
+
+                        }).catch(err => {
                             console.log(err.response);
                             console.log(err.request);
                             console.log(err.message);
+                            toast.show(err.message, {
+                                type: "warning",
+                                placement: "bottom",
+                                duration: 4000,
+                                offset: 30,
+                                animationType: "slide-in",
+
                         });
 
                 } else {
@@ -248,7 +307,9 @@ function FishermanRegistration({ navigation }) {
                     }])
 
                     storeData(logRecord);
-                    //console.log(logRecord[1]);
+
+                    console.log(logRecord);
+
                     navigation.navigate('notsubmit');
 
 
@@ -370,11 +431,13 @@ function FishermanRegistration({ navigation }) {
                                                     display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                                                     is24Hour={true}
                                                     onChange={onDateSelected}
-
+                                                //style={styleSheet.datePicker}
                                                 />
                                             )}
 
-                                            <Text style={{ fontSize: 18, margin: 20, color: '#333C8D' }}>{date.toLocaleDateString('en-US')}</Text>
+
+                                            <Text style={{ fontSize: 18, margin: 20, color: '#333C8D' }}>{date.toLocaleDateString()}</Text>
+
 
 
                                         </View>
