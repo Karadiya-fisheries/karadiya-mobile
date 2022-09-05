@@ -47,10 +47,17 @@ function createTrip({ navigation }) {
             fetchMyAPI()
 
             const loadData = async () => {
-                const savedTripData = await AsyncStorage.getItem('Tripdata')
-                const currentTripData = JSON.parse(savedTripData)
-                console.log(currentTripData.Tripdata)
-                setShow(currentTripData.Tripdata);
+
+                try {
+                    const savedTripData = await AsyncStorage.getItem('Tripdata')
+                    const currentTripData = JSON.parse(savedTripData)
+                    console.log(currentTripData.Tripdata)
+                    setShow(currentTripData.Tripdata);
+
+                } catch (error) {
+                    console.log(error)
+                }
+
             };
 
             // then call it here
@@ -150,11 +157,8 @@ function createTrip({ navigation }) {
 
         if (netInfo.isConnected) {
 
-
             triplogService
                 .createTripLog({
-
-
                     WesselID: logRecord.WesselID,
                     SkipperID: logRecord.SkipperID,
                     Harbor: logRecord.Harbor,
@@ -195,12 +199,22 @@ function createTrip({ navigation }) {
                         console.log(list.FishingTime)
                         catchService.createCatch(value).then(res => {
                             console.log(res.data);
+                            toast.show("submitted !!", {
+                                type: "success",
+                                placement: "bottom",
+                                duration: 4000,
+                                offset: 30,
+                                animationType: "slide-in",
+                            });
+                            claerData();
                         }).catch(err => {
                             console.log(err.response);
                             console.log(err.request);
                             console.log(err.message);
                         })
                     })
+
+
 
 
                 }).catch(err => {
@@ -216,13 +230,7 @@ function createTrip({ navigation }) {
                     });
                 });
 
-            toast.show("submitted !!", {
-                type: "success",
-                placement: "bottom",
-                duration: 4000,
-                offset: 30,
-                animationType: "slide-in",
-            });
+
         } else {
             toast.show("no network. try again later !!", {
                 type: "warning",
@@ -280,17 +288,18 @@ function createTrip({ navigation }) {
 
                                         })
                                     }
-                                    style={styles.button}>
+                                    style={styles.tripbutton}>
 
-                                    <Text style={styles.btnText}>Trip Log : </Text>
+                                    <Text style={styles.btnText}>Enter a Catch</Text>
                                     {/* {logRecord.DepartureDate} */}
 
                                 </TouchableOpacity>
                                 :
+
                                 <TouchableOpacity
 
                                     onPress={() => navigation.navigate('E-logBook')}
-                                    style={styles.button}>
+                                    style={styles.catchbutton}>
 
                                     <Text style={styles.btnText}>Create Trip</Text>
                                 </TouchableOpacity>
@@ -357,21 +366,21 @@ function createTrip({ navigation }) {
                                 onPress={claerData}
                                 style={styles.button}>
 
-                                <Text style={styles.btnText}>Clear Log</Text>
+                                <Text style={styles.btnText}>Clear</Text>
                             </TouchableOpacity>
 
 
 
 
                         </View>
-                        <View style={styles.clearbtn}>
+                        <View style={styles.updatebtn}>
 
                             <TouchableOpacity
 
                                 onPress={onsubmithanddle}
                                 style={styles.button}>
 
-                                <Text style={styles.btnText}>upload</Text>
+                                <Text style={styles.btnText}>Upload</Text>
                             </TouchableOpacity>
 
 
@@ -448,7 +457,7 @@ const styles = StyleSheet.create({
 
     btnText: {
         color: '#fff',
-        fontSize: 15,
+        fontSize: 25,
         marginTop: 20,
         marginBottom: 20,
         marginLeft: 5,
@@ -465,16 +474,54 @@ const styles = StyleSheet.create({
     clearbtn: {
 
         flex: 0.5,
+        //borderColor: '#333C8D',
+        borderWidth: 2,
+        borderRadius: 20,
+        width: '90%',
+        height: '80%',
+        fontWeight: 'bold',
+        //fontSize: 20,
+        backgroundColor: '#fff',
+        marginBottom: 50,
+
+    },
+    updatebtn: {
+
+        flex: 0.5,
         borderColor: '#333C8D',
         borderWidth: 2,
         borderRadius: 20,
         width: '90%',
         height: '80%',
         fontWeight: 'bold',
-        fontSize: 10,
+        //fontSize: 20,
         backgroundColor: '#fff',
         marginBottom: 50,
 
+    },
+    tripbutton: {
+
+        flex: 0.9,
+        borderColor: '#333C8D',
+        borderWidth: 2,
+        borderRadius: 10,
+        width: '100%',
+        height: '100%',
+        fontWeight: 'bold',
+        fontSize: 10,
+        backgroundColor: '#5661c2',
+    },
+    catchbutton: {
+
+        flex: 0.9,
+        borderColor: '#333C8D',
+        borderWidth: 2,
+        borderRadius: 10,
+        width: '100%',
+        height: '100%',
+        fontWeight: 'bold',
+        fontSize: 10,
+        backgroundColor: '#009999',
     },
     scrollContainer: {
         flex: 4,
