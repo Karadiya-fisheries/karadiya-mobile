@@ -1,37 +1,59 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, Dimensions, ScrollView } from 'react-native';
-import { Headline } from 'react-native-paper';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, Dimensions, ScrollView,Image } from 'react-native';
+import { Headline,Avatar } from 'react-native-paper';
 
 
 function Notice({ route, navigation }) {
 
     const { post } = route.params;
 
-
+    const imageUrl = post.author.avatarUrl;
+    const img=post.cover;
+    const view=post.view;
 
     return (
         <View style={styles.container}>
             <StatusBar translucent backgroundColor="transparent" />
             <View style={styles.header}>
                 <Text style={styles.headTitle1}>Notice</Text>
-
-
-            </View>
+     </View>
+            
             <View style={styles.footer}>
                 <ScrollView>
-                    <View style={styles.rowContainer}>
-                        <Text style={styles.footertxt1}>Title:</Text>
 
-                        <Text style={styles.footertxt2}>{post.title}</Text>
-
-                    </View>
-                    <View style={styles.rowContainer}>
+                <View style={{ borderWidth: 0.5, borderRadius: 40, marginTop: 20, borderColor: '#333C8D', padding: 10,marginBottom:10 }}>
+                
+                <Image
+                          source={{uri: img}}
+                          style={styles.cover}
+                         //resizeMode="stretch"
+                          >
+                        </Image>
+                <View style={styles.rowContainer}>
                         <Text style={styles.footertxt1}>Author:</Text>
 
                         <Text style={styles.footertxt2}>{post.author.name}</Text>
+                        
+                        
+                        
 
                     </View>
+                    <Avatar.Image
+                          source={{uri: imageUrl}}
+                          style={styles.logo}
+                         //resizeMode="stretch"
+                          >
+                        </Avatar.Image>
+                    
+                        <View style={styles.rowContainer}>
+                        <Text style={styles.footertxt1}>Title:</Text>
+
+                        <Text style={styles.footertxt2}>{post.title}</Text>
+                        
+
+                    </View>
+                    
 
                     <View style={styles.rowContainer}>
                         <Text style={styles.footertxt1}>Notice:</Text>
@@ -39,6 +61,16 @@ function Notice({ route, navigation }) {
                         <Text style={styles.footertxt2}>{post.text}</Text>
 
                     </View>
+
+                   
+                <View >
+                   </View>
+
+                </View>
+ <View >
+               
+                    </View>
+                  
 
                 </ScrollView>
 
@@ -60,24 +92,48 @@ const styles = StyleSheet.create({
         backgroundColor: '#333C8D'
 
     },
+    textContainer:{
+        
+
+    },
+
     header: {
         flex: 0.8,
         justifyContent: 'flex-end',
         alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingBottom: 50,
+       // paddingHorizontal: 0,
+        paddingBottom: 30,
 
     },
 
     footer: {
         flex: 5,
         backgroundColor: '#fff',
-        borderBottomRightRadius: 100,
+        borderRadius: 40,
         paddingHorizontal: 20,
         justifyContent: 'space-between',
 
     },
+    logo: {
+    position: 'absolute',
+    top: '20%',
+    alignSelf: 'flex-end',
+    //borderColor: 'white',
+    //borderWidth: 0,
+    zIndex: 1,
+   margin:20,
+   
+      },
 
+
+      cover: {
+        width: height_logo * 3.85,
+        height: height_logo * 2,
+        borderColor: '#333C8D',
+        borderWidth: 0,
+        marginBottom:0,
+        borderRadius:40
+      },
     headTitle1: {
         color: '#fff',
         fontSize: 20,
@@ -121,12 +177,16 @@ const styles = StyleSheet.create({
         color: '#333C8D',
         fontSize: 20,
         marginTop: 20,
+        //marginEnd:100
+        flexDirection:'column-reverse',
+        //fontWeight:'bold'
     },
     footertxt2: {
         flex: 4,
         color: '#333C8D',
         fontSize: 20,
         marginTop: 20,
+        fontWeight:'bold'
     },
 
 
