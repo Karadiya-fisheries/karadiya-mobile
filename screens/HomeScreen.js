@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     flex: 2,
     marginTop: 10,
     marginBottom: 0,
-    fontSize: RFPercentage(1.8),
+    fontSize: RFPercentage(2.3),
     fontWeight: 'bold',
     color: '#333C8D',
     textAlign: 'center'

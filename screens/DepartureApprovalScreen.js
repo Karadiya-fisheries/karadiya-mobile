@@ -5,7 +5,7 @@ import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import { Checkbox, RadioButton } from 'react-native-paper';
 import SelectDropdown from 'react-native-select-dropdown';
 import { Picker } from '@react-native-picker/picker';
-import { Formik, Field, Form, ErrorMessage,resetForm } from 'formik';
+import { Formik, Field, Form, ErrorMessage, resetForm } from 'formik';
 import * as yup from 'yup';
 
 import TravelerDetails from '../components/TravelerDetails';
@@ -22,9 +22,9 @@ const departureapprovalValidationSchema = yup.object().shape({
     .string()
     .required('*This is a required field'),
   phnum: yup
-  .number()
-  .min(10, "Must be 10 characters")
-  .required("*This is a required field"),
+    .number()
+    .min(10, "Must be 10 characters")
+    .required("*This is a required field"),
   email: yup
     .string()
     .email("Please enter an valid email")
@@ -62,7 +62,7 @@ const departureapprovalValidationSchema = yup.object().shape({
   ilicense: yup
     .string()
     .required('*This is a required field'),
- 
+
 
 
 });
@@ -70,7 +70,7 @@ const departureapprovalValidationSchema = yup.object().shape({
 
 
 
-function DepartureApprovalScreen({navigation}) {
+function DepartureApprovalScreen({ navigation }) {
 
   const toast = useToast();
 
@@ -84,7 +84,7 @@ function DepartureApprovalScreen({navigation}) {
     marginBottom: 35,
 
   };
-  
+
 
   const [checked, setChecked] = React.useState(false);
   const [toggleCheckBox, setToggleCheckBox] = useState(false)
@@ -96,7 +96,7 @@ function DepartureApprovalScreen({navigation}) {
   const [agree, setAgree] = React.useState(false);
 
   const [travelerdata, settravelerData] = useState();
-  
+
   const childToParent1 = (travelerdata) => {
     settravelerData(travelerdata);
   }
@@ -109,11 +109,11 @@ function DepartureApprovalScreen({navigation}) {
   const netInfo = useNetInfo();
 
   if (netInfo.isConnected) {
-    var networkConn = <Text style={{ color: "white",backgroundColor:"green" }}>Back Online</Text>
-}
+    var networkConn = <Text style={{ color: "white", backgroundColor: "green" }}>Back Online</Text>
+  }
   else {
-    networkConn = <Text style = {{ color: "white",backgroundColor:"red"}}>No internet</Text>
-}
+    networkConn = <Text style={{ color: "white", backgroundColor: "red" }}>No internet</Text>
+  }
 
 
   return (
@@ -124,7 +124,7 @@ function DepartureApprovalScreen({navigation}) {
         ownername: '',
         phnum: '',
         email: '',
-        skippername: '', 
+        skippername: '',
         nic: '',
         skippernum: '',
         mlength: '',
@@ -135,80 +135,82 @@ function DepartureApprovalScreen({navigation}) {
         neteye: '',
         llicense: '',
         ilicense: '',
-        vmsStatus:'yes',
-        fishingArea:'indigenous sea',
-        selectedCode:'4096hz',
-        selectedPort:'galle',
-        selectedStation:'galle',
-        agree:'unchecked'
+        vmsStatus: 'yes',
+        fishingArea: 'indigenous sea',
+        selectedCode: '4096hz',
+        selectedPort: 'galle',
+        selectedStation: 'galle',
+        agree: 'unchecked'
 
       }}
 
-      onSubmit={(values ,{resetForm})=> {
-        
-        if(netInfo.isConnected){
-      
-        DepartureService
-          .createDeparture({
-            Imul: values.imul,
-            OwnerName: values.ownername,
-            TelNo: values.phnum,
-            Email: values.email,
-            SkipperName: values.skippername,
-            SkipperNic: values.nic,
-            SkipperNo: values.skippernum,
-            DepartingPort: values.selectedPort,
-            FishingZone: values.fishingArea,
-            MLength: values.mlength,
-            NoThrons: values.throns,
-            CNetLength: values.cnet,
-            CEyeSize: values.ceye,
-            NettingLength: values.netting,
-            NetEyeSize: values.neteye,
-            CrewDetails: travelerdata,
-            LocalOpLicense: values.llicense,
-            InterOpLicense:values.ilicense,
-            RadioStation:values.selectedStation,
-            Frequency:values.selectedCode,
-            Vms:values.vmsStatus,
-           
-           
-          })
-          .then(res => {
-            console.log(res);
-            resetForm();
-            settravelerData(null);
-            navigation.navigate('Home');
-          })
-          .catch(err => {
-            console.log(err.response);
-            console.log(err.request);
-            console.log(err.message);
-            toast.show(err.message, {
-              type: "warning",
-              placement: "bottom",
-              duration: 4000,
-              offset: 30,
-              animationType: "slide-in",
-         
-      });
+      onSubmit={(values, { resetForm }) => {
 
-      toast.show("Submitted Successfully!", {
-          type: "success",
-          placement: "bottom",
-          duration: 4000,
-          offset: 30,
-          animationType: "slide-in",
-      });
-            
-          });
-     
-      
-        }}}>
+        if (netInfo.isConnected) {
+
+          DepartureService
+            .createDeparture({
+              Imul: values.imul,
+              OwnerName: values.ownername,
+              TelNo: values.phnum,
+              Email: values.email,
+              SkipperName: values.skippername,
+              SkipperNic: values.nic,
+              SkipperNo: values.skippernum,
+              DepartingPort: values.selectedPort,
+              FishingZone: values.fishingArea,
+              MLength: values.mlength,
+              NoThrons: values.throns,
+              CNetLength: values.cnet,
+              CEyeSize: values.ceye,
+              NettingLength: values.netting,
+              NetEyeSize: values.neteye,
+              CrewDetails: travelerdata,
+              LocalOpLicense: values.llicense,
+              InterOpLicense: values.ilicense,
+              RadioStation: values.selectedStation,
+              Frequency: values.selectedCode,
+              Vms: values.vmsStatus,
+
+
+            })
+            .then(res => {
+              console.log(res);
+              resetForm();
+              settravelerData(null);
+              navigation.navigate('Home');
+              toast.show("Submitted Successfully!", {
+                type: "success",
+                placement: "bottom",
+                duration: 4000,
+                offset: 30,
+                animationType: "slide-in",
+              });
+            })
+            .catch(err => {
+              console.log(err.response);
+              console.log(err.request);
+              console.log(err.message);
+              toast.show(err.message, {
+                type: "warning",
+                placement: "bottom",
+                duration: 4000,
+                offset: 30,
+                animationType: "slide-in",
+
+              });
+
+
+
+            });
+
+
+        }
+      }}>
 
 
       {({ handleChange, handleBlur, handleSubmit, values, errors, isValid, touched, }) => (
-        
+
         <View style={styles.container}>
           <View style={styles.header}>
             <Text style={styles.headTitle1}>Sea Voyage Request for {"\n"}Multiday Vessels</Text>
@@ -303,25 +305,25 @@ function DepartureApprovalScreen({navigation}) {
                     <Text style={styles.txt}>08. Port where the boat is expected to depart (select one from the list)</Text>
 
                     <View style={{ borderColor: '#bdc3c7', overflow: 'hidden', width: '100%' }}>
-                        <Picker style={styles.picker}
-                          mode='dropdown'
-                          selectedValue={values.selectedPort}
-                          onValueChange={handleChange('selectedPort')}
-                          >
-                          <Picker.Item label="Galle" value="galle" />
-                          <Picker.Item label="Hambantota" value="hambantota" />
-                          <Picker.Item label="Kirinda" value="kirinda" />
-                          <Picker.Item label="Matara" value="matara" />
-                          <Picker.Item label="Colombo" value="colombo" />
-                          <Picker.Item label="Beruwala" value="beruwala" />
-                          <Picker.Item label="Kalutara" value="kalutara" />
-                        </Picker>
-                      </View>
+                      <Picker style={styles.picker}
+                        mode='dropdown'
+                        selectedValue={values.selectedPort}
+                        onValueChange={handleChange('selectedPort')}
+                      >
+                        <Picker.Item label="Galle" value="galle" />
+                        <Picker.Item label="Hambantota" value="hambantota" />
+                        <Picker.Item label="Kirinda" value="kirinda" />
+                        <Picker.Item label="Matara" value="matara" />
+                        <Picker.Item label="Colombo" value="colombo" />
+                        <Picker.Item label="Beruwala" value="beruwala" />
+                        <Picker.Item label="Kalutara" value="kalutara" />
+                      </Picker>
+                    </View>
 
                     <View style={{ flexDirection: 'column', marginTop: 20 }}>
                       <Text style={styles.txt}>09. Fishing area during fishing operations</Text>
 
-                       <RadioButton.Group
+                      <RadioButton.Group
                         onValueChange={handleChange('fishingArea')}
                         value={values.fishingArea}>
                         <View style={{ flexDirection: 'row' }}>
@@ -435,43 +437,43 @@ function DepartureApprovalScreen({navigation}) {
                   <View style={{ padding: 15, }}>
                     <Text style={styles.txt}>11. Boat Traveler Details (Fill in the number of travelers only)</Text>
                     <View
-                    style={{
-                      //borderWidth: 1,
-                      borderColor: '#333C8D',
-                      borderRadius: 10,
-                      padding: 5,
-                      marginBottom: 10,
-                    }}>
-                    
-                    <View>
-                    <TravelerDetails childToParent={childToParent1} />
+                      style={{
+                        //borderWidth: 1,
+                        borderColor: '#333C8D',
+                        borderRadius: 10,
+                        padding: 5,
+                        marginBottom: 10,
+                      }}>
 
-                    
+                      <View>
+                        <TravelerDetails childToParent={childToParent1} />
+
+
+
+                      </View>
+                    </View>
+                    <View>
+
+                      <Text style={styles.txt}>12. Local Operating License Number of the Vessel</Text>
+                      <TextInput style={styles.textInput}
+                        onChangeText={handleChange('llicense')}
+                        onBlur={handleBlur('llicense')}
+                        value={values.llicense}
+                      />
+                      {errors.llicense && touched.llicense ? (
+                        <Text style={styles.errorText}>{errors.llicense}</Text>
+                      ) : null}
+                      <Text style={styles.txt}>13. International Operating License Number of the Vessel (If any)</Text>
+                      <TextInput style={styles.textInput}
+                        onChangeText={handleChange('ilicense')}
+                        onBlur={handleBlur('ilicense')}
+                        value={values.ilicense}
+                      />
+                      {errors.ilicense && touched.ilicense ? (
+                        <Text style={styles.errorText}>{errors.ilicense}</Text>
+                      ) : null}
 
                     </View>
-                  </View>
-                  <View>
-
-                  <Text style={styles.txt}>12. Local Operating License Number of the Vessel</Text>
-                                        <TextInput style={styles.textInput}
-                                            onChangeText={handleChange('llicense')}
-                                            onBlur={handleBlur('llicense')}
-                                            value={values.llicense}
-                                        />
-                                        {errors.llicense && touched.llicense ? (
-                                            <Text style={styles.errorText}>{errors.llicense}</Text>
-                                        ) : null}
-                                        <Text style={styles.txt}>13. International Operating License Number of the Vessel (If any)</Text>
-                                        <TextInput style={styles.textInput}
-                                            onChangeText={handleChange('ilicense')}
-                                            onBlur={handleBlur('ilicense')}
-                                            value={values.ilicense}
-                                        />
-                                        {errors.ilicense && touched.ilicense ? (
-                                            <Text style={styles.errorText}>{errors.ilicense}</Text>
-                                        ) : null}
-
-                   </View>
 
                     <Text style={styles.txt}>14. Radio station and code addressed by the Vessel</Text>
                     <View style={{ flexDirection: 'row' }}>
@@ -533,35 +535,35 @@ function DepartureApprovalScreen({navigation}) {
                   <View style={{ padding: 15, marginTop: 10 }}>
 
                     <Text style={styles.txt}>16. I will not take on this boat any of my boat's registration book, operating license, valid insurance certificate, log book, fire extinguishers, radio with call sign, life jacket, life-saving equipment, or any other means of disembarkation. I hereby promise that I will not be taken on board and will not engage in any activity that is detrimental to national security or the health of the people of the country.</Text>
-                   
-                      <View style={styles.checkBox}>
-                        <Checkbox
+
+                    <View style={styles.checkBox}>
+                      <Checkbox
                         onValueChange={handleChange('checked')}
                         value={values.agree}
-                          status={agree ? 'checked' : 'unchecked'}
-                          onPress={() => {
+                        status={agree ? 'checked' : 'unchecked'}
+                        onPress={() => {
                           setAgree(!agree);
-                         }}
-                        />
+                        }}
+                      />
                       <Text style={styles.label}>I Agree</Text>
-                      
+
                     </View>
-                    </View>
-                    
-                  
-                 
+                  </View>
 
 
-                  <View style={{marginTop:180}}>
-                <Text style={styles.text1}>{networkConn}</Text>
-              
-                
 
-            </View>
+
+
+                  <View style={{ marginTop: 180 }}>
+                    <Text style={styles.text1}>{networkConn}</Text>
+
+
+
+                  </View>
                 </ProgressStep>
-                
+
               </ProgressSteps>
-              
+
             </View>
           </View>
         </View>
@@ -587,9 +589,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     color: 'black',
-    backgroundColor:'green'
-    
-},
+    backgroundColor: 'green'
+
+  },
   header: {
     flex: 0.8,
     justifyContent: 'flex-end',
