@@ -15,8 +15,10 @@ import { useNetInfo } from "@react-native-community/netinfo";
 
 import triplogService from "../service/triplog.service";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { useToast } from "react-native-toast-notifications";
 import { LogContext } from "../service/log.context";
+
 
 
 const fishermanregValidationSchema = yup.object().shape({
@@ -115,6 +117,7 @@ function FishermanRegistration({ navigation }) {
         // } catch (error) {
         //     console.log(e);
         // }
+
     };
 
     const progressStepsStyle = {
@@ -198,6 +201,7 @@ function FishermanRegistration({ navigation }) {
 
 
 
+
     return (
 
         <Formik
@@ -225,6 +229,101 @@ function FishermanRegistration({ navigation }) {
 
             onSubmit={values => {
 
+
+
+                if (netInfo.isConnected) {
+
+                    console.log(values);
+                    console.log(coods);
+                    console.log(fishList);
+                    console.log("Submitted");
+
+
+
+
+                    triplogService
+                        .createTripLog({
+
+                            boatBoatId: 1,
+                            WesselID: values.wesselId,
+                            SkipperID: values.skipperId,
+                            Harbor: values.depharbor,
+                            DepartureDate: values.depDate,
+                            DepartureTime: values.depTime,
+                            GearType: values.gearType,
+                            MainLine: values.mainLine,
+                            BranchLine: values.branchLine,
+                            HookNo: values.hookNo,
+                            HookTypes: values.hookType,
+                            Depth: values.depth,
+                            Bait: values.bait,
+
+                        }).then(res => {
+
+
+                            console.log(res.data.tripId);
+
+
+                            tripId = res.data.tripId,
+                                FishingDate = coods[0].fishDate,
+                                FishingTime = coods[0].fishTime,
+                                GPSPoint = {
+                                    start: {
+                                        long: coods[0].lon,
+                                        lat: coods[0].lat
+                                    },
+                                    end: {
+                                        long: coods[1].lon,
+                                        lat: coods[1].lat
+                                    }
+                                },
+                                Catch = caches
+
+                        }).catch(err => {
+                            console.log(err.response);
+                            console.log(err.request);
+                            console.log(err.message);
+                            toast.show(err.message, {
+                                type: "warning",
+                                placement: "bottom",
+                                duration: 4000,
+                                offset: 30,
+                                animationType: "slide-in",
+
+                        });
+
+                } else {
+
+                    console.log("not connected");
+                    console.log(values);
+                    console.log(coods);
+                    console.log(fishList);
+                    console.log(" not Submitted");
+
+                    setRecord([...logRecord, {
+                        boatBoatId: 1,
+                        WesselID: values.wesselId,
+                        SkipperID: values.skipperId,
+                        Harbor: values.depharbor,
+                        DepartureDate: values.depDate,
+                        DepartureTime: values.depTime,
+                        GearType: values.gearType,
+                        MainLine: values.mainLine,
+                        BranchLine: values.branchLine,
+                        HookNo: values.hookNo,
+                        HookTypes: values.hookType,
+                        Depth: values.depth,
+                        Bait: values.bait,
+                        coods: coods,
+                        fishList: fishList,
+
+                    }])
+
+                    storeData(logRecord);
+
+                    console.log(logRecord);
+
+                    navigation.navigate('notsubmit');
 
 
 
@@ -387,7 +486,9 @@ function FishermanRegistration({ navigation }) {
                                                 />
                                             )}
 
+
                                             <Text style={{ fontSize: 18, margin: 20, color: '#333C8D' }}>{date.toLocaleDateString()}</Text>
+
 
 
                                         </View>

@@ -9,6 +9,7 @@ function notsubmit({ navigation }) {
     const [log, setlog] = useState([]);
 
     useEffect(() => {
+
         // getData().then((value) => {
         //     console.log("val: " + value);
         //     setlog(value);
@@ -85,6 +86,7 @@ function notsubmit({ navigation }) {
 
 
 
+
     return (
         <View style={styles.container}>
             <StatusBar translucent backgroundColor="transparent" />
@@ -110,6 +112,7 @@ function notsubmit({ navigation }) {
                             );
                         })} */}
                     </View>
+
 
 
 
@@ -209,11 +212,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center'
     },
+
     list: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
+
 
 
 
