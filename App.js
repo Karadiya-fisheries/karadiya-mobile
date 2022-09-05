@@ -53,6 +53,9 @@ import WayPoint from './screens/Navigation/WayPoint';
 import Setwaypoint from './screens/Navigation/Setwaypoint.js';
 import Notice from './screens/Notices/Notice';
 import notsubmit from './screens/Elog/notsubmit';
+import createTrip from './screens/Elog/createTrip';
+import catchDetail from './screens/Elog/catchDetails'
+import { LogContext, logrecord } from './service/log.context';
 
 const Drawer = createDrawerNavigator();
 const NaviDrawer = createDrawerNavigator();
@@ -64,8 +67,7 @@ const NaviDrawer = createDrawerNavigator();
 
 
 const App = () => {
-  // const [isLoading, setIsLoading] = React.useState(true);
-  // const [userToken, setUserToken] = React.useState(null);
+
 
   const initialLoginState = {
     isLoading: true,
@@ -200,8 +202,10 @@ const App = () => {
   function ElogStackScreen() {
     return (
       <NaviDrawer.Navigator>
+        <NaviDrawer.Screen name="createTrip" component={createTrip} />
         <NaviDrawer.Screen name="E-logBook" component={ElogBookScreen} />
         <NaviDrawer.Screen name="notsubmit" component={notsubmit} />
+        <NaviDrawer.Screen name="catchDetail" component={catchDetail} />
 
       </NaviDrawer.Navigator>
     );
@@ -220,6 +224,7 @@ const App = () => {
   return (
     <ToastProvider>
       <AuthContext.Provider value={authContext}>
+        {/* <LogContext.Provider value={logrecord}> </LogContext.Provider> */}
         <NavigationContainer>
           {loginState.userToken != null ? (
             <Drawer.Navigator
@@ -259,7 +264,9 @@ const App = () => {
             <RootStackScreen />
           )}
         </NavigationContainer>
+
       </AuthContext.Provider>
+
     </ToastProvider>
   );
 };

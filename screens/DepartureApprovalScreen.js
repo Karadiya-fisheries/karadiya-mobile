@@ -7,10 +7,12 @@ import SelectDropdown from 'react-native-select-dropdown';
 import { Picker } from '@react-native-picker/picker';
 import { Formik, Field, Form, ErrorMessage,resetForm } from 'formik';
 import * as yup from 'yup';
+
 import TravelerDetails from '../components/TravelerDetails';
 import DepartureService from '../service/DepartureService';
 import { useNetInfo } from '@react-native-community/netinfo';
 import { useToast } from "react-native-toast-notifications";
+
 
 const departureapprovalValidationSchema = yup.object().shape({
   imul: yup
@@ -141,6 +143,7 @@ function DepartureApprovalScreen({navigation}) {
         agree:'unchecked'
 
       }}
+
       onSubmit={(values ,{resetForm})=> {
         
         if(netInfo.isConnected){
@@ -202,6 +205,7 @@ function DepartureApprovalScreen({navigation}) {
      
       
         }}}>
+
 
       {({ handleChange, handleBlur, handleSubmit, values, errors, isValid, touched, }) => (
         

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, Component, useRef, createRef } from "react";
+import React, { useState, useEffect, Component, useRef, createRef, useContext } from "react";
 import { TouchableHighlight, Image, Platform, LogBox, View, Text, StyleSheet, TextInput, TouchableOpacity, Dimensions, Button, SafeAreaView, ScrollView, Alert } from 'react-native';
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import { Checkbox, RadioButton, RadioButtonGroup } from 'react-native-paper';
@@ -10,16 +10,14 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as yup from 'yup';
 import { useNetInfo } from "@react-native-community/netinfo";
-import CoodinateContainer from "../components/CoodinateContainer";
-import FishCatchContainer from "../components/FIshCatchContainer";
+// import CoodinateContainer from "../components/CoodinateContainer";
+// import FishCatchContainer from "../components/FIshCatchContainer";
 
 import triplogService from "../service/triplog.service";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useToast } from "react-native-toast-notifications";
-
-
-
+import { LogContext } from "../service/log.context";
 
 
 
@@ -78,24 +76,25 @@ function FishermanRegistration({ navigation }) {
     console.log(netInfo.isConnected);
 
     const toast = useToast();
-
+    // const logrecord = useContext(LogContext)
+    // console.log(logrecord)
 
 
     const storeData = async (log) => {
-        //console.log(log)
-        // try {
-        //     const jsonValue = await JSON.stringify(log)
-        //     //console.log("Set:" + jsonValue);
-        //     await AsyncStorage.setItem('Elog', jsonValue)
-        // } catch (e) {
-        //     console.log(e);
-        // }
-
+        console.log(log)
         try {
-            await AsyncStorage.setItem('Elog', JSON.stringify(log));
-        } catch (error) {
+            const jsonValue = await JSON.stringify(log)
+            //console.log("Set:" + jsonValue);
+            await AsyncStorage.setItem('Elog', jsonValue)
+        } catch (e) {
             console.log(e);
         }
+
+        // try {
+        //     await AsyncStorage.setItem('Elog', JSON.stringify(log));
+        // } catch (error) {
+        //     console.log(e);
+        // }
 
     }
 
@@ -186,6 +185,20 @@ function FishermanRegistration({ navigation }) {
         });
     }, [])
 
+    const storeTripData = async (value) => {
+        try {
+            const jsonValue = JSON.stringify(value)
+            await AsyncStorage.setItem('Tripdata', jsonValue)
+
+        } catch (e) {
+            // saving error
+        }
+    }
+
+    const val = {
+        Tripdata: true
+    }
+
 
 
 
@@ -198,8 +211,8 @@ function FishermanRegistration({ navigation }) {
                 wesselId: '',
                 skipperId: '',
                 depharbor: 'Panadura',
-                depDate: date.toLocaleDateString('en-US'),
-                depTime: time.toLocaleTimeString('en-US'),
+                depDate: date,
+                depTime: time,
                 gearType: 'Longline',
                 mainLine: '',
                 branchLine: '',
@@ -314,8 +327,46 @@ function FishermanRegistration({ navigation }) {
 
 
 
+                //console.log(values);
+                //console.log("Submitted");
+
+
+
+
+                const triplog = {
+                    boatBoatId: 1,
+                    WesselID: values.wesselId,
+                    SkipperID: values.skipperId,
+                    Harbor: values.depharbor,
+                    DepartureDate: values.depDate,
+                    DepartureTime: values.depTime,
+                    GearType: values.gearType,
+                    MainLine: values.mainLine,
+                    BranchLine: values.branchLine,
+                    HookNo: values.hookNo,
+                    HookTypes: values.hookType,
+                    Depth: values.depth,
+                    Bait: values.bait,
+                    CatchRecords: {
+                        FishingDate: null,
+                        FishingTime: null,
+                        GPSPoint: {
+                            long1: null,
+                            lat1: null,
+                            long2: null,
+                            lat2: null
+                        },
+                        Catch: null
+
+                    },
+
                 }
 
+                storeData(triplog);
+                storeTripData(val);
+
+                //console.log(triplog);
+                navigation.goBack();
 
 
             }}
@@ -487,7 +538,10 @@ function FishermanRegistration({ navigation }) {
                                 </ProgressStep>
 
 
-                                <ProgressStep>
+                                <ProgressStep
+                                    onSubmit={handleSubmit}
+                                    disabled={!isValid}
+                                >
 
 
                                     <View style={{ borderWidth: 1, borderRadius: 10, marginBottom: 10, borderColor: '#333C8D', padding: 5 }}>
@@ -628,7 +682,7 @@ function FishermanRegistration({ navigation }) {
                                 </ProgressStep>
 
 
-                                <ProgressStep>
+                                {/* <ProgressStep>
 
                                     <CoodinateContainer childToParent={childToParent1} />
 
@@ -641,7 +695,7 @@ function FishermanRegistration({ navigation }) {
 
                                     <FishCatchContainer childToParent={childToParent2} />
 
-                                </ProgressStep>
+                                </ProgressStep> */}
 
                             </ProgressSteps>
                         </View >
