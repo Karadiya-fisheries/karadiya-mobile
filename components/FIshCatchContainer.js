@@ -22,9 +22,9 @@ const FishCatchContainer = ({ childToParent }) => {
   const handleAddTask = () => {
 
     setItem([...item, {
-      fishType: fishType,
-      subFishType: subfishType,
-      QTY: QTY,
+      FishType: fishType,
+      SubFishType: subfishType,
+      Qty: QTY,
       Weight: Weight,
     }])
 
@@ -140,7 +140,7 @@ const FishCatchContainer = ({ childToParent }) => {
           item.map((item, index) => {
             return (
               <TouchableOpacity key={index} onPress={() => deleteItem(index)}>
-                <Task text1={item.fishType} text2={item.subFishType} text3={item.QTY} text4={item.Weight} />
+                <Task text1={item.FishType} text2={item.SubFishType} text3={item.Qty} text4={item.Weight} />
               </TouchableOpacity>
 
             )

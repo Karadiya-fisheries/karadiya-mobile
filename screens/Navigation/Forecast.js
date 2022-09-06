@@ -190,6 +190,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         fontSize: RFPercentage(4),
         textAlign: 'center',
+        color: '#fff'
     },
     header: {
         flex: 1,

@@ -176,7 +176,10 @@ function createTrip({ navigation }) {
 
                     console.log(res);
 
+
                     console.log(res.data.tripId);
+
+
 
 
                     items.forEach((value, index) => {
@@ -186,18 +189,18 @@ function createTrip({ navigation }) {
                             FishingTime: value.FishingTime,
                             GPSPoint: {
                                 start: {
-                                    long: value.GPSPoint.lon1,
+                                    long: value.GPSPoint.long1,
                                     lat: value.GPSPoint.lat1
                                 },
                                 end: {
-                                    long: value.GPSPoint.lon2,
+                                    long: value.GPSPoint.long2,
                                     lat: value.GPSPoint.lat2
                                 }
                             },
                             Catch: value.Catch
                         }
-                        console.log(list.FishingTime)
-                        catchService.createCatch(value).then(res => {
+                        console.log(list)
+                        catchService.createCatch(list).then(res => {
                             console.log(res.data);
                             toast.show("submitted !!", {
                                 type: "success",
@@ -206,7 +209,7 @@ function createTrip({ navigation }) {
                                 offset: 30,
                                 animationType: "slide-in",
                             });
-                            claerData();
+                            //claerData();
                         }).catch(err => {
                             console.log(err.response);
                             console.log(err.request);
