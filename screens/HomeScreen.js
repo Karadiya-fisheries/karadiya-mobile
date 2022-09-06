@@ -49,16 +49,20 @@ function HomeScreen({ navigation }) {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => navigation.navigate('E-logBook')}
+              onPress={() => navigation.navigate('Departure-Approval')}
               style={styles.button}>
-              <Text style={styles.btnText}>E-log Book</Text>
+
+              <Text style={styles.btnText}>Departure Approval</Text>
 
               <Image
                 style={styles.icon}
-                source={require('../assets/Ebook.png')}
+                source={require('../assets/departure.png')}
                 resizeMode="stretch"
               />
+
             </TouchableOpacity>
+
+
           </View>
 
           <View style={styles.rowContainer}>
@@ -74,7 +78,7 @@ function HomeScreen({ navigation }) {
               />
             </TouchableOpacity>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => navigation.navigate('Prediction')}
               style={styles.button}>
               <Text style={styles.btnText}>Prediction</Text>
@@ -82,6 +86,17 @@ function HomeScreen({ navigation }) {
               <Image
                 style={styles.icon}
                 source={require('../assets/prediction.png')}
+                resizeMode="stretch"
+              />
+            </TouchableOpacity> */}
+            <TouchableOpacity
+              onPress={() => navigation.navigate('E-logBook')}
+              style={styles.button}>
+              <Text style={styles.btnText}>E-log Book</Text>
+
+              <Image
+                style={styles.icon}
+                source={require('../assets/Ebook.png')}
                 resizeMode="stretch"
               />
             </TouchableOpacity>
@@ -99,19 +114,7 @@ function HomeScreen({ navigation }) {
               />
             </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Departure-Approval')}
-              style={styles.button}>
 
-              <Text style={styles.btnText}>Departure Approval</Text>
-
-              <Image
-                style={styles.icon}
-                source={require('../assets/departure.png')}
-                resizeMode="stretch"
-              />
-
-            </TouchableOpacity>
           </View>
         </ScrollView>
       </View>

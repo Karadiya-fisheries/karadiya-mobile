@@ -20,7 +20,7 @@ import { Checkbox, RadioButton, RadioButtonGroup } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 //import * as ImagePicker from 'react-native-image-picker';
 import SignatureCapture from 'react-native-signature-capture';
-import { Formik, Field, Form, ErrorMessage,resetForm } from 'formik';
+import { Formik, Field, Form, ErrorMessage, resetForm } from 'formik';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as yup from 'yup';
 import fishermenService from '../service/fishermen.service';
@@ -30,6 +30,7 @@ import DependentDetails from '../components/DependentDetails';
 import { launchImageLibrary } from 'react-native-image-picker';
 
 import { useToast } from "react-native-toast-notifications";
+import { useNetInfo } from '@react-native-community/netinfo';
 
 //import { showImagePicker } from 'react-native-image-picker';
 import storage from '@react-native-firebase/storage';
@@ -126,7 +127,7 @@ function FishermanRegistration({ navigation }) {
       }
     });
 
-    uploadImage();
+    //uploadImage();
 
   };
 
@@ -182,7 +183,7 @@ function FishermanRegistration({ navigation }) {
 
   //-----------------------------
   //Dynamiccaly Adding input fields
- 
+
   //-----------------------------
   //date picker
   const [date, setDate] = useState(new Date());
@@ -230,11 +231,11 @@ function FishermanRegistration({ navigation }) {
     setdependentData(childdata);
 
   }
-
+  const netInfo = useNetInfo();
 
   return (
     <Formik
-     // validationSchema={fishermanregValidationSchema}
+      validationSchema={fishermanregValidationSchema}
       initialValues={{
         fidivision: '',
         gndivision: '',
@@ -254,7 +255,7 @@ function FishermanRegistration({ navigation }) {
         membershipno: 'no',
 
       }}
-      onSubmit={(values ,{resetForm})=> {
+      onSubmit={(values, { resetForm }) => {
         const boatCat = [
           { label: 'IMUL', value: imul },
           { label: 'IDAY', value: iday },
@@ -272,64 +273,65 @@ function FishermanRegistration({ navigation }) {
             return element !== undefined;
           });
 
+        if (netInfo.isConnected) {
+          fishermenService
+            .createFishermen({
+              uid: userUid,
+              FIDivision: values.fidivision,
+              GNDivision: values.gndivision,
+              DSDivision: values.dsdivision,
+              FDistrict: values.district,
+              Surname: values.surname,
+              OtherNames: values.othernames,
+              NicNo: values.nicno,
+              BoatCat: boatCat,
+              NumofBoats: values.numofboats,
+              FZone: [values.fishingZone],
+              OccuType: values.occupation,
+              FOpType: values.natureOfFishing,
+              AssocAct: values.associateOccu,
+              LInsuaranceNo: values.insuarance,
+              MemberOfSoc: values.membershipStatus,
+              MemberNo: values.membershipno,
+              Children: childdata,
+              Dependent: dependentdata,
+              Photo: null,
+              Sign: null,
 
 
-        fishermenService
-          .createFishermen({
-            uid: userUid,
-            FIDivision: values.fidivision,
-            GNDivision: values.gndivision,
-            DSDivision: values.dsdivision,
-            FDistrict: values.district,
-            Surname: values.surname,
-            OtherNames: values.othernames,
-            NicNo: values.nicno,
-            BoatCat: boatCat,
-            NumofBoats: values.numofboats,
-            FZone: [values.fishingZone],
-            OccuType: values.occupation,
-            FOpType: values.natureOfFishing,
-            AssocAct: values.associateOccu,
-            LInsuaranceNo: values.insuarance,
-            MemberOfSoc: values.membershipStatus,
-            MemberNo: values.membershipno,
-            Children: childdata,
-            Dependent: dependentdata,
-            Photo: null,
-            Sign: null,
+            })
+            .then(res => {
+              console.log(res);
+              toast.show("Submitted Successfully.Check Your Email!", {
+                type: "success",
+                placement: "bottom",
+                duration: 4000,
+                offset: 30,
+                animationType: "slide-in",
+              });
+              resetForm();
+              setchildData(null);
+              setdependentData(null);
+              navigation.navigate('Home');
+            })
+            .catch(err => {
+              console.log(err.response);
+              console.log(err.request);
+              console.log(err.message);
+              toast.show(err.message, {
+                type: "warning",
+                placement: "bottom",
+                duration: 4000,
+                offset: 30,
+                animationType: "slide-in",
+
+              });
 
 
-          })
-          .then(res => {
-            console.log(res);
-            resetForm();
-            setchildData(null);
-            setdependentData(null);
-            navigation.navigate('Home');
-          })
-          .catch(err => {
-            console.log(err.response);
-            console.log(err.request);
-            console.log(err.message);
-            toast.show(err.message, {
-              type: "warning",
-              placement: "bottom",
-              duration: 4000,
-              offset: 30,
-              animationType: "slide-in",
-         
-      });
-
-      toast.show("Check Your Email!", {
-          type: "success",
-          placement: "bottom",
-          duration: 4000,
-          offset: 30,
-          animationType: "slide-in",
-      });
 
 
-          });
+            });
+        }
       }}>
       {({
         handleChange,
@@ -707,7 +709,7 @@ function FishermanRegistration({ navigation }) {
                       <Text style={styles.txt}>
                         Membership of {'\n'}Fisheries Society
                       </Text>
-                      
+
                       <RadioButton.Group
                         onValueChange={handleChange('membershipStatus')}
                         value={values.membershipStatus}>
@@ -862,6 +864,7 @@ const styles = StyleSheet.create({
     color: '#333C8D',
     //marginEnd: 50,
     minWidth: 160,
+    fontWeight: 'bold'
   },
 
   picker: {

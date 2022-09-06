@@ -126,7 +126,7 @@ export function DrawerContent(props) {
                             label="Navigation"
                             onPress={() => { props.navigation.navigate('Navigation') }}
                         />
-                        <DrawerItem
+                        {/* <DrawerItem
                             icon={({ color, size }) => (
                                 <Icon
                                     name="map-check-outline"
@@ -136,7 +136,7 @@ export function DrawerContent(props) {
                             )}
                             label="Prediction"
                             onPress={() => { props.navigation.navigate('Prediction') }}
-                        />
+                        /> */}
                         <DrawerItem
                             icon={({ color, size }) => (
                                 <Icon

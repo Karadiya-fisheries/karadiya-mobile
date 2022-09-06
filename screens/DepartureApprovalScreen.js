@@ -118,7 +118,7 @@ function DepartureApprovalScreen({ navigation }) {
 
   return (
     <Formik
-      //validationSchema={departureapprovalValidationSchema}
+      validationSchema={departureapprovalValidationSchema}
       initialValues={{
         imul: '',
         ownername: '',
@@ -176,9 +176,6 @@ function DepartureApprovalScreen({ navigation }) {
             })
             .then(res => {
               console.log(res);
-              resetForm();
-              settravelerData(null);
-              navigation.navigate('Home');
               toast.show("Submitted Successfully!", {
                 type: "success",
                 placement: "bottom",
@@ -186,12 +183,16 @@ function DepartureApprovalScreen({ navigation }) {
                 offset: 30,
                 animationType: "slide-in",
               });
+              resetForm();
+              settravelerData(null);
+              navigation.navigate('Home');
+
             })
             .catch(err => {
               console.log(err.response);
               console.log(err.request);
               console.log(err.message);
-              toast.show(err.message, {
+              toast.show(err.message + " :Check IMUL number", {
                 type: "warning",
                 placement: "bottom",
                 duration: 4000,
@@ -537,7 +538,7 @@ function DepartureApprovalScreen({ navigation }) {
                     <Text style={styles.txt}>16. I will not take on this boat any of my boat's registration book, operating license, valid insurance certificate, log book, fire extinguishers, radio with call sign, life jacket, life-saving equipment, or any other means of disembarkation. I hereby promise that I will not be taken on board and will not engage in any activity that is detrimental to national security or the health of the people of the country.</Text>
 
                     <View style={styles.checkBox}>
-                      <Checkbox
+                      {/* <Checkbox
                         onValueChange={handleChange('checked')}
                         value={values.agree}
                         status={agree ? 'checked' : 'unchecked'}
@@ -545,7 +546,7 @@ function DepartureApprovalScreen({ navigation }) {
                           setAgree(!agree);
                         }}
                       />
-                      <Text style={styles.label}>I Agree</Text>
+                      <Text style={styles.label}>I Agree</Text> */}
 
                     </View>
                   </View>
